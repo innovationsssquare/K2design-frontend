@@ -30,7 +30,7 @@ export default function Nav() {
 
       <NavbarContent as="div" className="items-center" justify="end">
         <div className="flex items-center gap-2 cursor-pointer">
-        <Badge color="secondary" content={5} shape="circle" >
+        <Badge color="secondary" content={''} shape="circle" >
 
         <BsBell size={20} />
         </Badge>
