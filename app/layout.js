@@ -1,7 +1,7 @@
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import Nav from "@/components/Nav";
+import Nav from "../components/Navbarcomponents/Nav";
 
 
 
