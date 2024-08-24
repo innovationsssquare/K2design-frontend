@@ -26,7 +26,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 
 export default function Nav() {
   return (
-    <header className="header-two sticky-header sticky top-0 z-20 lg:relative w-full h-16 lg:h-auto bg-[#f8f9fb]">
+    <header className="header-two sticky-header sticky top-0 z-20 lg:relative w-full h-14 lg:h-auto bg-[#f8f9fb]">
       <div className="z-20 transition-all duration-200 ease-in-out innerSticky lg:w-full body-font ">
         <div className="w-full transition-all duration-200 ease-in-out top-bar-search hidden lg:max-w-[600px] absolute z-30 px-4 md:px-6 top-1">
           <div className="overlay cursor-pointer invisible w-full h-full opacity-0 flex top-0 ltr:left-0 rtl:right-0 transition-all duration-300 fixed"></div>
