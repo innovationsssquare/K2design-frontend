@@ -3,7 +3,7 @@ import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Badge} from "@nextui-org/react";
 import { IoSearchOutline } from "react-icons/io5";
 import Image from "next/image";
-import Logo from '../public/Logo.png'
+import Logo from '@/public/Logo.png'
 import { BsCart3 } from "react-icons/bs";
 import { BsBell } from "react-icons/bs";
 
