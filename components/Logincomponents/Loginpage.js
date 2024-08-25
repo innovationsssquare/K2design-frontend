@@ -6,8 +6,8 @@ import { FaUser } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import toast, { Toaster } from 'react-hot-toast';
 
-// import { Superadminlogin } from "@/lib/API/Auth";
-// import { Adminlogin, } from "@/lib/API/Auth";
+import { Adminlogin, } from "@/lib/API/Auth";
+
 import Cookies from "js-cookie";
 import { Tabs, Tab } from "@nextui-org/react";
 
@@ -84,74 +84,72 @@ const Loginpage = () => {
   const validate = () => {
     if (selected === "Superadminlogin") {
       if (!superAdminEmail) {
-        return "Super Admin Email is required";
+        return "Email is required";
       } else if (!validateEmail(superAdminEmail)) {
-        return "Invalid Super Admin email format";
+        return "Invalid  email format";
       }
-      if (!superAdminPassword) return "Super Admin Password is required";
+      if (!superAdminPassword) return " Password is required";
     } else {
       if (!adminEmail) {
-        return "Admin Email is required";
+        return " Email is required";
       } else if (!validateEmail(adminEmail)) {
-        return "Invalid Admin email format";
+        return "Invalid  email format";
       }
-      if (!adminPassword) return "Admin Password is required";
+      if (!adminPassword) return " Password is required";
     }
     return null;
   };
 
-//   const handleSubmit = async () => {
-//     const errors = validate();
-//     if (errors) {
-//       toast.error(errors);
-//       return;
-//     }
+  const handleSubmit = async () => {
+    const errors = validate();
+    if (errors) {
+      toast.error(errors);
+      return;
+    }
 
-//     setLoading(true);
+    setLoading(true);
 
-//     let data, result;
+    let data, result;
 
-//     try {
-//       if (selected === "Superadminlogin") {
-//         data = {
-//           Email: superAdminEmail,
-//           Password: superAdminPassword,
-//         };
-//         result = await Superadminlogin(data);
-//        if(result.data){
-//         dispatch(setUser(result.data));
-//         Setuserdata(result.data)
-//       }
-//       } else {
-//         data = {
-//           Email: adminEmail,
-//           Password: adminPassword,
-//         };
-//         result = await Adminlogin(data);
-//         if(result.data){
-//           dispatch(setUser(result.data));
-//           Setuserdata(result.data)
-//         }
-//       }
+    try {
+      if (selected === "Superadminlogin") {
+        data = {
+          Email: superAdminEmail,
+          Password: superAdminPassword,
+        };
+        result = await Adminlogin(data);
+       if(result.data){
+        Setuserdata(result.data)
+      }
+      } else {
+        data = {
+          Email: adminEmail,
+          Password: adminPassword,
+        };
+        result = await Adminlogin(data);
+        if(result.data){
+          Setuserdata(result.data)
+        }
+      }
 
-//       if (result.status) {
-//         console.log(result.token);
-//         Cookies.set("token", result.token);
-//         if (rememberMe) {
-//           localStorage.setItem("rememberedEmail", data.Email);
-//         } else {
-//           localStorage.removeItem("rememberedEmail");
-//         }
-//         router.push("/");
-//       } else {
-//         toast.error(result.message || "An error occurred during login");
-//       }
-//     } catch (error) {
-//       toast.error("An error occurred during login");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+      if (result.status) {
+        console.log(result.token);
+        Cookies.set("token", result.token);
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", data.Email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+        router.push("/");
+      } else {
+        toast.error(result.message || "An error occurred during login");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -167,10 +165,10 @@ const Loginpage = () => {
               fullWidth
               classNames={{
                 tabList:
-                  "gap-6 w-11/12 mx-auto relative hidden rounded-md p-0  ",
+                  "gap-6 w-11/12 mx-auto relative  rounded-md p-0  ",
                 cursor: "w-full bg-white",
-                tab: " px-2 h-10",
-                tabContent: "group-data-[selected=true]:text-white text-white",
+                tab: " px-2 h-6",
+                tabContent: "group-data-[selected=true]:text-black text-black uppercase font-bold",
               }}
               size="md"
               aria-label="Tabs form"
@@ -205,7 +203,7 @@ const Loginpage = () => {
               
             </Tabs>
 
-            <div className="flex py-2 px-4 justify-between w-full">
+            <div className="flex py-2 px-6 justify-between w-full">
               <Checkbox
                color="secondary"
                 classNames={{
@@ -220,14 +218,14 @@ const Loginpage = () => {
                 color="primary"
                 href="#"
                 size="sm"
-                className="text-white opacity-70"
+                className="text-black opacity-70"
               >
                 Forgot password?
               </Link>
             </div>
             <div className="w-full flex justify-center items-center py-2">
               <Button
-                // onPress={handleSubmit}
+                onPress={handleSubmit}
                 className="bg-[#9c1dac] w-11/12 text-white font-semibold rounded-md"
               >
                 {loading ? <span className="loader2"></span> : "Login"}
@@ -250,8 +248,8 @@ const Loginpage = () => {
           className: "",
           duration: 5000,
           style: {
-            background: "linear-gradient(90deg, #222C68 0%, #1D5B9E 100%)",
-            color: "#fff",
+            background: "white",
+            color: "#000",
           },
 
           // Default options for specific types
@@ -270,37 +268,3 @@ const Loginpage = () => {
 
 export default Loginpage;
 
-{
-  /* <div
-                onClick={toggleDropdown}
-                className="bg-[#324970]  relative rounded-md w-11/12 mx-auto h-12 flex justify-start px-2 items-center gap-4"
-              >
-                <BiSolidBuildingHouse className="text-white" size={24} />
-                <input
-                  className="outline-none bg-transparent text-sm text-white placeholder:text-white placeholder:text-sm placeholder:font-medium"
-                  placeholder="Property"
-                  value={selectedProperty}
-                />
-                {isDropdownOpen ? (
-                  <IoChevronUp className="text-white ml-14" size={24} />
-                ) : (
-                  <IoChevronDownOutline
-                    className="text-white ml-14"
-                    size={24}
-                  />
-                )}
-                {isDropdownOpen && (
-                  <div className="absolute w-full top-full mt-1 z-20 bg-[#324970] left-0 right-0  rounded-md">
-                    {properties.map((property) => (
-                      <div
-                        key={property}
-                        onClick={() => handlePropertySelect(property)}
-                        className="cursor-pointer px-4 py-2 text-white hover:bg-[#2a3e60] text-sm"
-                      >
-                        {property}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div> */
-}

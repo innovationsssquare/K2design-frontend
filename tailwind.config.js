@@ -24,7 +24,7 @@ module.exports = {
       'Apptheme': '#9c1dac',
       'black': '#00000',
       'white': '#ffffff',
-      'slate': '#e2e8f0',
+      'slate': '#f3f4f6',
       'green': '#13ce66',
       'yellow': '#ffc82c',
       'gray-dark': '#273444',
