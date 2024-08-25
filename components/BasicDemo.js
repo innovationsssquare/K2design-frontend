@@ -53,6 +53,66 @@ const menuItems = [
       { title: "FAQ", href: "/pages/faq" },
     ],
   },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
+  {
+    title: "Pages",
+    href: "#",
+    icon: Logo,
+    subLinks: [
+      { title: "About Us", href: "/pages/about" },
+      { title: "Contact Us", href: "/pages/contact" },
+      { title: "FAQ", href: "/pages/faq" },
+    ],
+  },
 ];
 
 export function BasicDemo() {
@@ -79,11 +139,11 @@ export function BasicDemo() {
             >
               <div className="flex justify-center  items-center space-x-2 text-lg font-medium text-gray-700 hover:text-green-600 cursor-pointer">
                 <div className="flex flex-col justify-center items-center p-1">
-                  {/* <Image
+                   <Image
                     src={item.icon}
                     alt={`${item.title} icon`}
                     className="h-14 w-14"
-                  /> */}
+                  /> 
 
                   <div className="flex justify-center items-center gap-2 ">
                     <span className="text-nowrap ">{item.title}</span>
