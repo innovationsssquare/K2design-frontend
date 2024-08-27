@@ -157,7 +157,7 @@ const Loginpage = () => {
       <main className="h-screen w-full bg-[#f7f7f7]   flex justify-center items-center flex-col">
         <div className="md:w-96 lg:w-96 w-11/12 h-auto rounded-lg overflow-hidden mx-auto boxshadow">
           <div className="flex gap-3 bg-white justify-center items-center ">
-            <Image alt=" logo" height={40} radius="sm" src={Logo} width={40} className="object-contain h-24 w-24" />
+            <Image alt=" logo"  objectFit="contain"  radius="sm" src={Logo}  className="object-contain h-24 w-24" />
            
           </div>
           <Divider/>
