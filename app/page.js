@@ -1,8 +1,7 @@
 
 'use client'
 
-import { BasicDemo } from "@/components/BasicDemo";
-
+import BasicDemo from "@/components/BasicDemo";
 import { Categorynav } from "@/components/Navbarcomponents/Categorynav";
 import Image from "next/image";
 
@@ -13,7 +12,7 @@ export default function Home() {
     
 
     <Categorynav />
-    <BasicDemo/>
+    {/* <BasicDemo/> */}
    </main>
 
   );
