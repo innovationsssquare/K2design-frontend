@@ -68,3 +68,13 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
       transform: rotate(360deg);
     }
   } 
+
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
