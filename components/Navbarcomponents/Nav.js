@@ -28,7 +28,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 
 export default function Nav() {
   return (
-    <header className="header-two sticky-header sticky top-0 z-20 lg:relative w-full h-14 lg:h-auto bg-[#f8f9fb]">
+    <header className="header-two sticky-header sticky top-0 z-20 lg:relative w-full h-14 lg:h-auto ">
       <div className="z-20 transition-all duration-200 ease-in-out innerSticky lg:w-full body-font ">
         <div className="w-full transition-all duration-200 ease-in-out top-bar-search hidden lg:max-w-[600px] absolute z-30 px-4 md:px-6 top-1">
           <div className="overlay cursor-pointer invisible w-full h-full opacity-0 flex top-0 ltr:left-0 rtl:right-0 transition-all duration-300 fixed"></div>
@@ -67,7 +67,7 @@ export default function Nav() {
                   <div className="relative w-full flex gap-2">
                  
                     <input
-                      className="text-heading outline-none w-full h-[52px] ltr:pl-5 rtl:pr-5 md:ltr:pl-6 md:rtl:pr-6 ltr:pr-14 rtl:pl-14 md:ltr:pr-16 md:rtl:pl-16 bg-brand-light text-brand-dark text-sm lg:text-15px rounded-md transition-all duration-200 focus:border-secondary focus:ring-0 placeholder:text-brand-dark/50 border border-[#e5e7eb] p-4 boxshadow"
+                      className="text-heading outline-none w-full h-[52px] ltr:pl-5 rtl:pr-5 md:ltr:pl-6 md:rtl:pr-6 ltr:pr-14 rtl:pl-14 md:ltr:pr-16 md:rtl:pl-16 bg-brand-light text-brand-dark text-sm lg:text-15px rounded-md transition-all duration-200 focus:border-secondary focus:ring-0 placeholder:text-brand-dark/50 border border-[#e5e7eb] p-4  bg-[#f8f9fb]"
                       placeholder="What are you looking..."
                       type="search"
                     />
