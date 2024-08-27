@@ -1,7 +1,8 @@
 "use client";
 import * as React from "react";
 import Link from "next/link";
-
+import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -12,302 +13,219 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import Image from "next/image";
 import Logo from "../../public/Logo.png";
-import { ChevronDown } from "lucide-react";
+import FLEX from "../../public/images/FLEX (Banner).png";
+import Calnedar from "../../public/images/Calnedar.jpg";
+import CLIAPON from "../../public/images/CLIAPON FRAMES.png";
+import BROCHUR from "../../public/images/BROCHUR (3).jpg";
 
-const components = [
+const data = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+    mainMenu: "Paper Printing",
+    logo: FLEX,
+    subMenu: [
+      {
+        title: "Visiting Card",
+        href: "/docs/primitives/alert-dialog",
+        
+      },
+      {
+        title: " Letter Head",
+        href: "/docs/primitives/hover-card",
+        
+      },
+      {
+        title: "Envelopes",
+        href: "/docs/primitives/progress",
+        
+      },
+      {
+        title: "Bill Booka",
+        href: "/docs/primitives/scroll-area",
+        
+      },
+      {
+        title: "Pavati Books",
+        href: "/docs/primitives/tabs",
+        
+      },
+      {
+        title: " Brochure",
+        href: "/docs/primitives/tooltip",
+      },
+      {
+        title: " Booklet",
+        href: "/docs/primitives/tooltip",
+      },
+    ],
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
+    mainMenu: "Flex",
+    logo: Calnedar,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+    mainMenu: "Utilities",
+    logo: CLIAPON,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    mainMenu: "Media Printing ",
+    logo: BROCHUR,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
   },
   {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+    mainMenu: "Glass Films",
+    logo: Calnedar,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
   },
   {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    mainMenu: "Flex",
+    logo: Logo,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
   },
+  {
+    mainMenu: "Utilities",
+    logo: Logo,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
+  },
+  {
+    mainMenu: "Utilities",
+    logo: Logo,
+    subMenu: [
+      {
+        title: "Tooltip",
+        href: "/docs/primitives/tooltip",
+        description:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      },
+      {
+        title: "Tabs",
+        href: "/docs/primitives/tabs",
+        description:
+          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      },
+    ],
+  },
+  // Add more main menus as needed
 ];
 
 export function Categorynav() {
   return (
-    <nav className="flex justify-center items-center mx-auto mt-2 ">
+    <nav className="flex justify-center items-center mx-auto mt-2">
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
+          {data.map((menuItem, index) => (
+            <NavigationMenuItem key={index}>
+              <NavigationMenuTrigger>
+                <div className="flex flex-col gap-2 items-center">
+                  <Image
+                    src={menuItem.logo}
+                    alt="logo"
+                    className="rounded-full object-cover border border-gray-light h-12 w-12 "
                   />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[800px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <div className="flex flex-col gap-2 items-center ">
-                <Image
-                  src={Logo}
-                  alt="logo"
-                  className="rounded-full object-contain h-12 w-12"
-                />
-                <p className="flex gap-1 items-center">
-                  Components{" "}
-                  <ChevronDown
-                    className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                    aria-hidden="true"
-                  />
-                </p>
-              </div>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] justify-end gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[900px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-         
+                  <p className="flex gap-1 items-center relative  py-2  font-inter text-[14px]   font-semibold">
+                    {menuItem.mainMenu}
+                    <ChevronDown
+                      className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
+                      aria-hidden="true"
+                    />
+                  </p>
+                </div>
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-1 p-1 md:w-[500px] md:grid-cols-2 lg:grid-cols-3 lg:w-[800px]">
+                  {menuItem.subMenu.map((component, subIndex) => (
+                    <ListItem
+                      key={subIndex}
+                      title={component.title}
+                      href={component.href}
+                    >
+                     
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          ))}
         </NavigationMenuList>
       </NavigationMenu>
     </nav>
@@ -337,4 +255,5 @@ const ListItem = React.forwardRef(
     );
   }
 );
+
 ListItem.displayName = "ListItem";
