@@ -361,7 +361,9 @@ const Categorynav = () => {
                   <Image
                     src={menuItem.logo}
                     alt={menuItem.mainMenu}
-                    className="object-cover h-24 w-auto"
+                    className="object-cover h-24 w-auto "
+
+                    // w-24 overflow-hidden bg-slate p-2 border border-[#e5e7eb]
                   />
                   <p className="flex items-center text-center font-inter text-sm font-semibold whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
                     {menuItem.mainMenu}
@@ -378,7 +380,7 @@ const Categorynav = () => {
                 <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2">
                   {menuItem.subMenu.map((subItem, subIndex) => (
                     <MenubarItem key={subIndex} asChild>
-                      <Link href={subItem.href} className=" hover:font-bold hover:bg-[#f0f5ff] h-10  transition-colors ">
+                      <Link href={subItem.href} className=" hover:bg-[#f0f5ff] hover:text-Apptheme h-10  duration-750 transition-all ">
                         {subItem.title}
                       </Link>
                     </MenubarItem>
