@@ -114,8 +114,8 @@ const Loginpage = () => {
     try {
       if (selected === "Superadminlogin") {
         data = {
-          Email: superAdminEmail,
-          Password: superAdminPassword,
+          email: superAdminEmail,
+          password: superAdminPassword,
         };
         result = await Adminlogin(data);
        if(result.data){
@@ -123,8 +123,8 @@ const Loginpage = () => {
       }
       } else {
         data = {
-          Email: adminEmail,
-          Password: adminPassword,
+          email: adminEmail,
+          password: adminPassword,
         };
         result = await Adminlogin(data);
         if(result.data){
