@@ -361,7 +361,7 @@ const Categorynav = () => {
                   <Image
                     src={menuItem.logo}
                     alt={menuItem.mainMenu}
-                    className="object-cover h-24 w-auto "
+                    className="object-cover h-24 w-auto"
 
                     // w-24 overflow-hidden bg-slate p-2 border border-[#e5e7eb]
                   />

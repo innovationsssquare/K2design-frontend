@@ -62,7 +62,7 @@ export default function CarouselDApiDemo() {
 
     const autoplay = setInterval(() => {
       api.scrollNext();
-    }, 3000); // 3 seconds autoplay interval
+    }, 7000); // 3 seconds autoplay interval
 
     return () => clearInterval(autoplay);
   }, [api]);
