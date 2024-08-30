@@ -100,6 +100,7 @@ export default function App() {
               </div>
               <Button className="text-tiny" color="primary" radius="full" size="sm">
                 {/* jkdjldlkfjdfdlkf */}
+                {/* ddjkdjfkdf */}
                 View
               </Button>
             </CardFooter>
