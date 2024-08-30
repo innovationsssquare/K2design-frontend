@@ -11,7 +11,6 @@ import Stickers from "../../public/images/Stickers.jpeg";
 import Lanyards from "../../public/images/Lanyards.jpeg";
 import CardInvitation from "../../public/images/CardInvitation.jpeg";
 import Stamp from "../../public/images/Stamp.jpeg";
-import whitePage from "../../public/images/whitePage.jpeg";
 
 export default function App() {
   const cardsData = [
@@ -20,7 +19,7 @@ export default function App() {
       subtitle: "Get notified.",
       img: LEAFLETA.src,
     },
-       {
+    {
       title: "Standard Visiting Card",
       subtitle: "Starting Price : 200",
       img: StandardVisitingCard.src,
@@ -52,11 +51,11 @@ export default function App() {
     // },
 
     {
-        title: "Stamp",
-        subtitle: "Get notified.",
-        img: Stamp.src,
-      },
-  
+      title: "Stamp",
+      subtitle: "Get notified.",
+      img: Stamp.src,
+    },
+
     {
       title: "Diry With Pen",
       subtitle: "Starting Price : 100",
@@ -77,14 +76,12 @@ export default function App() {
       subtitle: "Starting Price : 100",
       img: CardInvitation.src,
     },
-  
 
-      {
-        title: "Brochures",
-        subtitle: "Starting Price : 100",
-        img: brochures.src,
-      },
-   
+    {
+      title: "Brochures",
+      subtitle: "Starting Price : 100",
+      img: brochures.src,
+    },
   ];
 
   return (
@@ -113,7 +110,7 @@ export default function App() {
               src={card.img}
             />
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-gray-light z-10 flex justify-between">
-            {/* border-zinc-100/50 */}
+              {/* border-zinc-100/50 */}
               <div className="items-start flex flex-col">
                 <p className="text-black text-tiny font-bold">{card.title}</p>
                 <p className="text-black text-tiny">{card.subtitle}</p>
