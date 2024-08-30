@@ -68,7 +68,7 @@ export default function CarouselDApiDemo() {
   }, [api]);
 
   return (
-    <div className="relative mx-4 my-3 ">
+    <div className="relative mx-4 my-3 mt-4 ">
       <Carousel setApi={setApi} className="w-full h-64">
         <CarouselContent>
           {slides.map((slide) => (

@@ -76,9 +76,9 @@ export default function App() {
   ];
 
   return (
-    <div className="mx-4 shadow-small my-6 px-4 bg-white">
+    <div className="mx-4 shadow-small my-1 px-4 bg-white">
       {/* Section Heading */}
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 mt-3">
+      <h2 className=" mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold font-inter 3xl:text-[25px] 3xl:leading-9">
         Our Most Popular Products
       </h2>
 
@@ -99,6 +99,8 @@ export default function App() {
                 <p className="text-black text-tiny">{card.subtitle}</p>
               </div>
               <Button className="text-tiny" color="primary" radius="full" size="sm">
+                {/* jkdjldlkfjdfdlkf */}
+                {/* ddjkdjfkdf */}
                 View
               </Button>
             </CardFooter>
