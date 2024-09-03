@@ -87,7 +87,7 @@ export default function App() {
   return (
     <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white">
       {/* Section Heading */}
-      <h2 className=" mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold font-inter 3xl:text-[25px] 3xl:leading-9">
+      <h2 className="p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold font-inter 3xl:text-[25px] 3xl:leading-9">
         Our Most Popular Products
       </h2>
 
@@ -109,6 +109,7 @@ export default function App() {
               //   scale-y-125 mt-4 -translate-y-6
               src={card.img}
             />
+
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-gray-light z-10 flex justify-between">
               {/* border-zinc-100/50 */}
               <div className="items-start flex flex-col">
@@ -117,16 +118,18 @@ export default function App() {
               </div>
               <Button
                 className="text-tiny"
-                color="primary"
+                color="secondary"
                 radius="full"
                 size="sm"
               >
                 View
               </Button>
             </CardFooter>
+            {/* <div className="absolute top-0 block w-1/2 h-full transform -skew-x-12 ltr:-left-full rtl:-right-full z-5 bg-gradient-to-r from-transparent to-white opacity-40 group-hover:animate-shine"></div> */}
           </Card>
         ))}
       </div>
+     
     </div>
   );
 }

@@ -78,3 +78,47 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
     scrollbar-width: none;
   }
   
+  @keyframes shine {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 125%;
+    }
+  }
+  
+  .shine-effect {
+    position: relative;
+    /* width: 20rem;
+    height: 15rem;  */
+    background-color: #f87171; 
+    overflow: hidden;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 2.25rem;  */
+  }
+  
+  /* .shine-effect h2 {
+    z-index: 1;
+  } */
+  
+  .shine-effect .shine-box {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, white);
+    opacity: 0.4;
+    transform: skewX(-12deg);
+    z-index: 5;
+    transition: opacity 0.6s ease;
+  }
+  
+  .shine-effect:hover .shine-box {
+    animation: shine 1s ;
+    /* infinite */
+  }
+  
