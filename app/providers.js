@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export function Providers({children}) {
+export function NextuiProviderWrapper({children}) {
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);

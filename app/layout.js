@@ -1,6 +1,7 @@
 import { Manrope } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
+import { NextuiProviderWrapper } from "./providers";
+import { Providers } from "@/lib/providers";
 import Nav from "../components/Navbarcomponents/Nav";
 
 
@@ -14,14 +15,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <Providers>
     <html lang="en">
       <body className={inter.className}>
       
-        <Providers>
+        <NextuiProviderWrapper>
         {children}
-        </Providers>
+        </NextuiProviderWrapper>
        
       </body>
     </html>
+
+    </Providers>
   );
 }
