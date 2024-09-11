@@ -16,14 +16,14 @@ import {
 } from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 
-import "primeicons/primeicons.css";
+// import "primeicons/primeicons.css";
 
 import { IoSearchOutline } from "react-icons/io5";
 import Image from "next/image";
 import Logo from "../../public/Logo.png";
 import { BsCart3 } from "react-icons/bs";
 import { BsBell } from "react-icons/bs";
-import { IoDocumentTextOutline } from "react-icons/io5";
+
 
 
 export default function Nav() {
