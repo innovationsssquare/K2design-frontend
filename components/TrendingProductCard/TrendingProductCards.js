@@ -50,12 +50,12 @@ export default function TrendingProductCards() {
   return (
     <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white">
       {/* Section Heading */}
-      <h2 className=" p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold font-inter 3xl:text-[25px] 3xl:leading-9">
+      <h2 className=" p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold 3xl:text-[25px] 3xl:leading-9">
         Trending Products
       </h2>
 
       <Carousel opts={{ align: "start" }} className="w-full ">
-        <CarouselContent className="flex gap-4">
+        {/* <CarouselContent className="flex gap-4">
           {cardsData.map((card, index) => (
             <CarouselItem
               key={index}
@@ -63,18 +63,44 @@ export default function TrendingProductCards() {
             >
               <Card className=" rounded-full border-none">
                 <CardContent className="flex flex-col items-center">
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44 bg-gray-100 rounded-full overflow-hidden mb-3">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full ">
                     <img
                       src={card.img}
                       alt={card.title}
                       className="object-cover w-full h-full"
                     />
-                  </div>
-                  <p className="text-black text-center text-base font-semibold">
+
+                    <p className="text-black text-center text-base font-semibold">
                     {card.title}
                   </p>
+                  </div>
+                  
                 </CardContent>
               </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent> */}
+
+        <CarouselContent className="flex gap-4">
+          {cardsData.map((card, index) => (
+            <CarouselItem
+              key={index}
+              className="flex-shrink-0 basis-1/3 md:basis-1/4 lg:basis-1/6"
+            >
+              <CardContent className="flex flex-col items-center mb-8">
+
+              <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full ">
+                <img
+                  src={card.img}
+                  alt={card.title}
+                  className="object-cover w-full rounded-full h-full"
+                />
+
+                <p className="text-black text-center text-base font-semibold">
+                  {card.title}
+                </p>
+                </div>
+              </CardContent>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -82,13 +108,12 @@ export default function TrendingProductCards() {
         <CarouselNext className="bsolute -right-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" />
       </Carousel>
 
-
-      <h2 className="mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold font-inter 3xl:text-[25px] 3xl:leading-9 p-4">
-      Branded Products
+      <h2 className="mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold 3xl:text-[25px] 3xl:leading-9 p-4">
+        Branded Products
       </h2>
 
       <Carousel opts={{ align: "start" }} className="w-full ">
-        <CarouselContent className="flex gap-4">
+        {/* <CarouselContent className="flex gap-4">
           {cardsData.map((card, index) => (
             <CarouselItem
               key={index}
@@ -96,18 +121,44 @@ export default function TrendingProductCards() {
             >
               <Card className=" rounded-full border-none">
                 <CardContent className="flex flex-col items-center">
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44 bg-gray-100 rounded-full overflow-hidden mb-3">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full ">
                     <img
                       src={card.img}
                       alt={card.title}
                       className="object-cover w-full h-full"
                     />
-                  </div>
-                  <p className="text-black text-center text-base font-semibold">
+
+                    <p className="text-black text-center text-base font-semibold">
                     {card.title}
                   </p>
+                  </div>
+                  
                 </CardContent>
               </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent> */}
+
+        <CarouselContent className="flex gap-4">
+          {cardsData.map((card, index) => (
+            <CarouselItem
+              key={index}
+              className="flex-shrink-0 basis-1/3 md:basis-1/4 lg:basis-1/6"
+            >
+              <CardContent className="flex flex-col items-center mb-8">
+
+              <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full ">
+                <img
+                  src={card.img}
+                  alt={card.title}
+                  className="object-cover w-full rounded-full h-full"
+                />
+
+                <p className="text-black text-center text-base font-semibold">
+                  {card.title}
+                </p>
+                </div>
+              </CardContent>
             </CarouselItem>
           ))}
         </CarouselContent>

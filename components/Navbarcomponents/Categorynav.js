@@ -341,7 +341,7 @@ const Categorynav = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center">
+    <div className="relative flex justify-center items-center text-gray  bg-[#f1f2f4] ">
       <button
         onClick={scrollLeft}
         className="absolute left-0 z-20 p-2 bg-white shadow-md rounded-full  hover:bg-Apptheme transition-colors "
@@ -365,7 +365,7 @@ const Categorynav = () => {
 
                     // w-24 overflow-hidden bg-slate p-2 border border-[#e5e7eb]
                   />
-                  <p className="flex items-center text-center font-inter text-sm font-semibold whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
+                  <p className="flex items-center text-center  text-sm font-semibold whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
                     {menuItem.mainMenu}
                     {menuItem.subMenu.length > 0 && (
                       <ChevronDown

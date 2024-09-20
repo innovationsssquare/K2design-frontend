@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 import LEAFLETA from "../../public/images/LEAFLETA.jpg";
@@ -11,94 +12,109 @@ import Stickers from "../../public/images/Stickers.jpeg";
 import Lanyards from "../../public/images/Lanyards.jpeg";
 import CardInvitation from "../../public/images/CardInvitation.jpeg";
 import Stamp from "../../public/images/Stamp.jpeg";
+import PaperPrintings from '../../public/images/PaperPrinting.png';
+import RecentlyView from "@/components/RecentlyView/RecentlyView";
+import Link from 'next/link';
 
-export default function App() {
+export default function page() {
   const cardsData = [
     {
       title: "Available soon.",
       subtitle: "Get notified.",
       img: LEAFLETA.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Standard Visiting Card",
       subtitle: "Starting Price : 200",
       img: StandardVisitingCard.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Printed Paper Bags",
       subtitle: "Starting Price : 100",
       img: PaperBag.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Photo Albums",
       subtitle: "Starting Price : 1000",
       img: PhotoAlbum.src,
+      link: "/paper-printing/VisitingCards",
     },
-    // {
-    //   title: "Available soon.",
-    //   subtitle: "Get notified.",
-    //   img: "https://5.imimg.com/data5/SELLER/Default/2023/9/346156501/YV/HG/YC/7064140/backlit-sign-board-1000x1000.webp",
-    // },
     {
       title: "Stand Board",
       subtitle: "Starting Price : 2500 ",
       img: StandBoard.src,
+      link: "/paper-printing/VisitingCards",
     },
-    // {
-    //   title: "Supercharged",
-    //   subtitle: "Creates beauty like a beast",
-    //   img: "https://nextui.org/images/card-example-2.jpeg",
-    // },
-
     {
       title: "Stamp",
       subtitle: "Get notified.",
       img: Stamp.src,
+      link: "/paper-printing/VisitingCards",
     },
-
     {
       title: "Diry With Pen",
       subtitle: "Starting Price : 100",
       img: DiryWithPen.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Packaging Labels",
       subtitle: "Starting Price : 100",
       img: Stickers.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Lanyards",
       subtitle: "Starting Price : 100",
       img: Lanyards.src,
+      link: "/paper-printing/VisitingCards",
     },
     {
       title: "Card Invitation",
       subtitle: "Starting Price : 100",
       img: CardInvitation.src,
+      link: "/paper-printing/VisitingCards",
     },
-
     {
       title: "Brochures",
       subtitle: "Starting Price : 100",
       img: brochures.src,
+      link: "/paper-printing/VisitingCards",
     },
   ];
 
   return (
-    <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white">
-      {/* Section Heading */}
-      <h2 className="p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 3xl:text-[25px] 3xl:leading-9">
-        Our Most Popular Products
-      </h2>
+    <>
+      <div className="bg-[#f1f2f4] flex justify-center items-center">
+        <div className="container justify-center items-center  p-4 shadow-sm my-4 ml-4 mr-4 bg-white">
 
-      {/* Card Grid */}
-      {/* klsjdklsjds */}
-      <div className="gap-6 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 lg:mx-4 sm:mx-4 mb-8">
+          {/* Header Section with Responsive Image */}
+          <div className="relative mb-5 w-full h-[150px] lg:h-[350px] sm:h-[200px]">
+            <div className="shine-box"></div>
+            <Image
+            isBlurred
+              src={PaperPrintings.src}
+              alt="Visiting Cards"
+              layout="fill"
+              objectFit="cover"
+              className="z-0"
+            />
+            {/* Title Overlay */}
+            <div className="absolute inset-0 flex items-center justify-start ml-4">
+              <h1 className="text-white text-4xl md:text-5xl font-bold">Paper Printing</h1>
+            </div>
+          </div>
+
+          {/* Responsive Card Grid */}
+          <div className="gap-6 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 lg:mx-4 sm:mx-4 mb-8">
             {cardsData.map((card, index) => (
 
-
+<Link key={index} href={card.link}>
               <Card
-               key={index} 
+                
                 isFooterBlurred
                 isPressable
                 onPress={() => console.log("item pressed")}
@@ -130,10 +146,11 @@ export default function App() {
 
                 <div className="shine-box"></div>
               </Card>
-            
+              </Link>
             ))}
           </div>
-     
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

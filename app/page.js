@@ -4,6 +4,7 @@
 import AdsCrausal from "@/components/AdsCrausal/AdsCrausal";
 import BasicDemo from "@/components/BasicDemo";
 import HeroCarousel from "@/components/Carousel/HeroCarousel";
+import Exploreallcategories from "@/components/Exploreallcategories/Exploreallcategories";
 import Footer from "@/components/Footer/Footer";
 import  Categorynav  from "@/components/Navbarcomponents/Categorynav";
 import AllProductCard from "@/components/ProductCard/AllProductCard";
@@ -18,13 +19,14 @@ export default function Home() {
    <main className="font-sans text-gray  bg-[#f1f2f4] flex flex-col gap-2">
     
 
-    <Categorynav />
+    {/* <Categorynav /> */}
     <HeroCarousel/>
+    <Exploreallcategories/>
     <AllProductCard/>
     <AdsCrausal/>
     <TrendingProductCards/>
     <RecentlyView/>
-    <Footer/>
+    {/* <Footer/> */}
 
     {/* <BasicDemo/> */}
    </main>
