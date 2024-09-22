@@ -138,3 +138,29 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
     /* infinite */
   }
   
+
+  /* .p-button{
+    background-color: #9c1dac;
+    color: white;
+    padding: 5px;
+
+  }
+  .p-button-label{
+
+    background-color: #9c1dac;
+    color: white;
+    padding: 5px;
+
+
+  }
+
+  .p-fileupload-buttonbar{
+    display: flex;
+    gap: 20px;
+    
+  } */
+
+  .p-galleria-thumbnail-container{
+
+    background-color: white;
+  }

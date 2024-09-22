@@ -8,6 +8,13 @@ import Categorynav from "@/components/Navbarcomponents/Categorynav";
 import Footer from "@/components/Footer/Footer";
 
 
+// import 'primeicons/primeicons.css';
+import { PrimeReactProvider } from 'primereact/api';
+// import 'primeflex/primeflex.css';
+// import 'primereact/resources/primereact.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+
+
 
 // const inter = Manrope({ subsets: ["latin"] });
 
@@ -23,12 +30,20 @@ export default function RootLayout({ children }) {
     <Providers>
     <html lang="en">
       <body className={inter.className}>
+
+      
       
         <NextuiProviderWrapper>
           <Categorynav/>
-        {children}
+
+          <PrimeReactProvider>
+          {children}
+          </PrimeReactProvider>
+       
         <Footer/>
         </NextuiProviderWrapper>
+
+       
        
       </body>
     </html>
