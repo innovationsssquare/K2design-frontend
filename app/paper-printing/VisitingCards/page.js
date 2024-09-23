@@ -85,12 +85,12 @@ const BusinessCardPage = () => {
 
   const itemTemplate = (item) => {
     return (
-      <div className="flex  items-center justify-center  h-[300px] lg:h-[350px] md:h-[350px]  w-[500px] border border-gray-light p-5">
+      <div className="flex  items-center justify-center  h-[300px] lg:h-[350px] md:h-[350px]  w-[500px] border border-gray-light ">
         <Image
           src={item.itemImageSrc}
           alt={item.alt}
           style={{ width: "100%", display: "block" }}
-          className=" h-80  object-contain"
+          className=" h-full  object-cover"
         />
       </div>
     );
