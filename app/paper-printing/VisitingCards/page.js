@@ -8,6 +8,15 @@ import PhotoAlbum from "../../../public/images/Visiting_Card2.png";
 import PaperBag from "../../../public/images/Visiting_Card3.png";
 import Visiting from "../../../public/images/Visiting_Card.png";
 import { FileUpload } from "primereact/fileupload";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // import 'primeicons/primeicons.css';
 // import 'primeflex/primeflex.css';
@@ -52,6 +61,11 @@ const BusinessCardPage = () => {
 
   // State to hold images
   const [images, setImages] = useState(null);
+  const [material, setMaterial] = useState("");
+  const [lamination, setLamination] = useState("");
+  const [orientation, setOrientation] = useState("");
+  const [printingLocation, setPrintingLocation] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   // Fetch image data (simulated with useEffect)
   useEffect(() => {
@@ -68,21 +82,10 @@ const BusinessCardPage = () => {
     { breakpoint: "575px", numVisible: 2 },
   ];
 
-  // Template for the main image
-  // const itemTemplate = (item) => {
-  //   return (
-
-  //     <>
-  //     <div className='flex  items-center justify-center  h-[300px] w-[300px] '>
-  //     <Image src={item.itemImageSrc} alt={item.alt} style={{ width: '100%' }} className='object-contain h-72 ' />
-  //     </div>
-  //     </>
-  //   )
-  // };
 
   const itemTemplate = (item) => {
     return (
-      <div className="flex  items-center justify-center  h-[300px] w-[300px]">
+      <div className="flex  items-center justify-center  h-[350px] w-[350px] border border-gray-light p-5">
         <Image
           src={item.itemImageSrc}
           alt={item.alt}
@@ -92,15 +95,7 @@ const BusinessCardPage = () => {
     );
   };
 
-  // Template for the thumbnail
-  // const thumbnailTemplate = (item) => {
-  //   return (
 
-  //     <div className='bg-white '>
-  //       <Image src={item.thumbnailImageSrc} alt={item.alt} style={{ display: 'block' }} className='mt-5   h-24 object-contain border   border-Apptheme ' />
-  //     </div>
-  //   )
-  // };
 
   const thumbnailTemplate = (item) => {
     return (
@@ -111,6 +106,15 @@ const BusinessCardPage = () => {
         className="h-24 object-cover border   border-Apptheme"
       />
     );
+  };
+
+  const handleProceed = () => {
+    // Log the selected dropdown values to the console
+    console.log("Material:", material);
+    console.log("Lamination:", lamination);
+    console.log("Orientation:", orientation);
+    console.log("Printing Location:", printingLocation);
+    console.log("Quantity:", quantity);
   };
 
   return (
@@ -173,71 +177,91 @@ const BusinessCardPage = () => {
             <label htmlFor="material" className="block mb-2 font-semibold">
               Materials
             </label>
-            <select
-              id="material"
-              className=" border-Apptheme  w-full border p-2 rounded-md"
-            >
-              <option>Lykam Matte Coated Paper</option>
-              <option>Lykam Glass Coated Paper</option>
-            </select>
+            <Select onValueChange={(value) => setMaterial(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Material" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Lykam Matte Coated Paper">Lykam Matte Coated Paper</SelectItem>
+                  <SelectItem value="Lykam Glass Coated Paper">Lykam Glass Coated Paper</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
+          {/* Dropdown for Lamination */}
           <div className="mb-4">
             <label htmlFor="lamination" className="block mb-2 font-semibold">
               Lamination
             </label>
-            <select
-              id="lamination"
-              className=" border-Apptheme  w-full border p-2 rounded-md"
-            >
-              <option>Matte Lamination</option>
-              <option>Glossy Lamination</option>
-            </select>
+            <Select onValueChange={(value) => setLamination(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Lamination" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Matte Lamination">Matte Lamination</SelectItem>
+                  <SelectItem value="Glossy Lamination">Glossy Lamination</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
+          {/* Dropdown for Orientation */}
           <div className="mb-4">
             <label htmlFor="orientation" className="block mb-2 font-semibold">
               Orientation
             </label>
-            <select
-              id="orientation"
-              className=" border-Apptheme  w-full border p-2 rounded-md"
-            >
-              <option>Landscape</option>
-              <option>Portrait</option>
-            </select>
+            <Select onValueChange={(value) => setOrientation(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Orientation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Landscape">Landscape</SelectItem>
+                  <SelectItem value="Portrait">Portrait</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
+          {/* Dropdown for Printing Location */}
           <div className="mb-4">
-            <label
-              htmlFor="printing-location"
-              className="block mb-2 font-semibold"
-            >
+            <label htmlFor="printing-location" className="block mb-2 font-semibold">
               Printing Location
             </label>
-            <select
-              id="printing-location"
-              className=" border-Apptheme w-full border p-2 rounded-md"
-            >
-              <option>Front</option>
-              <option>Back</option>
-              <option>Both</option>
-            </select>
+            <Select onValueChange={(value) => setPrintingLocation(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Printing Location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Front">Front</SelectItem>
+                  <SelectItem value="Back">Back</SelectItem>
+                  <SelectItem value="Both">Both</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
+          {/* Dropdown for Quantity */}
           <div className="mb-4">
             <label htmlFor="quantity" className="block mb-2 font-semibold">
               Quantity
             </label>
-            <select
-              id="quantity"
-              className="w-full border-Apptheme border p-2 rounded-md"
-            >
-              <option>100</option>
-              <option>200</option>
-              <option>300</option>
-              <option>500</option>
-            </select>
+            <Select onValueChange={(value) => setQuantity(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Quantity" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="100">100</SelectItem>
+                  <SelectItem value="200">200</SelectItem>
+                  <SelectItem value="500">500</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex justify-between items-center mb-4">
@@ -264,8 +288,8 @@ const BusinessCardPage = () => {
             Create your Design
           </button> */}
 
-<Button color="secondary" className="w-full">
-                   Confirm and Add to Cart
+<Button onClick={handleProceed} color="secondary" className="w-full">
+                   Confirm and Proceed
                   </Button>
         </div>
 
