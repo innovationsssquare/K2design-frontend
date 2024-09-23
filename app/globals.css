@@ -163,4 +163,36 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
   .p-galleria-thumbnail-container{
 
     background-color: white;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    
+  }
+
+  .p-galleria-thumbnail-items-container{
+    width: auto;
+   
+    gap: 10px;
+  }
+
+  .p-galleria-thumbnail-items{
+
+    display: flex;
+    justify-items: center;
+    border-radius: 10px;
+    gap: 10px;
+  }
+
+  .p-galleria-thumbnail-item-content{
+    border-radius: 10px;
+
+  }
+  .p-galleria-thumbnail-prev {
+
+    display: none;
+
+  }
+
+  .p-galleria-thumbnail-next{
+    display: none;
   }
