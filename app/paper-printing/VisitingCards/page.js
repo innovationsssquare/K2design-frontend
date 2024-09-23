@@ -79,17 +79,18 @@ const BusinessCardPage = () => {
   const responsiveOptions = [
     { breakpoint: "991px", numVisible: 4 },
     { breakpoint: "767px", numVisible: 3 },
-    { breakpoint: "575px", numVisible: 2 },
+    { breakpoint: "575px", numVisible: 4 },
   ];
 
 
   const itemTemplate = (item) => {
     return (
-      <div className="flex  items-center justify-center  h-[350px] w-[350px] border border-gray-light p-5">
+      <div className="flex  items-center justify-center  h-[300px] lg:h-[350px] md:h-[350px]  w-[500px] border border-gray-light p-5">
         <Image
           src={item.itemImageSrc}
           alt={item.alt}
           style={{ width: "100%", display: "block" }}
+          className=" h-80  object-contain"
         />
       </div>
     );
@@ -103,7 +104,7 @@ const BusinessCardPage = () => {
         src={item.thumbnailImageSrc}
         alt={item.alt}
         style={{ display: "block" }}
-        className="h-24 object-cover border   border-Apptheme"
+        className="h-14 w-14 object-cover border   border-Apptheme"
       />
     );
   };
@@ -121,20 +122,22 @@ const BusinessCardPage = () => {
     <div className="bg-[#f1f2f4] flex justify-center items-center">
       <div className="container p-4 shadow-sm ml-4 mr-4 my-4 flex gap-4 justify-center  lg:flex-row flex-col bg-white">
         {/* Left Side: Galleria */}
-        <div className="px-10  ">
-          <div className="card sticky top-5">
+        <div className="px-10   ">
+          <div className="card ">
             {images && (
-              <Galleria
-                value={images}
-                responsiveOptions={responsiveOptions}
-                numVisible={5}
-                circular
-                style={{ maxWidth: "640px" }}
-                showItemNavigators
-                showItemNavigatorsOnHover
-                item={itemTemplate}
-                thumbnail={thumbnailTemplate}
-              />
+              // <Galleria
+              //   value={images}
+              //   responsiveOptions={responsiveOptions}
+              //   numVisible={5}
+              //   circular
+              //   style={{ maxWidth: "640px" }}
+              //   showItemNavigators
+              //   showItemNavigatorsOnHover
+              //   item={itemTemplate}
+              //   thumbnail={thumbnailTemplate}
+              // />
+              <Galleria value={images} responsiveOptions={responsiveOptions} numVisible={7} circular style={{ maxWidth: '800px' }}
+                item={itemTemplate} thumbnail={thumbnailTemplate} />
             )}
           </div>
         </div>
