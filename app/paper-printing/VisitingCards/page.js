@@ -123,7 +123,7 @@ const BusinessCardPage = () => {
       <div className="container p-4 shadow-sm ml-4 mr-4 my-4 flex gap-4 justify-center  lg:flex-row flex-col bg-white">
         {/* Left Side: Galleria */}
         <div className="px-10   ">
-          <div className="card ">
+          <div className="card sticky top-5 ">
             {images && (
               // <Galleria
               //   value={images}
