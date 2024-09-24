@@ -13,6 +13,7 @@ import { PrimeReactProvider } from 'primereact/api';
 // import 'primeflex/primeflex.css';
 // import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import BasicDemo from "@/components/BasicDemo";
 
 
 
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
       
         <NextuiProviderWrapper>
           <Categorynav/>
+          {/* <BasicDemo/> */}
 
           <PrimeReactProvider>
           {children}

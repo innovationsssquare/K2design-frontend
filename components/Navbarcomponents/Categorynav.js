@@ -11,10 +11,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
-// Import images
-import Logo from "../../public/Logo.png";
-import FLEX from "../../public/images/FLEX (Banner).png";
-import Calnedar from "../../public/images/Calnedar.jpg";
+
 import VisitingCard from "../../public/images/Visiting_Card.png";
 import FlexandRelated from "../../public/images/Flex&Related.png";
 import MediaPrinting from "../../public/images/MediaPrinting.png";
@@ -26,8 +23,7 @@ import ArtFrames from "../../public/images/ArtFrames.png";
 import LEDBoard from "../../public/images/LEDBoard.png";
 import VinylLetter from "../../public/images/VinylLetter.png";
 import ACPandAcrylic from "../../public/images/ACPandAcrylic.png";
-import CLIAPON from "../../public/images/CLIAPON FRAMES.png";
-import BROCHUR from "../../public/images/BROCHUR (3).jpg";
+
 import Link from "next/link";
 
 const data = [
@@ -219,6 +215,25 @@ const data = [
       },
     ],
   },
+ 
+  {
+    mainMenu: "Modular / Premium Sign ",
+    logo: ModularPremiumSignProduct,
+    subMenu: [
+      {
+        title: "Opti Frames",
+        href: "/docs/primitives/tooltip",
+              },
+      {
+        title: "Flat Sign",
+        href: "/docs/primitives/tabs",
+      },
+      {
+        title: "Curv Sign",
+        href: "/docs/primitives/tabs",
+      },
+    ],
+  },
   {
     mainMenu: "Light Board /LED Board",
     logo: LEDBoard,
@@ -247,24 +262,6 @@ const data = [
         title: "Backlit Flex Board- tube Light",
         href: "/docs/primitives/tabs",
             },
-    ],
-  },
-  {
-    mainMenu: "Modular / Premium Sign ",
-    logo: ModularPremiumSignProduct,
-    subMenu: [
-      {
-        title: "Opti Frames",
-        href: "/docs/primitives/tooltip",
-              },
-      {
-        title: "Flat Sign",
-        href: "/docs/primitives/tabs",
-      },
-      {
-        title: "Curv Sign",
-        href: "/docs/primitives/tabs",
-      },
     ],
   },
   {
@@ -341,7 +338,7 @@ const Categorynav = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center text-gray  bg-[#f1f2f4] ">
+    <div className="relative w-full flex justify-center items-center text-gray  bg-[#f1f2f4] ">
       <button
         onClick={scrollLeft}
         className="absolute left-0 z-20 p-2 bg-white shadow-md rounded-full  hover:bg-Apptheme transition-colors "
@@ -351,21 +348,27 @@ const Categorynav = () => {
 
       <Menubar
         ref={menubarRef}
-        className="relative flex justify-start items-center space-x-6 px-8 bg-white shadow-small mx-4 mt-2 z-10 overflow-x-auto scrollbar-hide"
+        className="w-full relative flex justify-start items-center space-x-6 px-8 bg-white shadow-small mx-4 mt-2 z-10 overflow-x-auto scrollbar-hide"
       >
         <div className="flex space-x-6">
           {data.map((menuItem, index) => (
             <MenubarMenu key={index} className="min-w-max">
               <MenubarTrigger>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="bg-slate h-20 w-20 rounded-full flex items-center overflow-hidden">
+
+
                   <Image
                     src={menuItem.logo}
                     alt={menuItem.mainMenu}
-                    className="object-cover h-24 w-auto"
+                    className="object-contain h-16 rounded-full "
 
                     // w-24 overflow-hidden bg-slate p-2 border border-[#e5e7eb]
                   />
-                  <p className="flex items-center text-center  text-sm font-semibold whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
+
+                  </div>
+              
+                  <p className="flex items-center text-center  text-sm whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
                     {menuItem.mainMenu}
                     {menuItem.subMenu.length > 0 && (
                       <ChevronDown
@@ -377,11 +380,11 @@ const Categorynav = () => {
                 </div>
               </MenubarTrigger>
               {menuItem.subMenu.length > 0 && (
-                <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2">
+                <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2 ">
                   {menuItem.subMenu.map((subItem, subIndex) => (
-                    <MenubarItem key={subIndex} asChild>
-                      <Link href={subItem.href} className=" hover:bg-[#f0f5ff] hover:text-Apptheme h-10  duration-750 transition-all ">
-                        {subItem.title}
+                    <MenubarItem className="text-medium" key={subIndex} asChild>
+                      <Link href={subItem.href} className=" hover:bg-[#f0f5ff] hover:text-Apptheme   duration-750 transition-all ">
+                        <p className="flex items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme  " style={{fontFamily:"unset"}}>{subItem.title}</p>
                       </Link>
                     </MenubarItem>
                   ))}

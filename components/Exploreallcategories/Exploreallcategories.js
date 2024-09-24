@@ -82,7 +82,7 @@ export default function Exploreallcategories() {
   return (
     <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white">
       {/* Section Heading */}
-      <h2 className=" p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-sans 3xl:text-[25px] 3xl:leading-9">
+      <h2 className=" p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold 3xl:text-[25px] 3xl:leading-9">
         Explore all categories
       </h2>
 

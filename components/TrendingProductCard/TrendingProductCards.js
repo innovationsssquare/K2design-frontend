@@ -108,7 +108,7 @@ export default function TrendingProductCards() {
         <CarouselNext className="bsolute -right-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" />
       </Carousel>
 
-      <h2 className="mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold 3xl:text-[25px] 3xl:leading-9 p-4">
+      <h2 className="mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] font-bold xl:leading-8 3xl:text-[25px] 3xl:leading-9 p-4">
         Branded Products
       </h2>
 
