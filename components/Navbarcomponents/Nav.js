@@ -23,7 +23,8 @@ import Image from "next/image";
 import Logo from "../../public/Logo.png";
 import { BsCart3 } from "react-icons/bs";
 import { BsBell } from "react-icons/bs";
-
+import { AddToCart } from "../AddToCart/AddToCart";
+import { NotificationCart } from "../NotificationCart/NotificationCart";
 
 
 export default function Nav() {
@@ -98,9 +99,11 @@ export default function Nav() {
 
           <button className="flex items-center justify-center shrink-0 h-auto focus:outline-none transform  lg:flex mx-2.5 xl:mx-3.5">
             <div className="relative flex items-center">
-              <Badge color="secondary" content={""} shape="circle">
+
+              <NotificationCart/>
+              {/* <Badge color="secondary" content={""} shape="circle">
                 <BsBell size={20} />
-              </Badge>
+              </Badge> */}
             </div>
             {/* <span className=" ltr:ml-2 rtl:mr-2 ml-2 leading-5 pb-0.">
               Cart
@@ -108,13 +111,16 @@ export default function Nav() {
           </button>
           <button className="flex items-center justify-center shrink-0 h-auto focus:outline-none transform  lg:flex mx-2.5 xl:mx-3.5">
             <div className="relative flex items-center">
-              <Badge color="secondary" content={""} shape="circle">
+              {/* <Badge color="secondary" content={""} shape="circle">
                 <BsCart3 size={20} />
-              </Badge>
-            </div>
-            <span className=" ltr:ml-2 rtl:mr-2 ml-2 leading-5 pb-0.">
-              Cart
+              </Badge> */}
+              <span className=" ltr:ml-2 rtl:mr-2 ml-2 leading-5 pb-0.">
+              {/* Cart */}
+
+              <AddToCart/>
             </span>
+            </div>
+           
           </button>
           <div className="flex items-center justify-center shrink-0 h-auto focus:outline-none transform  lg:flex mx-2.5 xl:mx-3.5">
             <Dropdown placement="bottom-end">

@@ -172,7 +172,7 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
   .p-galleria-thumbnail-items-container{
     width: auto;
    
-    gap: 10px;
+    /* gap: 10px; */
   }
 
   .p-galleria-thumbnail-items{
@@ -180,19 +180,36 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
     display: flex;
     justify-items: center;
     border-radius: 10px;
-    gap: 10px;
+    /* gap: 10px; */
   }
 
   .p-galleria-thumbnail-item-content{
     border-radius: 10px;
 
   }
-  .p-galleria-thumbnail-prev {
 
-    display: none;
 
-  }
+  /* This will be added when the sheet (shopping cart) is open */
 
-  .p-galleria-thumbnail-next{
-    display: none;
-  }
+
+.custom-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #9c1dac #f1f1f1; /* For Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #9c1dac; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9c1dac; /* Darker shade on hover */
+}
