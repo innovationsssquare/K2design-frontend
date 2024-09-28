@@ -19,6 +19,7 @@ import { Divider, Input } from "@nextui-org/react";
 import PhotoAlbum from "../../public/images/Visiting_Card2.png"; 
 import PaperBag from "../../public/images/Visiting_Card3.png";
 import Image from "next/image";
+import Link from "next/link";
 export function AddToCart() {
   const [quantity, setQuantity] = useState(1);
   const price = 1.5; // example price per item
@@ -144,7 +145,9 @@ export function AddToCart() {
         <SheetFooter >
           <SheetClose asChild>
             <Button color="secondary" className="w-full" type="submit">
-              Proceed To Checkout
+             <Link href='/ProceedToCheckout'>
+             Proceed To Checkout
+             </Link>
             </Button>
           </SheetClose>
         </SheetFooter>
