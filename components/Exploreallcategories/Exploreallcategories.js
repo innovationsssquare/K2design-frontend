@@ -1,6 +1,6 @@
+"use client"
 
-
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 import StandBoard from "../../public/images/StandBoard.jpeg";
@@ -18,9 +18,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Image } from "@nextui-org/react";
-
+import { useDispatch,useSelector } from "react-redux";
+import {fetchcategoriesbyslug} from "@/lib/ReduxSlice/CategorySlice"
 
 export default function Exploreallcategories() {
+  const dispatch=useDispatch()
+  const {  categoryslug}=useSelector((state)=>state.category)
+
+
+useEffect(() => {
+ dispatch(fetchcategoriesbyslug())
+}, [])
+
+console.log(categoryslug)
+
   const cardsData = [
     {
       title: "Paper Printing",
