@@ -32,63 +32,70 @@ useEffect(() => {
 
 console.log(categoryslug)
 
-  const cardsData = [
-    {
-      title: "Paper Printing",
-      img: StandardVisitingCard.src,
-      link: "/paper-printing", // Add the link for this card
-    },
-    {
-      title: "Media Printing",
-      img: StandBoard.src,
-      link: "/media-printing",
-    },
-    {
-      title: "Flex & Related",
-      img: PhotoAlbum.src,
-      link: "/flex-related",
-    },
-    {
-      title: "Rigid Sign Plates",
-      img: PaperBag.src,
-      link: "/rigid-sign-plates",
-    },
-    {
-      title: "Vinyl Letters",
-      img: Stamp.src,
-      link: "/vinyl-letters",
-    },
-    {
-      title: "ACP & Acrylic",
-      img: brochures.src,
-      link: "/acp-acrylic",
-    },
-    {
-      title: "Light Board",
-      img: brochures.src,
-      link: "/light-board",
-    },
-    {
-      title: "Modular/ Premium Sign",
-      img: brochures.src,
-      link: "/modular-sign",
-    },
-    {
-      title: "Glass Films",
-      img: brochures.src,
-      link: "/glass-films",
-    },
-    {
-      title: "Name Plates",
-      img: brochures.src,
-      link: "/name-plates",
-    },
-    {
-      title: "Printed Frame",
-      img: brochures.src,
-      link: "/printed-frame",
-    },
-  ];
+  // const cardsData = [
+  //   {
+  //     title: "Paper Printing",
+  //     img: StandardVisitingCard.src,
+  //     link: "/paper-printing", // Add the link for this card
+  //   },
+  //   {
+  //     title: "Media Printing",
+  //     img: StandBoard.src,
+  //     link: "/media-printing",
+  //   },
+  //   {
+  //     title: "Flex & Related",
+  //     img: PhotoAlbum.src,
+  //     link: "/flex-related",
+  //   },
+  //   {
+  //     title: "Rigid Sign Plates",
+  //     img: PaperBag.src,
+  //     link: "/rigid-sign-plates",
+  //   },
+  //   {
+  //     title: "Vinyl Letters",
+  //     img: Stamp.src,
+  //     link: "/vinyl-letters",
+  //   },
+  //   {
+  //     title: "ACP & Acrylic",
+  //     img: brochures.src,
+  //     link: "/acp-acrylic",
+  //   },
+  //   {
+  //     title: "Light Board",
+  //     img: brochures.src,
+  //     link: "/light-board",
+  //   },
+  //   {
+  //     title: "Modular/ Premium Sign",
+  //     img: brochures.src,
+  //     link: "/modular-sign",
+  //   },
+  //   {
+  //     title: "Glass Films",
+  //     img: brochures.src,
+  //     link: "/glass-films",
+  //   },
+  //   {
+  //     title: "Name Plates",
+  //     img: brochures.src,
+  //     link: "/name-plates",
+  //   },
+  //   {
+  //     title: "Printed Frame",
+  //     img: brochures.src,
+  //     link: "/printed-frame",
+  //   },
+  // ];
+
+
+  const cardsData = categoryslug.map((category) => ({
+    title: category.name, // Assuming category has a `name` property
+    img: category.image || "/default-image.jpg", // Fallback to a default image if none exists
+    link: `/categories/${category.slug}`, // Assuming category has a `slug` property for the link
+  }));
 
   return (
     <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white">

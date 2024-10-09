@@ -144,11 +144,13 @@ export function AddToCart() {
         {/* Footer */}
         <SheetFooter >
           <SheetClose asChild>
+          <Link href='/ProceedToCheckout'>
             <Button color="secondary" className="w-full" type="submit">
-             <Link href='/ProceedToCheckout'>
+             
              Proceed To Checkout
-             </Link>
+            
             </Button>
+            </Link>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

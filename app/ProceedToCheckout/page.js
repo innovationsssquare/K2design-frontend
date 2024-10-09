@@ -1,120 +1,467 @@
-'use client'
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { Checkbox } from "@/components/ui/checkbox"
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
+"use client";
+
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@nextui-org/react";
+import { Dropdown } from "primereact/dropdown";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import PaperBag from "../../public/images/Visiting_Card3.png";
+import Image from "next/image";
 
 export default function CheckoutPage() {
-  const [quantity, setQuantity] = useState(500)
-  const [generateInvoice, setGenerateInvoice] = useState(false)
-  const [showOptions, setShowOptions] = useState(true)
+  const [activeStep, setActiveStep] = useState("order-summary");
+  const [quantity, setQuantity] = useState({});
+  const [showOptions, setShowOptions] = useState({});
+  const [isAddingCustomer, setIsAddingCustomer] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [customerInfo, setCustomerInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    city: "",
+    zip: "",
+  });
 
-  const itemPrice = 2.39
-  const total = quantity * itemPrice
+  const steps = [
+    { id: "order-summary", title: "Order Summary" },
+    { id: "customer-info", title: "Customer Info" },
+    { id: "payment", title: "Payment" },
+  ];
 
-  const selectedOptions = [
-    { name: "Finish", value: "None", price: "Included" },
-    { name: "Corners", value: "Standard (89 x 51 mm)", price: "Included" },
-    { name: "Shape", value: "Standard (89 x 51 mm)", price: "Included" },
-    { name: "Product Orientation", value: "Horizontal", price: "Included" },
-    { name: "Stock", value: "Premium Plus Glossy", price: "₹203.39" },
-    { name: "Corners", value: "Standard", price: "₹593.22" },
-    { name: "Backside", value: "Color", price: "₹398.31" },
-  ]
+  const handleNextStep = () => {
+    const currentIndex = steps.findIndex((step) => step.id === activeStep);
+    if (currentIndex < steps.length - 1) {
+      setActiveStep(steps[currentIndex + 1].id);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    const currentIndex = steps.findIndex((step) => step.id === activeStep);
+    if (currentIndex > 0) {
+      setActiveStep(steps[currentIndex - 1].id);
+    }
+  };
+
+  const products = [
+    {
+      id: 1,
+      name: "Standard Visiting Cards",
+      price: 2.39,
+      image: PaperBag,
+      selectedOptions: [
+        { name: "Finish", value: "None", price: "Included" },
+        { name: "Stock", value: "Premium Plus Glossy", price: "₹203.39" },
+      ],
+      quantityOptions: [500, 1000, 1500],
+    },
+    {
+      id: 2,
+      name: "Premium Business Cards",
+      price: 3.5,
+      image: PaperBag,
+      selectedOptions: [
+        { name: "Corners", value: "Rounded", price: "₹100.00" },
+        { name: "Backside", value: "Color", price: "₹150.00" },
+      ],
+      quantityOptions: [250, 500, 1000],
+    },
+  ];
+
+  const total = Object.keys(quantity).reduce(
+    (acc, productId) =>
+      acc +
+      (quantity[productId] || 0) *
+        products.find((p) => p.id === parseInt(productId))?.price,
+    0
+  );
+
+  const [selectedCity, setSelectedCity] = useState(null);
+  const cities = [
+    { name: "Sandeep Kadam", code: "NY" },
+    { name: "Santosh Alimkar", code: "RM" },
+    { name: "Rahul T", code: "LDN" },
+    { name: "Sandesh Rokade", code: "IST" },
+    { name: "Rohit Tajane", code: "PRS" },
+  ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Order Summary <span className="inline-block bg-Apptheme text-white rounded-full w-6 h-6 text-center items-center -mt-5 text-sm">1</span></h1>
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="flex-grow">
-          <div className="flex items-start mb-6">
-            <div className="relative w-24 h-24 mr-4">
-              <img src="/placeholder.svg?height=96&width=96" alt="Product" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 flex justify-between items-center">
-                <Button variant="ghost" size="icon" className="bg-white/80"><ChevronLeft className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" className="bg-white/80"><ChevronRight className="h-4 w-4" /></Button>
-              </div>
-            </div>
-            <div className="flex-grow">
-              <h2 className="text-lg font-semibold mb-2">Standard Visiting Cards</h2>
-              <div className="flex items-center justify-between mb-2">
-                <Select value={quantity.toString()} onValueChange={(value) => setQuantity(parseInt(value))}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Quantity" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="500">500</SelectItem>
-                    <SelectItem value="1000">1000</SelectItem>
-                    <SelectItem value="1500">1500</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button variant="link" className="text-[#9c1dac]">Remove</Button>
-              </div>
-              {/* <div className="flex items-center space-x-2 mb-2">
-                <Checkbox 
-                  id="invoice" 
-                  checked={generateInvoice} 
-                  onCheckedChange={() => setGenerateInvoice(!generateInvoice)}
-                />
-                <Label htmlFor="invoice" className="text-sm">Generate Invoice</Label>
-              </div> */}
-              <div className="mb-4">
-                {/* <Button 
-                  variant="outline" 
-                  className="text-[#9c1dac] border-[#9c1dac] w-full justify-between"
-                  onClick={() => setShowOptions(!showOptions)}
-                >
-                  Selected options
-                  {showOptions ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
-                </Button> */}
-                {showOptions && (
-                  <div className="mt-2 border-t border-[#eaeaec] pt-2">
-                    {selectedOptions.map((option, index) => (
-                      <div key={index} className="flex justify-between text-sm py-1">
-                        <span>{option.name}: {option.value}</span>
-                        <span>{option.price}</span>
-                      </div>
-                    ))}
+    <div className="w-full min-h-screen  bg-[#f1f2f4] ">
+      <div className=" shadow-sm ml-4 mr-4 my-4  bg-white">
+        <div className="mb-8 flex justify-center pt-4">
+          <ol className="flex items-center">
+            {steps.map((step, index) => (
+              <li key={step.id} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                      activeStep === step.id
+                        ? "bg-[#9c1dac] text-white"
+                        : steps.findIndex((s) => s.id === activeStep) > index
+                        ? "bg-[#9c1dac] text-white"
+                        : "bg-gray-300 text-gray-600"
+                    }`}
+                  >
+                    {index + 1}
                   </div>
+                  <span
+                    className={`mt-2 text-sm ${
+                      activeStep === step.id
+                        ? "font-medium text-[#9c1dac]"
+                        : steps.findIndex((s) => s.id === activeStep) > index
+                        ? "font-medium text-[#9c1dac]"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {step.title}
+                  </span>
+                </div>
+                {index < steps.length - 1 && (
+                  <div className="w-12 sm:w-20 border-t border-gray-300 mx-2"></div>
                 )}
-              </div>
-              <div className="text-right font-semibold">
-                Item Total: ₹{total.toFixed(2)}
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">More with your design</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-gray-100 h-32 rounded-lg"></div>
-              ))}
-            </div>
-          </div>
+              </li>
+            ))}
+          </ol>
         </div>
-        <Card className="w-full md:w-80">
-          <CardContent className="pt-6">
-            <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
-            <div className="flex justify-between mb-4">
-              <span>Subtotal</span>
-              <span className="font-semibold">₹{total.toFixed(2)}</span>
-            </div>
-            {/* <div className="mb-4">
-              <Label htmlFor="code" className="mb-1 block">Have a code?</Label>
-              <Input id="code" placeholder="Enter code" />
-            </div> */}
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full bg-[#9c1dac] hover:bg-[#8c19a0] text-white">
-              Checkout
-            </Button>
-          </CardFooter>
+
+        {/* Content */}
+        <Card className="w-full">
+          {activeStep === "order-summary" && (
+            <>
+              <CardHeader>
+                <CardTitle>Order Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {products.map((product) => (
+                    <div key={product.id} className="flex items-start mb-6">
+                      <div className="relative w-24 h-24 mr-4">
+                        <Image
+                          src={product.image}
+                          alt="Product"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="flex-grow">
+                        <h2 className="text-sm font-semibold text-gray-800 mb-2">
+                          {product.name}
+                        </h2>
+                        <div className="flex items-center justify-between mb-2">
+                          <Select
+                            value={(
+                              quantity[product.id] || product.quantityOptions[0]
+                            ).toString()}
+                            onValueChange={(value) =>
+                              setQuantity((prev) => ({
+                                ...prev,
+                                [product.id]: parseInt(value),
+                              }))
+                            }
+                          >
+                            <SelectTrigger className="w-[180px] ">
+                              <SelectValue placeholder="Quantity" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {product.quantityOptions.map((qty) => (
+                                <SelectItem key={qty} value={qty.toString()}>
+                                  {qty}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            variant="link"
+                            className="text-Apptheme hover:underline"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+
+                        {/* Optional selected options */}
+                        <div className="mb-4">
+                          <Button
+                            variant="outline"
+                            className="w-full justify-between text-[#9c1dac] border-[#9c1dac] hover:bg-[#f3e6f6]"
+                            onClick={() =>
+                              setShowOptions((prev) => ({
+                                ...prev,
+                                [product.id]: !prev[product.id],
+                              }))
+                            }
+                          >
+                            Product Details
+                            {showOptions[product.id] ? (
+                              <ChevronUp className="ml-2 h-4 w-4 text-[#9c1dac]" />
+                            ) : (
+                              <ChevronDown className="ml-2 h-4 w-4 text-[#9c1dac]" />
+                            )}
+                          </Button>
+                          {showOptions[product.id] && (
+                            <div className="mt-2 border-t border-gray-200 pt-2 space-y-1">
+                              {product.selectedOptions.map((option, index) => (
+                                <div
+                                  key={index}
+                                  className="flex justify-between text-sm"
+                                >
+                                  <span>
+                                    {option.name}: {option.value}
+                                  </span>
+                                  <span>{option.price}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="text-right font-semibold text-gray-800">
+                          Item Total: ₹
+                          {(quantity[product.id] || 0) * product.price}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-right font-bold text-lg mt-4">
+                  Order Total: ₹{total.toFixed(2)}
+                </div>
+              </CardContent>
+
+              <CardFooter className="flex justify-end">
+                <Button onClick={handleNextStep} color="secondary" radius="sm">
+                  Next
+                </Button>
+              </CardFooter>
+            </>
+          )}
+
+          {activeStep === "customer-info" && (
+            <>
+              <CardHeader>
+                <CardTitle>Customer Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Search Existing Customer */}
+                  {/* <div className="flex items-center mb-4">
+                    <Input
+                      placeholder="Search Existing Customer"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="flex-grow mr-2"
+                    />
+                    <Button
+                      onClick={() => {
+                        // Implement search logic
+                        console.log("Searching for:", searchTerm);
+                      }}
+                    >
+                      Search
+                    </Button>
+                  </div> */}
+
+                  <div className="flex justify-center">
+                    <div>
+                      <Dropdown
+                        value={selectedCity}
+                        onChange={(e) => setSelectedCity(e.value)}
+                        options={cities}
+                        optionLabel="name"
+                        editable
+                        placeholder="Select Existing Customer"
+                        className="w-full md:w-14rem"
+                      />
+                    </div>
+
+                    <div className="flex items-center">
+                      <Button
+                        onClick={() => setIsAddingCustomer(!isAddingCustomer)}
+                        color="default"
+                        variant="bordered"
+                        className="mr-2"
+                      >
+                        {isAddingCustomer ? "Cancel" : "Add Customer"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {isAddingCustomer && (
+                    <div className="border border-gray-300 p-4 rounded-md">
+                      <h3 className="font-semibold mb-2">Add New Customer</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>First Name</Label>
+                          <Input
+                            value={customerInfo.firstName}
+                            onChange={(e) =>
+                              setCustomerInfo({
+                                ...customerInfo,
+                                firstName: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>Last Name</Label>
+                          <Input
+                            value={customerInfo.lastName}
+                            onChange={(e) =>
+                              setCustomerInfo({
+                                ...customerInfo,
+                                lastName: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>Email</Label>
+                          <Input
+                            value={customerInfo.email}
+                            onChange={(e) =>
+                              setCustomerInfo({
+                                ...customerInfo,
+                                email: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>Address</Label>
+                          <Input
+                            value={customerInfo.address}
+                            onChange={(e) =>
+                              setCustomerInfo({
+                                ...customerInfo,
+                                address: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>Mobile Number</Label>
+                          <Input
+                            value={customerInfo.city}
+                            onChange={(e) =>
+                              setCustomerInfo({
+                                ...customerInfo,
+                                city: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                
+                      </div>
+                      <Button
+                        onClick={() => {
+                          // Add customer logic
+                          console.log("Adding customer:", customerInfo);
+                        }}
+                        className="mt-4"
+                      >
+                        Add Customer
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button
+                  color="default"
+                  onClick={handlePreviousStep}
+                  radius="sm"
+                >
+                  Previous
+                </Button>
+                <Button onClick={handleNextStep} color="secondary" radius="sm">
+                  Next
+                </Button>
+              </CardFooter>
+            </>
+          )}
+
+          {activeStep === "payment" && (
+            <>
+              <CardHeader>
+                <CardTitle>Payment Confirmation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Paid Amount */}
+                    <div className="space-y-2">
+                      <Label htmlFor="paid-amount">Advance Amount</Label>
+                      <Input id="paid-amount" placeholder="Enter paid amount" />
+                    </div>
+
+                    {/* Remaining Payment */}
+                    <div className="space-y-2">
+                      <Label htmlFor="remaining-payment">
+                        Remaining Payment
+                      </Label>
+                      <Input
+                        id="remaining-payment"
+                        placeholder="Enter remaining payment"
+                      />
+                    </div>
+
+                    {/* Payment Status */}
+                    <div className="space-y-2">
+                      <Label htmlFor="payment-status">Payment Status</Label>
+                      <Select
+                        id="payment-status"
+                        className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select payment status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="unpaid">Unpaid</SelectItem>
+                          <SelectItem value="paid">Paid</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+
+              <CardFooter className="flex justify-between">
+                <Button onClick={handlePreviousStep} radius="sm">
+                  Previous
+                </Button>
+                <Button
+                  onClick={() => alert("Order placed successfully!")}
+                  color="success"
+                  radius="sm"
+                >
+                  Place Order
+                </Button>
+              </CardFooter>
+            </>
+          )}
         </Card>
       </div>
     </div>
-  )
+  );
 }

@@ -22,7 +22,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FFF8EC]  pt-4">
+    <footer className="bg-slate  pt-4  ">
       <div className="w-11/12 mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-14">
           <div className="mb-4">
@@ -130,7 +130,7 @@ export default function Footer() {
         </div>
       </div> */}
 
-      <div className="w-full flex flex-col bg-Apptheme">
+      <div className="w-full flex-col bg-gradient-to-r from-purple-600 to-indigo-600 text-white" style={{ background: "linear-gradient(to right, #6A1B9A, #1E88E5)" }}>
         <div className="md:m-10 m-4 flex items-center justify-center  relative ">
           {/* <Image
          className="w-full object-fill h-80 rounded-lg "
@@ -168,7 +168,7 @@ export default function Footer() {
           <Divider orientation="horizontal" />
         </div>
 
-        <p className="text-center mt-2 text-white mb-3 font-sans md:text-xs lg:text-xs text-tiny px-1 uppercase w-full">
+        <p className="text-center mt-2 text-white  font-sans md:text-xs lg:text-xs text-tiny px-1 uppercase w-full">
           {` 2024 K2 Design - Digital Signage House - All rights reserved.`}
         </p>
       </div>

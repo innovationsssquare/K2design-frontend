@@ -1,8 +1,7 @@
 "use client";
-import React, { useRef } from "react";
-import Image from "next/image";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"; // Added ChevronLeft and ChevronRight icons
+import React, { useEffect, useRef } from "react";
 
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Menubar,
   MenubarContent,
@@ -10,320 +9,22 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-
-
-import VisitingCard from "../../public/images/Visiting_Card.png";
-import FlexandRelated from "../../public/images/Flex&Related.png";
-import MediaPrinting from "../../public/images/MediaPrinting.png";
-import GLASSFILMS from "../../public/images/GLASSFILMS.png";
-import RigidSign from "../../public/images/RigidSign.png";
-import ModularPremiumSignProduct from "../../public/images/ModularPremiumSignProduct.png";
-import NamePalates from "../../public/images/NamePalates.png";
-import ArtFrames from "../../public/images/ArtFrames.png";
-import LEDBoard from "../../public/images/LEDBoard.png";
-import VinylLetter from "../../public/images/VinylLetter.png";
-import ACPandAcrylic from "../../public/images/ACPandAcrylic.png";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchcategoriesbyslug } from "@/lib/ReduxSlice/CategorySlice";
 import Link from "next/link";
-
-const data = [
-  {
-    mainMenu: "Paper Printing",
-    logo: VisitingCard,
-    subMenu: [
-      {
-        title: "Visiting Card",
-        href: "/docs/primitives/alert-dialog",
-      },
-      {
-        title: "Letter Head",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Envelopes",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Bill Books",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Pavati Books",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Brochure",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Booklet",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "12*18 Digital Print (Poster)",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Stamps",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Pamphlets /Flyers Leaflets/ ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Invitations ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Sticker & Labels ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Tags ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Calendar ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Files & Folder ",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Paper Bags ",
-        href: "/docs/primitives/hover-card",
-      },
-      // More sub-menu items...
-    ],
-  },
-  {
-    mainMenu: "Media Printing",
-    logo: MediaPrinting,
-    subMenu: [
-      {
-        title: "Vinyl Print",
-        href: "/docs/primitives/alert-dialog",
-      },
-      {
-        title: "Night Glow Print",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Canvas Print",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "3mm Reflector Print & Signs",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Translite Print",
-        href: "/docs/primitives/hover-card",
-      },
-      {
-        title: "Backlite Flex Print",
-        href: "/docs/primitives/hover-card",
-      },
-      // More sub-menu items...
-    ],
-  },
-  {
-    mainMenu: "Flex & Related",
-    logo: FlexandRelated,
-    subMenu: [
-      {
-        title: "Flex ( Banner )",
-        href: "/docs/primitives/tooltip",
-       },
-      {
-        title: "Flex Wooden Frame Board",
-        href: "/docs/primitives/tabs",
-         },
-      {
-        title: "Flex Adv MS Frame Board",
-        href: "/docs/primitives/tabs",
-         },
-      {
-        title: "Flex Economy Frame Board",
-        href: "/docs/primitives/tabs",
-         },
-      {
-        title: "Flex Premium Frame Board",
-        href: "/docs/primitives/tabs",
-         },
-      {
-        title: "Flex Stand & Standee",
-        href: "/docs/primitives/tabs",
-         },
-    ],
-  },
-  {
-    mainMenu: "Rigid Sign Plates",
-    logo: RigidSign,
-    subMenu: [
-      {
-        title: "PVC Foam Plates",
-        href: "/docs/primitives/tooltip",
-        
-      },
-      {
-        title: "Acp Plates",
-        href: "/docs/primitives/tabs",
-        },
-      {
-        title: "Acrylic Plates",
-        href: "/docs/primitives/tabs",
-        },
-      {
-        title: "Night Glow Plates",
-        href: "/docs/primitives/tabs",
-        },
-      {
-        title: "Stainless Steel / Plates (SS)",
-        href: "/docs/primitives/tabs",
-        },
-    ],
-  },
-  {
-    mainMenu: "Vinyl Letters",
-    logo: VinylLetter,
-    subMenu: [
-      {
-        title: "Vinyl Cut Lettering",
-        href: "/docs/primitives/tooltip",
-      },
-     
-    ],
-  },
-  {
-    mainMenu: "ACP & Acrylic",
-    logo: ACPandAcrylic,
-    subMenu: [
-      {
-        title: "Acrylic Letters Cut & Paste",
-        href: "/docs/primitives/tooltip",
-            },
-      {
-        title: "Acp & Acrylic Boad",
-        href: "/docs/primitives/tabs",
-      },
-      {
-        title: "Acp Work + Aluminium Framing",
-        href: "/docs/primitives/tabs",
-      },
-    ],
-  },
- 
-  {
-    mainMenu: "Modular / Premium Sign ",
-    logo: ModularPremiumSignProduct,
-    subMenu: [
-      {
-        title: "Opti Frames",
-        href: "/docs/primitives/tooltip",
-              },
-      {
-        title: "Flat Sign",
-        href: "/docs/primitives/tabs",
-      },
-      {
-        title: "Curv Sign",
-        href: "/docs/primitives/tabs",
-      },
-    ],
-  },
-  {
-    mainMenu: "Light Board /LED Board",
-    logo: LEDBoard,
-    subMenu: [
-      {
-        title: "3D LED Letters",
-        href: "/docs/primitives/tooltip",
-      },
-            {
-        title: "Acp Stencil LED Board",
-        href: "/docs/primitives/tabs",
-            },
-            {
-        title: "Light Box",
-        href: "/docs/primitives/tabs",
-            },
-            {
-        title: "Fabrics / Texttile LED Board",
-        href: "/docs/primitives/tabs",
-            },
-            {
-        title: "LED Thinlite Frames",
-        href: "/docs/primitives/tabs",
-            },
-            {
-        title: "Backlit Flex Board- tube Light",
-        href: "/docs/primitives/tabs",
-            },
-    ],
-  },
-  {
-    mainMenu: "Glass Films /Glass Decorative",
-    logo: GLASSFILMS,
-    subMenu: [
-      {
-        title: "One Way Vision Print",
-        href: "/docs/primitives/tooltip",
-        
-      },
-      {
-        title: "Glass Films",
-        href: "/docs/primitives/tabs",
-        
-      },
-    ],
-  },
-  {
-    mainMenu: "Name Plates",
-    logo: NamePalates,
-    subMenu: [
-      {
-        title: "Door Name Plates",
-        href: "/docs/primitives/tooltip",
-       
-      },
-      
-    ],
-  },
-  {
-    mainMenu: "Printed Frame",
-    logo: ArtFrames,
-    subMenu: [
-      {
-        title: "I Sign - Wall Mounted",
-        href: "/docs/primitives/tooltip",
-        
-      },
-      {
-        title: "Art Frames",
-        href: "/docs/primitives/tabs",
-        
-      },
-      {
-        title: "Table Stand",
-        href: "/docs/primitives/tabs",
-        
-      },
-      {
-        title: "Table Name Plates",
-        href: "/docs/primitives/tabs",
-        
-      },
-    ],
-  },
-  
-  // More main menu items...
-];
+import { Image } from "@nextui-org/react";
 
 const Categorynav = () => {
   const menubarRef = useRef(null);
+  const dispatch = useDispatch();
+  const { categoryslug } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(fetchcategoriesbyslug()); // Fetch categories when component mounts
+  }, [dispatch]);
+
+
+  console.log("Menu",categoryslug)
 
   const scrollLeft = () => {
     if (menubarRef.current) {
@@ -338,10 +39,10 @@ const Categorynav = () => {
   };
 
   return (
-    <div className="relative w-full flex justify-center items-center text-gray  bg-[#f1f2f4] ">
+    <div className="relative w-full flex justify-center items-center text-gray bg-[#f1f2f4]">
       <button
         onClick={scrollLeft}
-        className="absolute left-0 z-20 p-2 bg-white shadow-md rounded-full  hover:bg-Apptheme transition-colors "
+        className="absolute left-0 z-20 p-2 bg-white shadow-md rounded-full hover:bg-Apptheme transition-colors"
       >
         <ChevronLeft className="h-6 w-6 text-gray-600 hover:text-white transition-colors" />
       </button>
@@ -351,26 +52,23 @@ const Categorynav = () => {
         className="w-full relative flex justify-start items-center space-x-6 px-8 bg-white shadow-small mx-4 mt-2 z-10 overflow-x-auto scrollbar-hide"
       >
         <div className="flex space-x-6">
-          {data.map((menuItem, index) => (
+          {categoryslug?.map((menuItem, index) => (
             <MenubarMenu key={index} className="min-w-max">
               <MenubarTrigger>
                 <div className="flex flex-col items-center justify-center">
-                  <div className="bg-slate h-20 w-20 rounded-full flex items-center overflow-hidden">
-
-
-                  <Image
-                    src={menuItem.logo}
-                    alt={menuItem.mainMenu}
-                    className="object-contain h-16 rounded-full "
-
-                    // w-24 overflow-hidden bg-slate p-2 border border-[#e5e7eb]
-                  />
-
-                  </div>
+                  <div className="bg-slate h-20 w-20 rounded-full flex items-center justify-center overflow-hidden">
+                    <Image
+                      src={menuItem.image} // Ensure that logo URLs are coming from the API or state
+                      alt={menuItem.mainMenu}
+                      className="object-contain h-16 rounded-full"
+                      layout="fill"
               
-                  <p className="flex items-center text-center  text-sm whitespace-nowrap mt-1  hover:text-Apptheme transition-colors ">
-                    {menuItem.mainMenu}
-                    {menuItem.subMenu.length > 0 && (
+                      
+                    />
+                  </div>
+                  <p className="flex items-center text-center text-sm whitespace-nowrap mt-1 hover:text-Apptheme transition-colors">
+                    {menuItem.name}
+                    {menuItem.subcategories?.length > 0 && (
                       <ChevronDown
                         className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
                         aria-hidden="true"
@@ -379,12 +77,20 @@ const Categorynav = () => {
                   </p>
                 </div>
               </MenubarTrigger>
-              {menuItem.subMenu.length > 0 && (
-                <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2 ">
-                  {menuItem.subMenu.map((subItem, subIndex) => (
+              {menuItem.subcategories?.length > 0 && (
+                <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2">
+                  {menuItem.subcategories.map((subItem, subIndex) => (
                     <MenubarItem className="text-medium" key={subIndex} asChild>
-                      <Link href={subItem.href} className=" hover:bg-[#f0f5ff] hover:text-Apptheme   duration-750 transition-all ">
-                        <p className="flex items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme  " style={{fontFamily:"unset"}}>{subItem.title}</p>
+                      <Link
+                        href={`${subItem.slug}`}
+                        className="hover:bg-[#f0f5ff] hover:text-Apptheme duration-750 transition-all"
+                      >
+                        <p
+                          className="flex items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
+                          style={{ fontFamily: "unset" }}
+                        >
+                          {subItem.name}
+                        </p>
                       </Link>
                     </MenubarItem>
                   ))}
