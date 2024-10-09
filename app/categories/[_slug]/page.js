@@ -13,7 +13,7 @@ import { fetchcategoriesbyslug } from "@/lib/ReduxSlice/CategorySlice";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-export default function page() {
+export default function Page() {
   const dispatch = useDispatch();
   const { categoryslug } = useSelector((state) => state.category);
 

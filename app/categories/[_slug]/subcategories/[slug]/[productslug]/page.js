@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProductBySlug } from "@/lib/ReduxSlice/ProductSlice";
 import { useParams } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const dispatch = useDispatch();
 
   const { productDetails } = useSelector((state) => state.product);
@@ -446,4 +446,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
