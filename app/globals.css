@@ -213,3 +213,16 @@ background: linear-gradient(90deg, rgba(168,58,182,1) 0%, rgba(197,131,205,1) 54
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #9c1dac; /* Darker shade on hover */
 }
+
+
+.p-dropdown-label{
+
+  height: 48px;
+  /* width: 500px; */
+  border: #0e6be4;
+  border: 10px;
+}
+
+.p-hidden-accessible{
+  background-color: #9c1dac;
+}

@@ -68,17 +68,17 @@ export default function CarouselDApiDemo() {
   }, [api]);
 
   return (
-    <div className="relative mx-4 my-3 mt-4 ">
+    <div className="relative mx-4 my-3 2xl:my-6 mt-4 ">
       <Carousel setApi={setApi} className="w-full h-64">
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative w-full  h-64 md:h-96">
+              <div className="relative w-full  h-64 md:h-96 ">
                 <Image
                   src={slide.imageUrl}
                   alt={`Slide ${slide.id}`}
                   
-                  className="w-full h-64 object-cover rounded-md"
+                  className="w-full h-64 lg:h-72 2xl:h-80 lg:object-fill object-fill   rounded-md"
                 />
                 {/* <span className="absolute  left-4 text-black bottom-14 text-xl font-semibold">
                   {slide.caption}

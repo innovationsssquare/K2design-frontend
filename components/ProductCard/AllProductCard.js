@@ -93,7 +93,7 @@ export default function App() {
 
       {/* Card Grid */}
       {/* klsjdklsjds */}
-      <div className="gap-6 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 lg:mx-4 sm:mx-4 mb-8">
+      <div className="gap-6 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 lg:mx-4 sm:mx-4 mb-8">
             {cardsData.map((card, index) => (
 
 
