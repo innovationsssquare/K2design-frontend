@@ -7,6 +7,7 @@ import PaperPrintings from "../../../../../../public/images/PaperPrinting.png";
 import PhotoAlbum from "../../../../../../public/images/Visiting_Card2.png";
 import PaperBag from "../../../../../../public/images/Visiting_Card3.png";
 import Visiting from "../../../../../../public/images/Visiting_Card.png";
+import StandardVisitingCard from "../../../../../../public/images/StandardVisitingCard.jpeg";
 import { FileUpload } from "primereact/fileupload";
 import {
   Select,
@@ -30,6 +31,8 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+
+import { Skeleton } from "@nextui-org/react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductBySlug } from "@/lib/ReduxSlice/ProductSlice";
@@ -76,8 +79,8 @@ const Page = () => {
     },
 
     {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
+      itemImageSrc: StandardVisitingCard,
+      thumbnailImageSrc: StandardVisitingCard,
       alt: "Business Card 4",
     },
     {
@@ -114,14 +117,28 @@ const Page = () => {
   const [orientation, setOrientation] = useState("");
   const [printingLocation, setPrintingLocation] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Fetch image data (simulated with useEffect)
+  // // Fetch image data (simulated with useEffect)
+  // useEffect(() => {
+  //   // Simulating fetching data
+  //   setTimeout(() => {
+  //     setImages(imageData); // Set the image data after fetching
+  //   }, 1000); // Simulate delay
+  // }, []);
+
   useEffect(() => {
-    // Simulating fetching data
-    setTimeout(() => {
-      setImages(imageData); // Set the image data after fetching
-    }, 1000); // Simulate delay
-  }, []);
+    if (productDetails?.data) {
+      // Extract images from productDetails
+      const imgData = productDetails.data.images.map((image) => ({
+        itemImageSrc: image,
+        thumbnailImageSrc: image,
+        alt: "Product Image", // Update with a better alt description if needed
+      }));
+      setImages(imgData); // Set the images state
+      setLoading(false);
+    }
+  }, [productDetails]);
 
   // Galleria responsive options
   const responsiveOptions = [
@@ -149,7 +166,8 @@ const Page = () => {
         <Image
           src={item.itemImageSrc}
           alt={item.alt}
-          style={{ width: "100%", display: "block" }}
+          fill={true}
+          style={{ width: "100%", display: "block" , }}
           className=" h-full  object-cover rounded-2xl "
         />
       </div>
@@ -162,10 +180,27 @@ const Page = () => {
         src={item.thumbnailImageSrc}
         alt={item.alt}
         style={{ display: "block" }}
+        height={56}
+        width={56}
+        // fill={true}
         className="h-14 w-14 object-cover border   border-Apptheme"
       />
     );
   };
+
+  // const thumbnailTemplate = (item) => {
+  //   return (
+  //     <div className="h-14 w-14 border border-Apptheme">
+  //       <Image
+  //         src={item.thumbnailImageSrc} // This will now be the same as itemImageSrc
+  //         alt={item.alt}
+  //         width={56} // Set width in pixels (for 14 tailwind classes)
+  //         height={56} // Set height in pixels (for 14 tailwind classes)
+  //         className="object-cover"
+  //       />
+  //     </div>
+  //   );
+  // };
 
   const handleProceed = () => {
     // Log the selected dropdown values to the console
@@ -182,18 +217,8 @@ const Page = () => {
         {/* Left Side: Galleria */}
         <div className=" ">
           <div className="card sticky top-5 lg:flex lg:justify-center md:flex md:justify-center w-full ">
-            {images && (
-              // <Galleria
-              //   value={images}
-              //   responsiveOptions={responsiveOptions}
-              //   numVisible={5}
-              //   circular
-              //   style={{ maxWidth: "640px" }}
-              //   showItemNavigators
-              //   showItemNavigatorsOnHover
-              //   item={itemTemplate}
-              //   thumbnail={thumbnailTemplate}
-              // />
+            {/* {images && (
+            
               <Galleria
                 value={images}
                 responsiveOptions={responsiveOptions}
@@ -203,6 +228,22 @@ const Page = () => {
                 item={itemTemplate}
                 thumbnail={thumbnailTemplate}
               />
+            )} */}
+
+{loading ? ( // Show Skeleton while loading
+              <Skeleton className="h-[450px] lg:h-[450px] md:h-[350px] w-[600px]" />
+            ) : (
+              images && (
+                <Galleria
+                  value={images}
+                  responsiveOptions={responsiveOptions}
+                  numVisible={7}
+                  circular
+                  style={{ maxWidth: "800px" }}
+                  item={itemTemplate}
+                  thumbnail={thumbnailTemplate}
+                />
+              )
             )}
           </div>
         </div>

@@ -47,6 +47,7 @@ module.exports = {
       'gray-800': '#1F2937',
       'gray-900': '#111827',
     },
+   
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
