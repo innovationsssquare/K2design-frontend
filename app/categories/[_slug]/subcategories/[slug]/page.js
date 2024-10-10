@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 
 import StandardVisitingCard from "../../../../../public/images/StandardVisitingCard.jpeg";
-
-import PaperPrintings from "../../../../../public/images/PaperPrinting.png";
-
+import { Skeleton } from "@nextui-org/skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSubCategoryProducts } from "@/lib/ReduxSlice/CategorySlice";
 
@@ -19,7 +17,7 @@ export default function Page() {
   const params = useParams(); // Get route params (including slug)
   // Extract slug from params
 
-  console.log("params",params)
+  console.log("params", params);
   const slug = params.slug;
 
   console.log("fetchSubCategoryProductsslug", slug);
@@ -28,9 +26,16 @@ export default function Page() {
     dispatch(fetchSubCategoryProducts(slug));
   }, [slug]);
 
+
+  useEffect(() => {
+    if (subcategoryProducts?.length > 0) {
+      setIsLoading(false); // Disable loading once data is fetched
+    }
+  }, [subcategoryProducts]);
+
   console.log("fetchSubCategoryProducts", subcategoryProducts);
 
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const cardsData =
     subcategoryProducts?.map((item) => ({
@@ -45,42 +50,21 @@ export default function Page() {
     <>
       <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
         <div className=" justify-center items-center  p-4 shadow-sm w-full my-4 ml-4 mr-4 bg-white">
-          {/* Header Section with Responsive Image */}
-          {/* <div className="relative  w-full h-[150px] lg:h-[500px] sm:h-[200px]">
-            <div className="shine-box"></div>
-            <Image
-             
-              src={PaperPrintings.src}
-              alt="Visiting Cards"
-              layout="fill"
-              objectFit="cover"
-              className="z-0"
-            />
-   
-            <div className="absolute inset-10 flex items-center justify-start ml-4">
-              <h1 className="text-white text-4xl md:text-5xl font-bold capitalize">
-             {slug}
+          <header
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
+            style={{
+              background: "linear-gradient(to right, #6A1B9A, #1E88E5)",
+            }}
+          >
+            <div className="container mx-auto px-4 py-16 text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 capitalize">
+                Explore {slug}
               </h1>
+              <p className="text-xl md:text-2xl opacity-80">
+                Discover our wide range of high-quality products
+              </p>
             </div>
-          </div> */}
-
-          {/* <div className=" inset-10 flex items-center justify-center ml-4 bg-[#9c6d9657] h-20">
-            <h1 className="text-Apptheme text-4xl md:text-5xl font-bold capitalize">
-             Explore {slug}
-            </h1>
-          </div> */}
-
-<header className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white" style={{ background: "linear-gradient(to right, #6A1B9A, #1E88E5)" }}>
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 capitalize">
-            Explore {slug}
-          </h1>
-          <p className="text-xl md:text-2xl opacity-80">
-            Discover our wide range of high-quality products
-          </p>
-        </div>
-      </header>
-      
+          </header>
 
           {/* Responsive Card Grid */}
           <div className="px-4 py-4">
@@ -92,7 +76,15 @@ export default function Page() {
           </div>
 
           <div className="gap-6 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 lg:mx-4 sm:mx-4 mb-8">
-            {cardsData.map((card, index) => (
+          {isLoading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                <Skeleton
+                key={index}
+                className="h-[300px] w-full rounded-lg"
+              />
+                ))
+              :
+            cardsData.map((card, index) => (
               <Card
                 key={index}
                 isFooterBlurred
@@ -115,7 +107,7 @@ export default function Page() {
                     <p className="text-black text-tiny font-bold">
                       {card.title}
                     </p>
-                    {/* <p className="text-black text-tiny">{card.subtitle}</p> */}
+                  
                   </div>
                   <Button
                     className="text-tiny"
