@@ -138,7 +138,7 @@ export default function Footer() {
          alt="Conatctus"
        /> */}
 
-          <div className="text-center p-4">
+          <div className="text-center flex flex-col items-center gap-2 p-4">
             <h3 className="font-bold text-2xl md:text-4xl text-white">
               K2 Design - Digital Signage House
             </h3>
@@ -168,7 +168,7 @@ export default function Footer() {
           <Divider orientation="horizontal" />
         </div>
 
-        <p className="text-center mt-2 text-white  font-sans md:text-xs lg:text-xs text-tiny px-1 uppercase w-full">
+        <p className="text-center  text-white py-2  font-sans md:text-xs lg:text-xs text-tiny px-1 uppercase w-full">
           {` 2024 K2 Design - Digital Signage House - All rights reserved.`}
         </p>
       </div>
