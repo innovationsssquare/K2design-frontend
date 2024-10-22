@@ -211,6 +211,27 @@ const Page = () => {
     console.log("Quantity:", quantity);
   };
 
+
+
+
+  // to render difffrent component for diffrent slug
+
+  // const renderFormComponent = () => {
+  //   switch (slug) {
+  //     case 'electronics':
+  //       return <ElectronicsForm productData={productData} />;
+  //     case 'furniture':
+  //       return <FurnitureForm productData={productData} />;
+  //     case 'clothing':
+  //       return <ClothingForm productData={productData} />;
+  //     default:
+  //       return <div>Select a category to see the form.</div>;
+  //   }
+  // };
+
+
+
+
   return (
     <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
       <div className="w-full p-4 shadow-sm ml-4 mr-4 my-4 flex gap-4 justify-center    lg:flex-row flex-col bg-white">
