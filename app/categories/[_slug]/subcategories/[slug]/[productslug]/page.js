@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Galleria } from "primereact/galleria"; // Assuming you're using PrimeReact Galleria
 
 import "primereact/resources/primereact.min.css";
@@ -38,6 +38,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProductBySlug } from "@/lib/ReduxSlice/ProductSlice";
 import { useParams } from "next/navigation";
 
+
+
+
+
+
+
+
+
 const Page = () => {
   const dispatch = useDispatch();
 
@@ -60,55 +68,7 @@ const Page = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   // Static array of image objects
-  const imageData = [
-    {
-      itemImageSrc: PaperPrintings,
-      thumbnailImageSrc: PaperPrintings,
-      alt: "Business Card 1",
-    },
 
-    {
-      itemImageSrc: Visiting,
-      thumbnailImageSrc: Visiting,
-      alt: "Business Card 3",
-    },
-    {
-      itemImageSrc: PhotoAlbum,
-      thumbnailImageSrc: PhotoAlbum,
-      alt: "Business Card 3",
-    },
-
-    {
-      itemImageSrc: StandardVisitingCard,
-      thumbnailImageSrc: StandardVisitingCard,
-      alt: "Business Card 4",
-    },
-    {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
-      alt: "Business Card 4",
-    },
-    {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
-      alt: "Business Card 4",
-    },
-    {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
-      alt: "Business Card 4",
-    },
-    {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
-      alt: "Business Card 4",
-    },
-    {
-      itemImageSrc: PaperBag,
-      thumbnailImageSrc: PaperBag,
-      alt: "Business Card 4",
-    },
-  ];
 
   // State to hold images
   const [images, setImages] = useState(null);
@@ -232,6 +192,34 @@ const Page = () => {
 
 
 
+  const renderCustomizationDropdowns = () => {
+    return productDetails?.data?.customizations?.map((customization) => (
+      <div key={customization._id} className="mb-4">
+        <label htmlFor={customization.fieldName} className="block mb-2 font-semibold">
+          {customization?.fieldName}
+        </label>
+        <Select onValueChange={(value) => setMaterial(value)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={`Select a ${customization.fieldName}`} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {customization.options.map((option) => (
+                <SelectItem key={option._id} value={option.label}>
+                  {`${option.label}`}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+    ));
+  };
+
+
+  
+
+
   return (
     <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
       <div className="w-full p-4 shadow-sm ml-4 mr-4 my-4 flex gap-4 justify-center    lg:flex-row flex-col bg-white">
@@ -278,133 +266,46 @@ const Page = () => {
             {productDetails?.data?.description || "Loading..."}
           </p>
 
-          <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
-          <div class="flex space-x-4 mt-2 mb-2">
-            <button class="px-4 py-2 border-2 border-Apptheme text-Apptheme bg-[#ecd5f2] font-medium rounded-md focus:outline-none">
-              250 GSM
-            </button>
+         
 
-            <button class="px-4 py-2 border-2 border-[#E0E0E0] text-[#606060] bg-[#FFFFFF] font-medium rounded-md hover:border-Apptheme hover:text-Apptheme focus:outline-none">
-              350 GSM
-            </button>
-            {/* <button class="px-4 py-2 border-2 border-[#E0E0E0] text-[#606060] bg-[#FFFFFF] font-medium rounded-md hover:border-[#32a852] hover:text-[#32a852] focus:outline-none">
-      large
-    </button> */}
-          </div>
-
-          <ul className="list-disc list-inside mb-4">
+          {/* <ul className="list-disc list-inside mb-4">
             <li>Size: 3.5 x 2 inches</li>
             <li>2 different paper materials available</li>
             <li>Available Lamination Options: Matte or Glossy</li>
             <li>Order from as low as 100 units</li>
             <li>Same-day delivery for orders before 3 PM</li>
-          </ul>
+          </ul> */}
           {/* <p className="font-bold mb-4">
           {`We do not accept designs that belong to or represent government or government-affiliated organizations.`}
           </p> */}
 
-          {/* Dropdowns for Options */}
-          <div className="mb-4">
-            <label htmlFor="material" className="block mb-2 font-semibold">
-              Materials
-            </label>
-            <Select onValueChange={(value) => setMaterial(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a Material" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="Lykam Matte Coated Paper">
-                    Lykam Matte Coated Paper
-                  </SelectItem>
-                  <SelectItem value="Lykam Glass Coated Paper">
-                    Lykam Glass Coated Paper
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+          <Suspense fallback={<p>loading...</p>}>
+              {renderCustomizationDropdowns()}
+          </Suspense>
 
-          {/* Dropdown for Lamination */}
-          <div className="mb-4">
-            <label htmlFor="lamination" className="block mb-2 font-semibold">
-              Lamination
-            </label>
-            <Select onValueChange={(value) => setLamination(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Lamination" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="Matte Lamination">
-                    Matte Lamination
-                  </SelectItem>
-                  <SelectItem value="Glossy Lamination">
-                    Glossy Lamination
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Dropdown for Orientation */}
-          <div className="mb-4">
-            <label htmlFor="orientation" className="block mb-2 font-semibold">
-              Orientation
-            </label>
-            <Select onValueChange={(value) => setOrientation(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Orientation" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="Landscape">Landscape</SelectItem>
-                  <SelectItem value="Portrait">Portrait</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Dropdown for Printing Location */}
-          <div className="mb-4">
-            <label
-              htmlFor="printing-location"
-              className="block mb-2 font-semibold"
-            >
-              Printing Location
-            </label>
-            <Select onValueChange={(value) => setPrintingLocation(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Printing Location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="Front">Front</SelectItem>
-                  <SelectItem value="Back">Back</SelectItem>
-                  <SelectItem value="Both">Both</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+      
+         
 
           {/* Dropdown for Quantity */}
           <div className="mb-4">
-            <label htmlFor="quantity" className="block mb-2 font-semibold">
-              Quantity
-            </label>
-            <Select onValueChange={(value) => setQuantity(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Quantity" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="100">100</SelectItem>
-                  <SelectItem value="200">200</SelectItem>
-                  <SelectItem value="500">500</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+  <label htmlFor="quantity" className="block mb-2 font-semibold">
+    Quantity
+  </label>
+  <Select onValueChange={(value) => setQuantity(value)}>
+    <SelectTrigger className="w-full">
+      <SelectValue placeholder="Select Quantity" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectGroup>
+        {productDetails?.data?.availableQuantities?.map((quantity) => (
+          <SelectItem key={quantity} value={quantity}>
+            {quantity}
+          </SelectItem>
+        ))}
+      </SelectGroup>
+    </SelectContent>
+  </Select>
+</div>
 
           <div className="flex justify-between items-center mb-4">
             <div>
