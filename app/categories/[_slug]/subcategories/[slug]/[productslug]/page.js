@@ -79,13 +79,14 @@ const Page = () => {
   const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // // Fetch image data (simulated with useEffect)
-  // useEffect(() => {
-  //   // Simulating fetching data
-  //   setTimeout(() => {
-  //     setImages(imageData); // Set the image data after fetching
-  //   }, 1000); // Simulate delay
-  // }, []);
+  const [selectedCustomizations, setSelectedCustomizations] = useState({});
+
+  const handleSelectChange = (fieldName, value) => {
+    setSelectedCustomizations((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  };
 
   useEffect(() => {
     if (productDetails?.data) {
@@ -189,7 +190,7 @@ const Page = () => {
   //   }
   // };
 
-
+console.log(selectedCustomizations)
 
 
   const renderCustomizationDropdowns = () => {
@@ -198,14 +199,14 @@ const Page = () => {
         <label htmlFor={customization.fieldName} className="block mb-2 font-semibold">
           {customization?.fieldName}
         </label>
-        <Select onValueChange={(value) => setMaterial(value)}>
+        <Select onValueChange={(value) => handleSelectChange(customization.fieldName, value)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder={`Select a ${customization.fieldName}`} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               {customization.options.map((option) => (
-                <SelectItem key={option._id} value={option.label}>
+                <SelectItem key={option._id} value={option.rate}>
                   {`${option.label}`}
                 </SelectItem>
               ))}
