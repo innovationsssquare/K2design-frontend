@@ -175,20 +175,7 @@ const Page = () => {
 
 
 
-  // to render difffrent component for diffrent slug
-
-  // const renderFormComponent = () => {
-  //   switch (slug) {
-  //     case 'electronics':
-  //       return <ElectronicsForm productData={productData} />;
-  //     case 'furniture':
-  //       return <FurnitureForm productData={productData} />;
-  //     case 'clothing':
-  //       return <ClothingForm productData={productData} />;
-  //     default:
-  //       return <div>Select a category to see the form.</div>;
-  //   }
-  // };
+  
 
 console.log(selectedCustomizations)
 
