@@ -57,13 +57,13 @@ const Page = () => {
   const slug = params.slug;
   const productslug = params.productslug;
 
-  console.log("params", params);
+
 
   useEffect(() => {
     dispatch(fetchProductBySlug({slug, productslug}));
   }, [slug, productslug]);
 
-  console.log("fetchProductBySlug", productDetails);
+
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -78,13 +78,14 @@ const Page = () => {
   const [printingLocation, setPrintingLocation] = useState("");
   const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(true);
+  const [totalRate, setTotalRate] = useState(0);
 
   const [selectedCustomizations, setSelectedCustomizations] = useState({});
 
   const handleSelectChange = (fieldName, value) => {
     setSelectedCustomizations((prev) => ({
       ...prev,
-      [fieldName]: value,
+      [fieldName]: parseFloat(value),
     }));
   };
 
@@ -100,6 +101,49 @@ const Page = () => {
       setLoading(false);
     }
   }, [productDetails]);
+
+
+    // const calculateRate = () => {
+    //   const selectedOrientation = selectedCustomizations.orientation || 0;
+    //   const selectedLamination = selectedCustomizations.UV || 0;
+    //   const selectedPrintingLocation = selectedCustomizations.PrintingLocation || 0;
+
+    //   const baseRate = selectedOrientation + selectedLamination + selectedPrintingLocation;
+    //   return baseRate * quantity;
+    // }; 
+
+    const calculateRate = () => {
+      const selectedOrientation = selectedCustomizations.orientation || 0;
+      
+      // Initialize lamination rate with conditions for UV and Lamination
+      const selectedUV = selectedCustomizations.UV || 0; // Assuming UV represents a specific rate
+      const selectedLamination = selectedCustomizations.Lamination || 0;
+    
+      const selectedPrintingLocation = selectedCustomizations.PrintingLocation || 0;
+    
+      // Initialize base rate
+      let baseRate = selectedOrientation + selectedPrintingLocation;
+    
+      // Add UV rate only if it is selected
+      if (selectedUV > 0) {
+        baseRate += selectedUV; // Add UV value if selected
+      }
+    
+      // Add Lamination rate only if it is selected
+      if (selectedLamination > 0) {
+        baseRate += selectedLamination; // Add Lamination value if selected
+      }
+    
+      // Calculate total rate based on quantity
+      return baseRate * quantity;
+    };
+    
+
+  // Update total rate when customizations or quantity change
+  useEffect(() => {
+    setTotalRate(calculateRate());
+  }, [selectedCustomizations, quantity]); 
+
 
   // Galleria responsive options
   const responsiveOptions = [
@@ -149,19 +193,7 @@ const Page = () => {
     );
   };
 
-  // const thumbnailTemplate = (item) => {
-  //   return (
-  //     <div className="h-14 w-14 border border-Apptheme">
-  //       <Image
-  //         src={item.thumbnailImageSrc} // This will now be the same as itemImageSrc
-  //         alt={item.alt}
-  //         width={56} // Set width in pixels (for 14 tailwind classes)
-  //         height={56} // Set height in pixels (for 14 tailwind classes)
-  //         className="object-cover"
-  //       />
-  //     </div>
-  //   );
-  // };
+
 
   const handleProceed = () => {
     // Log the selected dropdown values to the console
@@ -183,7 +215,7 @@ console.log(selectedCustomizations)
   const renderCustomizationDropdowns = () => {
     return productDetails?.data?.customizations?.map((customization) => (
       <div key={customization._id} className="mb-4">
-        <label htmlFor={customization.fieldName} className="block mb-2 font-semibold">
+        <label htmlFor={customization.fieldName} className="block mb-2 font-semibold capitalize">
           {customization?.fieldName}
         </label>
         <Select onValueChange={(value) => handleSelectChange(customization.fieldName, value)}>
@@ -214,18 +246,7 @@ console.log(selectedCustomizations)
         {/* Left Side: Galleria */}
         <div className=" ">
           <div className="card sticky top-5 lg:flex lg:justify-center md:flex md:justify-center w-full ">
-            {/* {images && (
-            
-              <Galleria
-                value={images}
-                responsiveOptions={responsiveOptions}
-                numVisible={7}
-                circular
-                style={{ maxWidth: "800px" }}
-                item={itemTemplate}
-                thumbnail={thumbnailTemplate}
-              />
-            )} */}
+         
 
 {loading ? ( // Show Skeleton while loading
               <Skeleton className="h-[450px] lg:h-[450px] md:h-[350px] w-[600px]" />
@@ -279,31 +300,29 @@ console.log(selectedCustomizations)
   <label htmlFor="quantity" className="block mb-2 font-semibold">
     Quantity
   </label>
-  <Select onValueChange={(value) => setQuantity(value)}>
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select Quantity" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectGroup>
-        {productDetails?.data?.availableQuantities?.map((quantity) => (
-          <SelectItem key={quantity} value={quantity}>
-            {quantity}
-          </SelectItem>
-        ))}
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+    <Select onValueChange={(value) => setQuantity(parseInt(value, 10))}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Quantity" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {productDetails?.data?.availableQuantities?.map((qty) => (
+                    <SelectItem key={qty} value={qty}>
+                      {qty}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 </div>
 
           <div className="flex justify-between items-center mb-4">
             <div>
-              <p className="text-lg  ">
-                <strong className="text-Apptheme">₹739.86</strong> inclusive of
-                all taxes
+            <p className="text-lg">
+                <strong className="text-Apptheme">₹{totalRate.toFixed(2)}</strong> inclusive of all taxes
               </p>
-              <p class=" text-sm font-medium text-[#606060]">
-                {" "}
-                for 100 Qty (₹2.60 / piece)
+              <p className="text-sm font-medium text-[#606060]">
+                for {quantity || 0} Qty
               </p>
             </div>
 
