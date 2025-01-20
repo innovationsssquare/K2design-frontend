@@ -52,11 +52,11 @@ export default function Page() {
   console.log("Filtered Category:", filteredCategory);
 
   const cardsData =
-    filteredCategory?.subcategories?.map((item) => ({
+    filteredCategory?.products?.map((item) => ({
       title: item.name,
       // subtitle: item.description ? `Description: ${item.description}` : "No description",
       img: item.image || StandardVisitingCard.src,
-      link: `/categories/${slug}/subcategories/${item.slug}`,
+      link: `${item.slug}`,
     })) || [];
   console.log(" cards", cardsData);
 
