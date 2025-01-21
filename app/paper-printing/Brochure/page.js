@@ -11,8 +11,8 @@ const page = () => {
 
     {/* <Brochure/> */}
     {/* <Booklet/> */}
-    <DigitalPoster/>
-    {/* <Stamp/> */}
+    {/* <DigitalPoster/> */}
+    <Stamp/>
   
 
 </div>
