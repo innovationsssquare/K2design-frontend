@@ -6,9 +6,6 @@ import "primereact/resources/primereact.min.css";
 
 import BrochureDesign1 from "../../../public/images/StandBoard.jpeg";
 import BrochureDesign2 from "../../../public/images/BrochureDesign2.png";
-import brochures from "../../../public/images/brochures.jpeg";
-import { FileUpload } from "primereact/fileupload";
-import { FixedSizeList as List } from "react-window";
 import {
   Select,
   SelectContent,

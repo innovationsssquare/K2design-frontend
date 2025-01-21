@@ -48,6 +48,7 @@ const Page = () => {
 
   const slug = params.slug;
   const productslug = params.productslug;
+  console.log("product",productslug);
 
   useEffect(() => {
     dispatch(fetchProductBySlug({ slug, productslug }));
@@ -85,8 +86,8 @@ const Page = () => {
       if (productDetails?.data?.qty === 0) {
         // If qty is 0, do not include previous selections
         return {
-          [fieldName]: parseFloat(value) || 0 ,
-        "Quantity2": parseInt(label) || 0 ,
+          [fieldName]: parseFloat(value) || 0,
+          Quantity2: parseInt(label) || 0,
         };
       } else {
         // Otherwise, include previous selections
@@ -98,8 +99,6 @@ const Page = () => {
       }
     });
   };
-  
-  
 
   useEffect(() => {
     if (productDetails?.data) {
@@ -114,66 +113,60 @@ const Page = () => {
     }
   }, [productDetails]);
 
-
-
   const calculateValues = () => {
     // Fallback to 0 if either value is undefined
     const quantity1 = parseFloat(selectedCustomizations.Quantity) || 0;
     const quantity2 = parseInt(selectedCustomizations.Quantity2) || 0;
-  
+
     // Multiply the quantities
     const result = quantity1 * quantity2;
-    console.log("result",result)
+    console.log("result", result);
     return result;
   };
 
   // console.log("CalculateValues",result)
-  console.log("selectedCustomizations",selectedCustomizations);
+  console.log("selectedCustomizations", selectedCustomizations);
 
-
- 
   const calculateRate = () => {
     const selectedOrientation = selectedCustomizations.orientation || 0;
-    
+
     // Initialize lamination rate with conditions for UV and Lamination
     const selectedUV = selectedCustomizations.UV || 0; // Assuming UV represents a specific rate
     const selectedLamination = selectedCustomizations.Lamination || 0;
-  
-    const selectedPrintingLocation = selectedCustomizations.PrintingLocation || 0;
-  
+
+    const selectedPrintingLocation =
+      selectedCustomizations.PrintingLocation || 0;
+
     // Initialize base rate
     let baseRate = selectedOrientation + selectedPrintingLocation;
-  
+
     // Add UV rate only if it is selected
     if (selectedUV > 0) {
       baseRate += selectedUV; // Add UV value if selected
     }
-  
+
     // Add Lamination rate only if it is selected
     if (selectedLamination > 0) {
       baseRate += selectedLamination; // Add Lamination value if selected
     }
-  
+
     // Calculate total rate based on quantity
     return baseRate * quantity;
   };
- 
+
   useEffect(() => {
     setTotalRate(calculateRate());
     setTotalValue(calculateValues());
-   
-  }, [selectedCustomizations,quantity]);
-
+  }, [selectedCustomizations, quantity]);
 
   useEffect(() => {
     const rateResult = calculateRate();
     const valuesResult = calculateValues();
-    
+
     // Combine results as needed; here, we're adding them as an example
     setTotalRate(rateResult + valuesResult);
   }, [selectedCustomizations, quantity]);
 
-  
   // Galleria responsive options
   const responsiveOptions = [
     {
@@ -231,11 +224,10 @@ const Page = () => {
     console.log("Quantity:", quantity);
   };
 
- 
   // console.log("productDetails.qty",productDetails.data.qty)
 
   const renderCustomizationDropdowns = () => {
-    return productDetails?.data?.customizations?.map((customization,index ) => (
+    return productDetails?.data?.customizations?.map((customization, index) => (
       <div key={index} className="mb-4">
         <label
           htmlFor={customization.fieldName}
@@ -243,12 +235,14 @@ const Page = () => {
         >
           {customization?.fieldName}
         </label>
-        <Select key={index}
+        <Select
+          key={index}
           onValueChange={(value) =>
             handleSelectChange(
               customization.fieldName,
               value,
-              customization.options.find(option => option.rate === value)?.label
+              customization.options.find((option) => option.rate === value)
+                ?.label
               // customization.options[index].label
             )
           }
@@ -320,7 +314,9 @@ const Page = () => {
           <Suspense fallback={<p>loading...</p>}>
             {renderCustomizationDropdowns()}
 
-            {productDetails?.data?.qty === 0 ? <div> </div> : (
+            {productDetails?.data?.qty === 0 ? (
+              <div> </div>
+            ) : (
               <div className="mb-4">
                 <label htmlFor="quantity" className="block mb-2 font-semibold">
                   Quantity
