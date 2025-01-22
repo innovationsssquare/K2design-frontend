@@ -56,10 +56,6 @@ const Billbooks = () => {
     (state) => state.Billbooks
   );
 
-  // const handleSelectChange = (name, value) => {
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -75,7 +71,22 @@ const Billbooks = () => {
     ) {
       dispatch(GetBillbookscalculation(formData));
     }
-  }, [formData, dispatch]);
+  }, [
+    formData,
+    availablePageCounts,
+    availableQuantities,
+    availableSizes,
+    availablePageDetails,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    if (Billbooksresult?.message === "Configuration not found") {
+      setErrorMessage("Selected options are not available");
+    } else {
+      setErrorMessage("");
+    }
+  }, [Billbooksresult]);
 
   const sizeOptions = {
     "One Colour": ["1/16", "1/8", "1/6", "1/5", "1/4"],
@@ -145,8 +156,8 @@ const Billbooks = () => {
 
   const pageDetailsOptions = {
     "One Colour": {
-      "1/16": ["W+P+Y","W+NP"],
-      "1/8": ["W+P+Y","W+NP"],
+      "1/16": ["W+P+Y", "W+NP"],
+      "1/8": ["W+P+Y", "W+NP"],
       default: ["W+NP"],
     },
     "Multi Colour": {
@@ -454,11 +465,15 @@ const Billbooks = () => {
                   className="bg-white  "
                   disabled={Billbooksresult == null}
                 >
-                 {loading ?<span className="loader4"></span>: <strong className="text-Apptheme text-lg ">
-                    ₹{Billbooksresult?.totalPrice || 0}
-                  </strong>}
+                  {loading ? (
+                    <span className="loader4"></span>
+                  ) : (
+                    <strong className="text-Apptheme text-lg ">
+                      ₹{Billbooksresult?.totalPrice || 0}
+                    </strong>
+                  )}
                 </Button>
-                 <p className="inline-block ml-3"> inclusive of all taxes</p>
+                <p className="inline-block ml-3"> inclusive of all taxes</p>
               </div>
 
               <Button
