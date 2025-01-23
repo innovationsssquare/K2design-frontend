@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from "react";
 import { useParams } from "next/navigation";
 import Billbooks from "@/components/Paper-printing/Billbooks/Billbooks";
+import Pavtibooks from "@/components/Paper-printing/Pavtibooks/Pavtibooks";
 
 const Brochure = lazy(() => import("@/components/Paper-printing/Brochure/Brochure"));
 const Booklet = lazy(() => import("@/components/Paper-printing/Booklet/Booklet"));
@@ -24,6 +25,8 @@ const Page = () => {
         return <Stamp/>;
       case "bill-books":
         return <Billbooks/>;
+      case "pavati-book":
+        return <Pavtibooks/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
