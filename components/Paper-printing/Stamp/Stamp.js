@@ -252,7 +252,7 @@ const Stamp = () => {
 
             {/* Dropdown for Orientation */}
   
-        {formData?.Stampname==='Basic - Nylon Stamp' &&
+        {formData?.type==='Rectangular or Square Shape' &&
 
 <div className="mb-4">
 <label htmlFor="Lines" className="block mb-2 font-semibold">
