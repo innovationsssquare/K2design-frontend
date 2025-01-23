@@ -34,10 +34,9 @@ import { Input } from "@/components/ui/input";
 const Stamp = () => {
   const [formData, setFormData] = useState({
     Stampname: "",
-   type: "",
+    type: "",
     qty: 0,
     lines: 0,
-
   });
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,9 +45,7 @@ const Stamp = () => {
 
   const dispatch = useDispatch();
 
-  const { stampresult, loading, error } = useSelector(
-    (state) => state.stamp
-  );
+  const { stampresult, loading, error } = useSelector((state) => state.stamp);
 
   console.log("stampresult", stampresult);
 
@@ -194,10 +191,8 @@ const Stamp = () => {
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
             <ul className="list-disc list-inside mb-4">
-         
               <li>Available in Rectangular or Square Shape</li>
               <li>Available in Round or Oval Shape</li>
-              
             </ul>
             {/* <p className="font-bold mb-4">
           {`We do not accept designs that belong to or represent government or government-affiliated organizations.`}
@@ -206,10 +201,12 @@ const Stamp = () => {
             {/* Dropdowns for Options */}
             <div className="mb-4">
               <label htmlFor="material" className="block mb-2 font-semibold">
-              Stamp Name
+                Stamp Name
               </label>
               <Select
-                onValueChange={(value) => handleSelectChange("Stampname", value)}
+                onValueChange={(value) =>
+                  handleSelectChange("Stampname", value)
+                }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select a Type" />
@@ -217,7 +214,9 @@ const Stamp = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="Dater Stamp">Dater Stamp</SelectItem>
-                    <SelectItem value="Basic - Nylon Stamp">Basic - Nylon Stamp</SelectItem>
+                    <SelectItem value="Basic - Nylon Stamp">
+                      Basic - Nylon Stamp
+                    </SelectItem>
                     <SelectItem value="Sun Stamp">Sun Stamp</SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -226,60 +225,66 @@ const Stamp = () => {
 
             <div className="mb-4">
               <label htmlFor="lamination" className="block mb-2 font-semibold">
-                 Type
+                Type
               </label>
               <Select
-                onValueChange={(value) =>
-                  handleSelectChange("type", value)
-                }
+                onValueChange={(value) => handleSelectChange("type", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Premium-2Colour-DateStamp(Small)">Premium-2 Colour DateStamp(Small)</SelectItem>
-                    <SelectItem value="Rectangular or Square Shape">Rectangular or Square Shape</SelectItem>
-                    <SelectItem value="Round or Oval Shape">Round or Oval Shape</SelectItem>
-                    <SelectItem value="Rectangular or Oval Shape">Rectangular or Oval Shape</SelectItem>
-                    <SelectItem value="Round or Square Shape">Round or Square Shape</SelectItem>
-                    <SelectItem value="Basic-SelfInk-DateStamp">Basic-SelfInk-DateStamp</SelectItem>
-                    <SelectItem value="Premium-2Colour-DateStamp(Big)">Premium-2Colour-DateStamp(Big)</SelectItem>
+                    <SelectItem value="Premium-2Colour-DateStamp(Small)">
+                      Premium-2 Colour DateStamp(Small)
+                    </SelectItem>
+                    <SelectItem value="Rectangular or Square Shape">
+                      Rectangular or Square Shape
+                    </SelectItem>
+                    <SelectItem value="Round or Oval Shape">
+                      Round or Oval Shape
+                    </SelectItem>
+                    <SelectItem value="Rectangular or Oval Shape">
+                      Rectangular or Oval Shape
+                    </SelectItem>
+                    <SelectItem value="Round or Square Shape">
+                      Round or Square Shape
+                    </SelectItem>
+                    <SelectItem value="Basic-SelfInk-DateStamp">
+                      Basic-SelfInk-DateStamp
+                    </SelectItem>
+                    <SelectItem value="Premium-2Colour-DateStamp(Big)">
+                      Premium-2Colour-DateStamp(Big)
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Dropdown for Orientation */}
-  
-        {formData?.type==='Rectangular or Square Shape' &&
 
-<div className="mb-4">
-<label htmlFor="Lines" className="block mb-2 font-semibold">
-   Lines
-</label>
-<Select
-  onValueChange={(value) =>
-    handleSelectChange("lines", value)
-  }
->
-  <SelectTrigger className="w-full">
-    <SelectValue placeholder="Select Line" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectItem value={1}>1</SelectItem>
-      <SelectItem value={2}>2</SelectItem>
-      <SelectItem value={3}>3</SelectItem>
-      <SelectItem value={4}>4</SelectItem>
-      
-    </SelectGroup>
-  </SelectContent>
-</Select>
-</div>
-
-        }
-   
+            {formData?.Stampname === "Basic - Nylon Stamp" && (
+              <div className="mb-4">
+                <label htmlFor="Lines" className="block mb-2 font-semibold">
+                  Lines
+                </label>
+                <Select
+                  onValueChange={(value) => handleSelectChange("lines", value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Line" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value={1}>1</SelectItem>
+                      <SelectItem value={2}>2</SelectItem>
+                      <SelectItem value={3}>3</SelectItem>
+                      <SelectItem value={4}>4</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {/* Dropdown for Quantity */}
             <div className="mb-4">
