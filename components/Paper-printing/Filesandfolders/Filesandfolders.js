@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Galleria } from "primereact/galleria"; // Assuming you're using PrimeReact Galleria
 import StandBoard from "../../../public/images/StandBoard.jpeg";
 import "primereact/resources/primereact.min.css";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import BrochureDesign1 from "../../../public/images/BrochureDesign1.png";
 import BrochureDesign2 from "../../../public/images/BrochureDesign2.png";
@@ -32,12 +35,13 @@ import {
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFileandfoldersCalculation } from "@/lib/ReduxSlice/Paper-printing/FileandfoldersSlice";
+import { Fileandfolderscalculation } from "@/lib/API/Filesandfolder";
 
 const Filesandfolders = () => {
   const [formData, setFormData] = useState({
     productType: "",
     paperType: "",
-    size: "",
+    size: "9x12 Inches",
     quantity: 0,
     glossLamination: false,
     mattLamination: false,
@@ -48,12 +52,15 @@ const Filesandfolders = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const dispatch = useDispatch();
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const { Fileandfoldersresult, loading, error } = useSelector(
-    (state) => state.Fileandfolders
-  );
+  // const { Fileandfoldersresult, loading, error } = useSelector(
+  //   (state) => state.Fileandfolders
+  // );
 
-  console.log("Fileandfoldersresult", Fileandfoldersresult);
+  // console.log("Fileandfoldersresult", Fileandfoldersresult);
   console.log("loading", loading);
   console.log("error", error);
 
@@ -61,20 +68,46 @@ const Filesandfolders = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // useEffect(() => {
+  //   if (
+  //     formData.size &&
+  //     formData.quantity &&
+  //     formData.glossLamination &&
+  //     formData.innerSidePrinting &&
+  //     formData.paperType &&
+  //     formData.productType
+  //   ) {
+  //     dispatch(GetFileandfoldersCalculation(formData));
+  //   }
+  // }, [formData, dispatch]);
+
   useEffect(() => {
+    const fetchCalculation = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await Fileandfolderscalculation(formData);
+        console.log(response, "reess");
+        setResult(response.data);
+      } catch (err) {
+        setError(err.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (
       formData.size &&
       formData.quantity &&
-      formData.glossLamination &&
-      formData.innerSidePrinting &&
       formData.paperType &&
       formData.productType
     ) {
-      dispatch(GetFileandfoldersCalculation(formData));
+      console.log("Triggering API call"); // Debug log
+      fetchCalculation();
     }
-  }, [formData, dispatch]);
+  }, [formData]);
 
-  console.log(formData, "formData");
+  console.log(formData, "result");
 
   // Static array of image objects
   const imageData = [
@@ -165,6 +198,29 @@ const Filesandfolders = () => {
     // Log the selected dropdown values to the console
   };
 
+  const handleRadioChange = (value) => {
+    setFormData((prevState) => ({
+      ...prevState, // Preserve existing fields in formData
+      glossLamination: value === "glossLamination",
+      mattLamination: value === "mattLamination",
+      mattSpotUV: value === "mattSpotUV",
+    }));
+  };
+
+  const handleCheckboxToggle = () => {
+    setFormData((prev) => ({
+      ...prev,
+      innerSidePrinting: !prev.innerSidePrinting,
+    }));
+  };
+
+  const selectedValue = Object.keys(formData).find(
+    (key) =>
+      (key === "glossLamination" ||
+        key === "mattLamination" ||
+        key === "mattSpotUV") &&
+      formData[key] === true
+  );
   return (
     <>
       <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
@@ -230,9 +286,10 @@ const Filesandfolders = () => {
                 </SelectContent>
               </Select>
             </div>
+
             <div className="mb-4">
               <label htmlFor="paperType" className="block mb-2 font-semibold">
-                paper Type
+                Paper Type
               </label>
               <Select
                 onValueChange={(value) =>
@@ -244,28 +301,17 @@ const Filesandfolders = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="320gsm">320gsm</SelectItem>
-                    <SelectItem value="PP 0.3mm Plastic">
-                      PP 0.3mm Plastic
-                    </SelectItem>
-                    <SelectItem value="250gsm">250gsm</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="size" className="block mb-2 font-semibold">
-                Size
-              </label>
-              <Select
-                onValueChange={(value) => handleSelectChange("size", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a size " />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="9x12 Inches">9x12 Inches</SelectItem>
+                    {formData.productType === "Premium Board Files" && (
+                      <SelectItem value="320gsm">320gsm</SelectItem>
+                    )}
+                    {formData.productType === "Plastic Files" && (
+                      <SelectItem value="PP 0.3mm Plastic">
+                        PP 0.3mm Plastic
+                      </SelectItem>
+                    )}
+                    {formData.productType === "Paper Files" && (
+                      <SelectItem value="250gsm">250gsm</SelectItem>
+                    )}{" "}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -275,46 +321,53 @@ const Filesandfolders = () => {
               <label htmlFor="Lamination" className="block mb-2 font-semibold">
                 Lamination
               </label>
-              <Select
-                onValueChange={(value) => handleExtraOptionsChange(value)} // Pass the selected value directly
+              <RadioGroup
+                value={selectedValue}
+                onValueChange={handleRadioChange}
+                defaultValue="none"
               >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Lamination Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="glossLamination">
-                      GlossLamination
-                    </SelectItem>
-                    <SelectItem value="mattLamination">
-                      Matt Lamination
-                    </SelectItem>
-                    <SelectItem value="mattSpotUV">matt + SpotUV</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="glossLamination"
+                    id="glossLamination"
+                  />
+                  <Label htmlFor="glossLamination">Gloss Lamination</Label>
+                </div>
+               {formData.productType==="Premium Board Files" && <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="mattLamination" id="mattLamination" />
+                  <Label htmlFor="mattLamination">MATT Lamination</Label>
+                </div>}
+               {formData.productType==="Premium Board Files" &&  <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="mattSpotUV" id="mattSpotUV" />
+                  <Label htmlFor="mattSpotUV">Matt + Spot UV Lamination</Label>
+                </div>}
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="none" id="none" />
+                  <Label htmlFor="none">None</Label>
+                </div>
+              </RadioGroup>
             </div>
+
             <div className="mb-4">
               <label
                 htmlFor="innerSidePrinting"
                 className="block mb-2 font-semibold"
               >
-                InnerSidePrinting
+                Inner Side
               </label>
-              <Select
-                onValueChange={(value) => handleExtraOptionsChange(value)} // Pass the selected value directly
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select innerSidePrinting" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="innerSidePrinting">
-                      innerSidePrinting
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="innerSidePrinting"
+                  checked={formData.innerSidePrinting}
+                  onCheckedChange={handleCheckboxToggle}
+                />
+                <label
+                  htmlFor="innerSidePrinting"
+                  className="text-sm font-medium"
+                >
+                 {formData.productType? "Inner Side Multicolour":"Inner Side Grey Print"}
+                </label>
+              </div>
             </div>
 
             <div className="mb-4">
@@ -343,14 +396,17 @@ const Filesandfolders = () => {
               <div>
                 <Button
                   className="bg-white  "
-                  isLoading={loading}
-                  disabled={Fileandfoldersresult == null}
+                  disabled={result == null}
                 >
-                  <strong className="text-Apptheme text-lg">
-                    ₹{Fileandfoldersresult?.totalPrice || 0}
-                  </strong>{" "}
-                  inclusive of all taxes
+                  {loading ? (
+                    <span className="loader4"></span>
+                  ) : (
+                    <strong className="text-Apptheme text-lg">
+                    ₹{result?.totalPrice || 0}
+                  </strong>
+                  )}
                 </Button>
+                <p className="inline-block ml-3"> inclusive of all taxes</p>
               </div>
 
               <Button
