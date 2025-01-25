@@ -11,6 +11,7 @@ import PaperBags from "@/components/Paper-printing/PaperBags/PaperBags";
 import Filesandfolders from "@/components/Paper-printing/Filesandfolders/Filesandfolders";
 import InvitationCards from "@/components/Paper-printing/InvitationCards/InvitationCards";
 import Weddingcard from "@/components/Paper-printing/Weddingcard/Weddingcard";
+import Sticker from "@/components/Paper-printing/Sticker/Sticker";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -57,6 +58,8 @@ const Page = () => {
         return <InvitationCards />;
       case "wedding-card":
         return <Weddingcard />;
+      case "sticker-and-label":
+        return <Sticker/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
