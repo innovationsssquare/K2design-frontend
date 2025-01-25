@@ -3,9 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Galleria } from "primereact/galleria"; // Assuming you're using PrimeReact Galleria
 import StandBoard from "../../../public/images/StandBoard.jpeg";
 import "primereact/resources/primereact.min.css";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 
 import BrochureDesign1 from "../../../public/images/BrochureDesign1.png";
 import BrochureDesign2 from "../../../public/images/BrochureDesign2.png";
@@ -34,80 +31,40 @@ import {
   useSelect,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetFileandfoldersCalculation } from "@/lib/ReduxSlice/Paper-printing/FileandfoldersSlice";
-import { Fileandfolderscalculation } from "@/lib/API/Filesandfolder";
+import { GetWallCalendarCalculation } from "@/lib/ReduxSlice/Paper-printing/WallCalendarSlice";
+import { GetInvitationCardsCalculation } from "@/lib/ReduxSlice/Paper-printing/InvitationCardsSlice";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Getweddingcardcalculation } from "@/lib/ReduxSlice/Paper-printing/WeddingSlice";
 
-const Filesandfolders = () => {
+const Weddingcard = () => {
   const [formData, setFormData] = useState({
-    productType: "",
     paperType: "",
-    size: "9x12 Inches",
-    quantity: 0,
-    glossLamination: false,
-    mattLamination: false,
-    mattSpotUV: false,
-    innerSidePrinting: false,
+    size: "",
+    includeLamination: false,
+    includeEnvelope: false,
+    qty: 0,
   });
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const dispatch = useDispatch();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // const { Fileandfoldersresult, loading, error } = useSelector(
-  //   (state) => state.Fileandfolders
-  // );
+  const { weddingcardresult, loading, error } = useSelector(
+    (state) => state.weddingcard
+  );
 
-  // console.log("Fileandfoldersresult", Fileandfoldersresult);
-  console.log("loading", loading);
-  console.log("error", error);
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // useEffect(() => {
-  //   if (
-  //     formData.size &&
-  //     formData.quantity &&
-  //     formData.glossLamination &&
-  //     formData.innerSidePrinting &&
-  //     formData.paperType &&
-  //     formData.productType
-  //   ) {
-  //     dispatch(GetFileandfoldersCalculation(formData));
-  //   }
-  // }, [formData, dispatch]);
-
   useEffect(() => {
-    const fetchCalculation = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await Fileandfolderscalculation(formData);
-        console.log(response, "reess");
-        setResult(response.data);
-      } catch (err) {
-        setError(err.message || "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (
-      formData.size &&
-      formData.quantity &&
-      formData.paperType &&
-      formData.productType
-    ) {
-      console.log("Triggering API call"); // Debug log
-      fetchCalculation();
+    if (formData.size && formData.qty && formData.paperType) {
+      dispatch(Getweddingcardcalculation(formData));
     }
-  }, [formData]);
+  }, [formData, dispatch]);
 
-  console.log(formData, "result");
+  console.log(formData, "formData");
 
   // Static array of image objects
   const imageData = [
@@ -130,17 +87,13 @@ const Filesandfolders = () => {
     },
   ];
 
-  const handleExtraOptionsChange = (selectedOption) => {
-    setFormData((prev) => ({
-      ...prev,
-      glossLamination: selectedOption === "glossLamination",
-      mattLamination: selectedOption === "mattLamination",
-      mattSpotUV: selectedOption === "mattSpotUV",
-      innerSidePrinting: selectedOption === "innerSidePrinting",
-    }));
-  };
-
+  // State to hold images
   const [images, setImages] = useState(null);
+  const [material, setMaterial] = useState("");
+  const [lamination, setLamination] = useState("");
+  const [orientation, setOrientation] = useState("");
+  const [printingLocation, setPrintingLocation] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   // Fetch image data (simulated with useEffect)
   useEffect(() => {
@@ -183,6 +136,14 @@ const Filesandfolders = () => {
     );
   };
 
+  const handleExtraOptionsChange = (selectedOption) => {
+    setFormData((prev) => ({
+      ...prev,
+      twoSided: selectedOption === "twoSided", // Set true if selected
+      oneSided: selectedOption === "oneSided", // Set true if selected
+    }));
+  };
+
   const thumbnailTemplate = (item) => {
     return (
       <Image
@@ -196,31 +157,26 @@ const Filesandfolders = () => {
 
   const handleProceed = () => {
     // Log the selected dropdown values to the console
-  };
-
-  const handleRadioChange = (value) => {
-    setFormData((prevState) => ({
-      ...prevState, // Preserve existing fields in formData
-      glossLamination: value === "glossLamination",
-      mattLamination: value === "mattLamination",
-      mattSpotUV: value === "mattSpotUV",
-    }));
+    console.log("Material:", material);
+    console.log("Lamination:", lamination);
+    console.log("Orientation:", orientation);
+    console.log("Printing Location:", printingLocation);
+    console.log("Quantity:", quantity);
   };
 
   const handleCheckboxToggle = () => {
     setFormData((prev) => ({
       ...prev,
-      innerSidePrinting: !prev.innerSidePrinting,
+      includeLamination: !prev.includeLamination,
+    }));
+  };
+  const handleCheckboxToggleforenvelope = () => {
+    setFormData((prev) => ({
+      ...prev,
+      includeEnvelope: !prev.includeEnvelope,
     }));
   };
 
-  const selectedValue = Object.keys(formData).find(
-    (key) =>
-      (key === "glossLamination" ||
-        key === "mattLamination" ||
-        key === "mattSpotUV") &&
-      formData[key] === true
-  );
   return (
     <>
       <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
@@ -244,48 +200,17 @@ const Filesandfolders = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold ">FILES & FOLDER</h1>
-            <p className="mb-4 mt-1 font-semibold">
-              <span>
-                {" "}
-                {`Paper Files | Premium Board Files | Plastic (PP) Files`}
-              </span>
-            </p>
+            <h1 className="text-2xl font-bold mb-4">Wedding Card</h1>
             <p className="mb-4">
-              {`Keep your documents safe and organized with our wide range of Files & Folders – from classic Paper Files to durable Premium Board Files and sleek Plastic (PP) Files, designed to meet all your storage needs.  
-`}
+              {`Premium wedding card with customizable options, including lamination and envelope.`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
             <ul className="list-disc list-inside mb-4">
-              <li>{`Paper 250gsm art`}</li>
-              <li>{`Premium Board 320gsm`}</li>
-              <li>{`PP 0.3 mm (PP Plastic)`}</li>
+              <li>{`250gms Art Paper `}</li>
+              <li>{`210gms Art Paper`}</li>
+              <li>{`2 Sides`}</li>
             </ul>
-
-            <div className="mb-4">
-              <label htmlFor="productType" className="block mb-2 font-semibold">
-                Product Type
-              </label>
-              <Select
-                onValueChange={(value) =>
-                  handleSelectChange("productType", value)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a Product Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Paper Files">Paper Files</SelectItem>
-                    <SelectItem value="Premium Board Files">
-                      Premium Board Files
-                    </SelectItem>
-                    <SelectItem value="Plastic Files">Plastic Files</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
 
             <div className="mb-4">
               <label htmlFor="paperType" className="block mb-2 font-semibold">
@@ -297,113 +222,139 @@ const Filesandfolders = () => {
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a Paper Type" />
+                  <SelectValue placeholder="Select  Paper Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {formData.productType === "Premium Board Files" && (
-                      <SelectItem value="320gsm">320gsm</SelectItem>
-                    )}
-                    {formData.productType === "Plastic Files" && (
-                      <SelectItem value="PP 0.3mm Plastic">
-                        PP 0.3mm Plastic
-                      </SelectItem>
-                    )}
-                    {formData.productType === "Paper Files" && (
-                      <SelectItem value="250gsm">250gsm</SelectItem>
-                    )}{" "}
+                    <SelectItem value="210 gsm art">
+                      210gms Art Paper
+                    </SelectItem>
+                  </SelectGroup>
+                  <SelectGroup>
+                    <SelectItem value="250 gsm art">
+                      250gms Art Paper
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="mb-4">
-              <label htmlFor="Lamination" className="block mb-2 font-semibold">
-                Lamination
+              <label htmlFor="size" className="block mb-2 font-semibold">
+                Size
               </label>
-              <RadioGroup
-                value={selectedValue}
-                onValueChange={handleRadioChange}
-                defaultValue="none"
+              <Select
+                onValueChange={(value) => handleSelectChange("size", value)}
               >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem
-                    value="glossLamination"
-                    id="glossLamination"
-                  />
-                  <Label htmlFor="glossLamination">Gloss Lamination</Label>
-                </div>
-               {formData.productType==="Premium Board Files" && <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="mattLamination" id="mattLamination" />
-                  <Label htmlFor="mattLamination">MATT Lamination</Label>
-                </div>}
-               {formData.productType==="Premium Board Files" &&  <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="mattSpotUV" id="mattSpotUV" />
-                  <Label htmlFor="mattSpotUV">Matt + Spot UV Lamination</Label>
-                </div>}
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="none" id="none" />
-                  <Label htmlFor="none">None</Label>
-                </div>
-              </RadioGroup>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a size" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {formData.paperType === "210 gsm art" && (
+                      <SelectItem value="10 x 15">10x15</SelectItem>
+                    )}
+                    {formData.paperType === "250 gsm art" && (
+                      <>
+                        <SelectItem value="11.5 x 18">11.5x18</SelectItem>
+                        <SelectItem value="12.5 x 18">12.5x18</SelectItem>
+                        <SelectItem value="15 x 20">15x20</SelectItem>
+                      </>
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
 
+            {/* Dropdown for Lamination */}
+
             <div className="mb-4">
-              <label
-                htmlFor="innerSidePrinting"
-                className="block mb-2 font-semibold"
-              >
-                Inner Side
-              </label>
+              <label className="block mb-2 font-semibold">Lamination</label>
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="innerSidePrinting"
-                  checked={formData.innerSidePrinting}
+                  id="Lamination"
+                  checked={formData.includeLamination}
                   onCheckedChange={handleCheckboxToggle}
                 />
-                <label
-                  htmlFor="innerSidePrinting"
-                  className="text-sm font-medium"
-                >
-                 {formData.productType? "Inner Side Multicolour":"Inner Side Grey Print"}
+                <label htmlFor="Lamination" className="text-sm font-medium">
+                  Add Lamination
                 </label>
               </div>
             </div>
 
+           
+
+            {/* Dropdown for Quantity */}
             <div className="mb-4">
               <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
               </label>
               <Select
-                onValueChange={(value) => handleSelectChange("quantity", value)}
+                onValueChange={(value) => handleSelectChange("qty", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Quantity" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={1000}>1000</SelectItem>
-                    <SelectItem value={2000}>2000</SelectItem>
-                    <SelectItem value={3000}>3000</SelectItem>
-                    <SelectItem value={4000}>4000</SelectItem>
-                    <SelectItem value={5000}>5000</SelectItem>
+                    {formData.size === "10 x 15" && (
+                      <>
+                        <SelectItem value={500}>500</SelectItem>
+                        <SelectItem value={700}>700</SelectItem>
+                        <SelectItem value={1000}>1000</SelectItem>
+                      </>
+                    )}
+                    {formData.size === "15 x 20" && (
+                      <>
+                       
+                        <SelectItem value={1000}>1000</SelectItem>
+                        <SelectItem value={2000}>2000</SelectItem>
+                      </>
+                    )}
+                    {(formData.size === "11.5 x 18" || formData.size==="12.5 x 18" ) && (
+                      <>
+                        <SelectItem value={500}>500</SelectItem>
+                        <SelectItem value={700}>700</SelectItem>
+                        <SelectItem value={1000}>1000</SelectItem>
+                        <SelectItem value={2000}>2000</SelectItem>
+                      </>
+                    )}
+
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
+           {formData.qty>=1000 && <div className="mb-4">
+              <label className="block mb-2 font-semibold">Envelope</label>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="includeEnvelope"
+                  checked={formData.includeEnvelope}
+                  onCheckedChange={handleCheckboxToggleforenvelope}
+                />
+                <label
+                  htmlFor="includeEnvelope"
+                  className="text-sm font-medium"
+                >
+                  Add envelope
+                </label>
+              </div>
+            </div>}
+
+
             <div className="flex justify-between items-center mb-4">
               <div>
                 <Button
                   className="bg-white  "
-                  disabled={result == null}
+                  disabled={weddingcardresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg">
-                    ₹{result?.totalPrice || 0}
-                  </strong>
+                    ₹{(parseFloat(weddingcardresult?.totalPrice) || 0).toFixed(2)}
+                    </strong>
                   )}
                 </Button>
                 <p className="inline-block ml-3"> inclusive of all taxes</p>
@@ -452,4 +403,4 @@ const Filesandfolders = () => {
   );
 };
 
-export default Filesandfolders;
+export default Weddingcard;
