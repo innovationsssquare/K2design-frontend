@@ -10,10 +10,17 @@ import Tags from "@/components/Paper-printing/Tags/Tags";
 import PaperBags from "@/components/Paper-printing/PaperBags/PaperBags";
 import Filesandfolders from "@/components/Paper-printing/Filesandfolders/Filesandfolders";
 import InvitationCards from "@/components/Paper-printing/InvitationCards/InvitationCards";
+import Weddingcard from "@/components/Paper-printing/Weddingcard/Weddingcard";
 
-const Brochure = lazy(() => import("@/components/Paper-printing/Brochure/Brochure"));
-const Booklet = lazy(() => import("@/components/Paper-printing/Booklet/Booklet"));
-const DigitalPoster = lazy(() => import("@/components/Paper-printing/DigitalPoster/DigitalPoster"));
+const Brochure = lazy(() =>
+  import("@/components/Paper-printing/Brochure/Brochure")
+);
+const Booklet = lazy(() =>
+  import("@/components/Paper-printing/Booklet/Booklet")
+);
+const DigitalPoster = lazy(() =>
+  import("@/components/Paper-printing/DigitalPoster/DigitalPoster")
+);
 const Stamp = lazy(() => import("@/components/Paper-printing/Stamp/Stamp"));
 
 const Page = () => {
@@ -29,25 +36,27 @@ const Page = () => {
       case "digital-print-product":
         return <DigitalPoster />;
       case "stamp":
-        return <Stamp/>;
+        return <Stamp />;
       case "bill-books":
-        return <Billbooks/>;
+        return <Billbooks />;
       case "pavati-book":
-        return <Pavtibooks/>;
+        return <Pavtibooks />;
       case "calendar":
-        return <WallCalendar/>;
+        return <WallCalendar />;
       case "envelopes":
-        return <Envelopes/>;
+        return <Envelopes />;
       case "visiting-cards":
-        return <VisitingCards/>;
+        return <VisitingCards />;
       case "tags":
-        return <Tags/>;
+        return <Tags />;
       case "paper-bags":
-        return <PaperBags/>;
+        return <PaperBags />;
       case "files-and-folders":
-        return <Filesandfolders/>;
+        return <Filesandfolders />;
       case "invitation-card":
-        return <InvitationCards/>;
+        return <InvitationCards />;
+      case "wedding-card":
+        return <Weddingcard />;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
@@ -55,9 +64,7 @@ const Page = () => {
 
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        {renderComponent()}
-      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>{renderComponent()}</Suspense>
     </div>
   );
 };
