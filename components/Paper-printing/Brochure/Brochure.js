@@ -41,7 +41,7 @@ const Brochure = () => {
   const [formData, setFormData] = useState({
     size: "",
     paperType: "",
-    qty: 500,
+    qty: 0,
     laminationRequired: false,
   });
 
