@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+
 import Image from "next/image";
 import {
   Modal,
@@ -31,44 +32,43 @@ import {
   useSelect,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
+import { GetWallCalendarCalculation } from "@/lib/ReduxSlice/Paper-printing/WallCalendarSlice";
+import { GetPamphletCalculation } from "@/lib/ReduxSlice/Paper-printing/PamphletsSlice";
 
-import { Paperbagscalculation } from "@/lib/API/Paperbags";
-import { GetPaperbagsCalculation } from "@/lib/ReduxSlice/Paper-printing/PaperbagsSlice";
-
-
-const PaperBags = () => {
-    const [formData, setFormData] = useState({
-        size: "",
-        qty: 0,
-        extraOptions: {
-          spotandmattLamination: false,
-          mattLamination: false,
-          silverandgoldFoil: false,
-        },
-      });
+const Pamphlets = () => {
+  const [formData, setFormData] = useState({
+    size: " ",
+    paperType: " ",
+    printingType: " ",
+    qty:0,
+    twoSided: false,
+    oneSided: false,
+   
+  });
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const dispatch = useDispatch();
 
-  const { Paperbagsresult, loading, error } = useSelector(
-    (state) => state.Paperbags
+  const { pamphletsresult, loading, error } = useSelector(
+    (state) => state.pamphlets
   );
 
-  console.log("Paperbagsresult", Paperbagsresult);
+  console.log("pamphletsresult", pamphletsresult);
+
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
   useEffect(() => {
-    if (formData?.size && formData?.qty       ) {
-      dispatch(GetPaperbagsCalculation(formData));
+    if (formData.size && formData.paperType && formData.qty && formData.printingType) {
+      dispatch(GetPamphletCalculation(formData));
     }
   }, [formData, dispatch]);
 
   console.log(formData, "formData");
-
+  console.log(formData.laminationRequired, "laminationRequiredformData");
 
   // Static array of image objects
   const imageData = [
@@ -95,17 +95,19 @@ const PaperBags = () => {
   const handleExtraOptionsChange = (selectedOption) => {
     setFormData((prev) => ({
       ...prev,
-      extraOptions: {
-        spotandmattLamination: selectedOption === "spotandmattLamination",
-        mattLamination: selectedOption === "mattLamination",
-        silverandgoldFoil: selectedOption === "silverandgoldFoil",
-      },
+      twoSided: selectedOption === "twoSided", // Set true if selected
+      oneSided: selectedOption === "oneSided", // Set true if selected
     }));
   };
-  
-  
 
+
+  // State to hold images
   const [images, setImages] = useState(null);
+  const [material, setMaterial] = useState("");
+  const [lamination, setLamination] = useState("");
+  const [orientation, setOrientation] = useState("");
+  const [printingLocation, setPrintingLocation] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   // Fetch image data (simulated with useEffect)
   useEffect(() => {
@@ -161,6 +163,11 @@ const PaperBags = () => {
 
   const handleProceed = () => {
     // Log the selected dropdown values to the console
+    console.log("Material:", material);
+    console.log("Lamination:", lamination);
+    console.log("Orientation:", orientation);
+    console.log("Printing Location:", printingLocation);
+    console.log("Quantity:", quantity);
   };
 
   return (
@@ -186,21 +193,25 @@ const PaperBags = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Paper Bags</h1>
+            <h1 className="text-2xl font-bold mb-4">Pamphlets, Flyers, and Leaflets</h1>
             <p className="mb-4">
-              {`Choose eco-friendly style with our versatile and durable Paper Bags – perfect for carrying your essentials while caring for the environment.
+              {`Spread the word with our high-quality Pamphlets, Flyers, and Leaflets – the ideal tools to promote your business, events, or special offers with impact and style.
 `}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
             <ul className="list-disc list-inside mb-4">
-              <li>{`Art Card 250gsm with gloss lamination `}</li>
-              <li>{`Multi Colour`}</li>
+              <li>{`130 gsm Gloss Finish `}</li>
+              <li>{`70gsm Maplitho`}</li>
+       
             </ul>
+  
+
+       
 
             <div className="mb-4">
-              <label htmlFor="material" className="block mb-2 font-semibold">
-                Size
+              <label htmlFor="size" className="block mb-2 font-semibold">
+              Size
               </label>
               <Select
                 onValueChange={(value) => handleSelectChange("size", value)}
@@ -210,94 +221,124 @@ const PaperBags = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="8.25x13.75x2.5">
-                    8.25x13.75x2.5
+                    <SelectItem value="A4 / 1/4">
+                    A4 / 1/4
                     </SelectItem>
-                    <SelectItem value="7.75x13.5x3">
-                    7.75x13.5x3
+                    <SelectItem value="A4 / 1/18">
+                    A4 / 1/18
                     </SelectItem>
-                    <SelectItem value="8.25x5.5x2.5">
-                    8.25x5.5x2.5
+                    <SelectItem value="A3 / 12x18">
+                    A3 / 12x18
                     </SelectItem>
-                    <SelectItem value="7.75x5x3">
-                    7.75x5x3
+                    <SelectItem value="A3 / 18x23">
+                    A3 / 18x23
                     </SelectItem>
-                    <SelectItem value="11.25x16.25x3">
-                    11.25x16.25x3
+                    <SelectItem value="10 x 15">
+                    10 x 15
                     </SelectItem>
-                    <SelectItem value="10.25x15.75x4">
-                    10.25x15.75x4
+                    <SelectItem value="15 x 20">
+                    15 x 20
                     </SelectItem>
-                    <SelectItem value="9.25x14.75x5">
-                    9.25x14.75x5
+                    <SelectItem value="20 x 30">
+                    20 x 30
                     </SelectItem>
-                    <SelectItem value="8.25x13.75x6">
-                    8.25x13.75x6
+                    <SelectItem value="A5 / 1/8">
+                    A5 / 1/8
                     </SelectItem>
-                    <SelectItem value="11.75x7.25x2.5">
-                    11.75x7.25x2.5
+                    <SelectItem value="A4 / 1/4">
+                    A4 / 1/4
                     </SelectItem>
-                    <SelectItem value="11.25x6.5x3">
-                    11.25x6.5x3
+                    <SelectItem value="A3 / 12x18">
+                    A3 / 12x18
                     </SelectItem>
-                    <SelectItem value="10.25x6x4">
-                    10.25x6x4
+                    <SelectItem value="A2 / 18x23">
+                    A2 / 18x23
                     </SelectItem>
-                    <SelectItem value="9.25x5x5">
-                    9.25x5x5
-                    </SelectItem>
-                    <SelectItem value="13x7.75x3">
-                    13x7.75x3
-                    </SelectItem>
-                    <SelectItem value="13.5x8.25x2.25">
-                    13.5x8.25x2.25
-                    </SelectItem>
-                    <SelectItem value="12x7.25x4">
-                    12x7.25x4
-                    </SelectItem>
-                    <SelectItem value="11x6.25x5">
-                    11x6.25x5
-                    </SelectItem>
-                    <SelectItem value="16x11x3">
-                    16x11x3
-                    </SelectItem>
-                    <SelectItem value="15x10.5x4">
-                    15x10.5x4
-                    </SelectItem>
-                    <SelectItem value="14x9.5x5">
-                    14x9.5x5
-                    </SelectItem>
-                    <SelectItem value="13x8.5x6">
-                    13x8.5x6
+                    <SelectItem value="15 x 20">
+                    15 x 20
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
+            {/* Dropdown for Lamination */}
             <div className="mb-4">
-  <label htmlFor="Lamination" className="block mb-2 font-semibold">
-    Lamination
-  </label>
-  <Select
-    onValueChange={(value) => handleExtraOptionsChange(value)} // Pass the selected value directly
-  >
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select Lamination Type" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectGroup>
-        <SelectItem value="spotandmattLamination">Spot and Matt Lamination</SelectItem>
-        <SelectItem value="mattLamination">Matt Lamination</SelectItem>
-        <SelectItem value="silverandgoldFoil">Silver and Gold Foil</SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
-</div>
+              <label htmlFor="lamination" className="block mb-2 font-semibold">
+                Paper Type
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("paperType", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select  Paper Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="130 gsm">130 gsm Gloss Finish</SelectItem>
+                    <SelectItem value="70 gsm">70 gsm Maplitho Paper</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
 
+            <div className="mb-4">
+              <label htmlFor="printingType" className="block mb-2 font-semibold">
+              Printing Type
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("printingType", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select  Printing Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="Multicolor">Multicolor</SelectItem>
+                    <SelectItem value="Onecolour">Onecolour</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
-      
+            {/* Dropdown for Orientation */}
+                  <div className="mb-4">
+          <label htmlFor="Lamination" className="block mb-2 font-semibold">
+            Printing Side
+          </label>
+          <Select
+            onValueChange={(value) => handleExtraOptionsChange(value)} // Pass the selected value directly
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue
+                placeholder="Select Printing Side"
+                value={
+                  formData.twoSided
+                    ? "twoSided"
+                    : formData.oneSided
+                    ? "oneSided"
+                    : undefined
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="twoSided">Two Side</SelectItem>
+                <SelectItem value="oneSided">One Side</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+            {/* Dropdown for Printing Location */}
+       
+
+            {/* Dropdown for Quantity */}
             <div className="mb-4">
               <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
@@ -310,14 +351,14 @@ const PaperBags = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={100}>100</SelectItem>
-                    <SelectItem value={250}>250</SelectItem>
+            
                     <SelectItem value={500}>500</SelectItem>
                     <SelectItem value={1000}>1000</SelectItem>
+                 
                     <SelectItem value={2000}>2000</SelectItem>
-                    <SelectItem value={3000}>3000</SelectItem>
                     <SelectItem value={4000}>4000</SelectItem>
-                    <SelectItem value={5000}>5000</SelectItem>
+                    <SelectItem value={8000}>8000</SelectItem>
+              
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -325,16 +366,13 @@ const PaperBags = () => {
 
             <div className="flex justify-between items-center mb-4">
               <div>
-                <Button
-                  className="bg-white  "
-                  isLoading={loading}
-                  disabled={Paperbagsresult == null}
-                >
-                  <strong className="text-Apptheme text-lg">
-                    ₹{Paperbagsresult?.totalPrice || 0}
-                  </strong>{" "}
-                  inclusive of all taxes
+           
+              
+                <Button className="bg-white  " isLoading={loading} disabled={pamphletsresult==null}>
+                  <strong className="text-Apptheme text-lg">₹{pamphletsresult?.totalPrice || 0 }</strong> inclusive
+                  of all taxes
                 </Button>
+              
               </div>
 
               <Button
@@ -380,4 +418,4 @@ const PaperBags = () => {
   );
 };
 
-export default PaperBags;
+export default Pamphlets;

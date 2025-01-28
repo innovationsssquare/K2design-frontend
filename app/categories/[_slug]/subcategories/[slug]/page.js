@@ -13,6 +13,7 @@ import InvitationCards from "@/components/Paper-printing/InvitationCards/Invitat
 import Weddingcard from "@/components/Paper-printing/Weddingcard/Weddingcard";
 import Sticker from "@/components/Paper-printing/Sticker/Sticker";
 import Letterheads from "@/components/Paper-printing/Letterheads/Letterheads";
+import Pamphlets from "@/components/Paper-printing/Pamphlets/Pamphlets";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -56,7 +57,10 @@ const Page = () => {
       case "files-and-folders":
         return <Filesandfolders />;
       case "invitation-card":
-        return <InvitationCards />;
+        return <InvitationCards/>;
+      case "pamphlet":
+        return <Pamphlets/>;
+        
       case "wedding-card":
         return <Weddingcard />;
       case "sticker-and-label":

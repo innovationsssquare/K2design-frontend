@@ -55,7 +55,7 @@ export default function Page() {
     filteredCategory?.products?.map((item) => ({
       title: item.name,
       // subtitle: item.description ? `Description: ${item.description}` : "No description",
-      img: item.image || StandardVisitingCard.src,
+      img: item.images[0] ,
       link: `/categories/${params._slug}/subcategories/${item.slug}`,
     })) || [];
   console.log(" cards", cardsData);

@@ -313,50 +313,6 @@ const Pavtibooks = () => {
               </Select>
             </div>
 
-            {/* Pages Dropdown */}
-            <div className="mb-4">
-              <label htmlFor="pages" className="block mb-2 font-semibold">
-                Pages
-              </label>
-              <Select
-                onValueChange={(value) => handleSelectChange("pages", value)}
-                disabled={!selectedType} // Disable if no type is selected
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Pages" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {pages.map((page, index) => (
-                      <SelectItem key={index} value={page}>
-                        {page}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="printing-location"
-                className="block mb-2 font-semibold"
-              >
-                Printing Orientation
-              </label>
-              <Select onValueChange={(value) => setPrintingLocation(value)}  disabled={!selectedType}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Printing Orientation" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Horizontal">Horizontal</SelectItem>
-                    <SelectItem value="Vertical">Vertical</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
             <div className="mb-4">
               <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
@@ -375,6 +331,57 @@ const Pavtibooks = () => {
                         {qty}
                       </SelectItem>
                     ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Pages Dropdown */}
+            <div className="mb-4">
+              <label htmlFor="pages" className="block mb-2 font-semibold">
+                Pages
+              </label>
+              <Select
+                onValueChange={(value) => handleSelectChange("pages", value)}
+                disabled={!selectedType} // Disable if no type is selected
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Pages" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {formData.qty <= 10 && (
+                      <SelectItem value={50}>50</SelectItem>
+                    )}
+
+                    {formData.qty >= 10 && (
+                      <SelectItem value={100}>100</SelectItem>
+                    )}
+
+                    
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="printing-location"
+                className="block mb-2 font-semibold"
+              >
+                Printing Orientation
+              </label>
+              <Select
+                onValueChange={(value) => setPrintingLocation(value)}
+                disabled={!selectedType}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Printing Orientation" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="Horizontal">Horizontal</SelectItem>
+                    <SelectItem value="Vertical">Vertical</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
