@@ -225,7 +225,7 @@ const PaperBags = () => {
                     <SelectItem value="11.25x16.25x3">
                     11.25x16.25x3
                     </SelectItem>
-                    <SelectItem value="11.25x16.25x3">
+                    <SelectItem value="10.25x15.75x4">
                     10.25x15.75x4
                     </SelectItem>
                     <SelectItem value="9.25x14.75x5">
