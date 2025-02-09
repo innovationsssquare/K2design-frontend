@@ -14,6 +14,12 @@ import Weddingcard from "@/components/Paper-printing/Weddingcard/Weddingcard";
 import Sticker from "@/components/Paper-printing/Sticker/Sticker";
 import Letterheads from "@/components/Paper-printing/Letterheads/Letterheads";
 import Pamphlets from "@/components/Paper-printing/Pamphlets/Pamphlets";
+import Vinylprint from "@/components/Media-printing/Vinylprint";
+import Backlitprint from "@/components/Media-printing/Backlitprint";
+import Canvasprint from "@/components/Media-printing/Canvasprint";
+import Nightglowprint from "@/components/Media-printing/Nightglowprint";
+import Translitprint from "@/components/Media-printing/Translitprint";
+import Threereflector from "@/components/Media-printing/Threereflector";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -57,16 +63,28 @@ const Page = () => {
       case "files-and-folders":
         return <Filesandfolders />;
       case "invitation-card":
-        return <InvitationCards/>;
+        return <InvitationCards />;
       case "pamphlet":
-        return <Pamphlets/>;
-        
+        return <Pamphlets />;
+
       case "wedding-card":
         return <Weddingcard />;
       case "sticker-and-label":
-        return <Sticker/>;
+        return <Sticker />;
       case "letterheads":
-        return <Letterheads/>;
+        return <Letterheads />;
+      case "vinyl-print":
+        return <Vinylprint />;
+      case "backlit-flex-print":
+        return <Backlitprint />;
+      case "canvas-print":
+        return <Canvasprint />;
+      case "night-glow-print-(green)":
+        return <Nightglowprint/>;
+      case "translit-print-(for-cliapon)":
+        return <Translitprint/>;
+      case "3m-reflector":
+        return <Threereflector/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
