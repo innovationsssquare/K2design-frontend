@@ -31,6 +31,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
 import { Input } from "@/components/ui/input";
+import { GetVinylprintcalculation } from "@/lib/ReduxSlice/Media-printing/VinylprintSlice";
 
 const Vinylprint = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,8 @@ const Vinylprint = () => {
     height: "",
     rigidSurface: "",
     width: "",
-    qty: 0,
+    qty: 1,
+    applyDiscount: false,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -51,27 +53,53 @@ const Vinylprint = () => {
 
   const dispatch = useDispatch();
 
-  const { Billbooksresult, loading, error } = useSelector(
-    (state) => state.Billbooks
+  const { Vinylprintresult, loading, error } = useSelector(
+    (state) => state.Vinylprint
   );
+
+  console.log("Vinylprintresult", Vinylprintresult);
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  console.log(formData, "formData");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+  
+      // Calculate square footage
+      const height = parseFloat(updatedFormData.height) || 0;
+      const width = parseFloat(updatedFormData.width) || 0;
+      const squareFootage = height * width;
+  
+      // Validation check
+      if (squareFootage > 0 && squareFootage < 3) {
+        setErrorMessage("Square footage must be greater than 3 sq.ft.");
+      } else {
+        setErrorMessage(""); // Clear error if valid
+      }
+  
+      return updatedFormData;
+    });
+  };
+  
+
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetBillbookscalculation(formData));
+      dispatch(GetVinylprintcalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Billbooksresult?.message === "Configuration not found") {
+    if (Vinylprintresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Billbooksresult]);
+  }, [Vinylprintresult]);
 
   // Static array of image objects
   const imageData = [
@@ -255,62 +283,95 @@ const Vinylprint = () => {
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
               </label>
-              <Input placeholder="Enter height"></Input>
+              <Input
+              name="height"
+              placeholder="Enter height"
+              value={formData.height}
+              onChange={handleInputChange}
+            />
             </div>
             <div className="mb-4">
               <label htmlFor="width" className="block mb-2 font-semibold">
                 Width
               </label>
-              <Input placeholder="Enter Width"></Input>
-            </div>
-
-            {/* Dropdown for Quantity */}
-            <div className="mb-4">
-              <label htmlFor="qty" className="block mb-2 font-semibold">
-                Quantity
-              </label>
-              <Select
-                onValueChange={(value) => handleSelectChange("qty", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Quantity" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {availableQuantities.map((quantity) => (
-                      <SelectItem key={quantity} value={quantity}>
-                        {quantity}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Input
+              name="width"
+              placeholder="Enter width"
+              value={formData.width}
+              onChange={handleInputChange}
+            />
             </div>
 
             {errorMessage && (
               <div className="text-[#F44336] mb-4 text-sm">{errorMessage}</div>
             )}
+            {/* Dropdown for Quantity */}
+           <div className="mb-4">
+                       <label htmlFor="quantity" className="block mb-2 font-semibold">
+                         Quantity
+                       </label>
+                       <Select
+                         onValueChange={(value) => handleSelectChange("qty", value)}
+                       >
+                         <SelectTrigger className="w-full">
+                           <SelectValue placeholder="Select Quantity" />
+                         </SelectTrigger>
+                         <SelectContent>
+                           <SelectGroup>
+                             <SelectItem value={1}>1</SelectItem>
+                           
+                           </SelectGroup>
+                         </SelectContent>
+                       </Select>
+                     </div>
+
+           
+
+              <div className="mb-4">
+                          <label htmlFor="applyDiscount" className="block mb-2 font-semibold">
+                          Apply 10% Discount
+                          </label>
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectChange("applyDiscount", value)
+                            }
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Apply Discount" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value={true}>Yes</SelectItem>
+                                <SelectItem value={false}>No</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
 
             <div className="flex justify-between items-center mb-4">
               <div>
-                {/* <p class=" text-sm font-medium text-[#606060] ml-4">
+                <p class=" text-sm font-medium text-[#606060] ml-4">
                            {" "}
-                           ₹{brochureresult?.laminationCost || 0} Lamination Cost 
-                         </p> */}
+                           {Vinylprintresult?.totalSqFt || 0} TotalSqFt
+                         </p>
+                <p class=" text-sm font-medium text-[#606060] ml-4">
+                           {" "}
+                           {Vinylprintresult?.finalRate || 0} Per SqFt
+                         </p>
 
                 <Button
                   className="bg-white  "
-                  disabled={Billbooksresult == null}
+                  disabled={Vinylprintresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Billbooksresult?.totalPrice || 0}
+                      ₹{Vinylprintresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>
-                <p className="inline-block ml-3"> inclusive of all taxes</p>
+                <p className="inline-block ml-3">inclusive of all taxes</p>
               </div>
 
               <Button
