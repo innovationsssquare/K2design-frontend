@@ -29,16 +29,15 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
+import { GetBacklitprintcalculation } from "@/lib/ReduxSlice/Media-printing/BacklitprintSlice";
 import { Input } from "@/components/ui/input";
 
 const Backlitprint = () => {
   const [formData, setFormData] = useState({
     type: "",
     height: "",
-    rigidSurface: "",
     width: "",
-    qty: 0,
+    qty: 1,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -51,27 +50,50 @@ const Backlitprint = () => {
 
   const dispatch = useDispatch();
 
-  const { Billbooksresult, loading, error } = useSelector(
-    (state) => state.Billbooks
+  const { Backlitprintresult, loading, error } = useSelector(
+    (state) => state.Backlitprint
   );
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+
+      // Calculate square footage
+      const height = parseFloat(updatedFormData.height) || 0;
+      const width = parseFloat(updatedFormData.width) || 0;
+      const squareFootage = height * width;
+
+      // Validation check
+      if (squareFootage > 0 && squareFootage < 3) {
+        setErrorMessage("Square footage must be greater than 3 sq.ft.");
+      } else {
+        setErrorMessage(""); // Clear error if valid
+      }
+
+      return updatedFormData;
+    });
+  };
+
+
+
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetBillbookscalculation(formData));
+      dispatch(GetBacklitprintcalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Billbooksresult?.message === "Configuration not found") {
+    if (Backlitprintresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Billbooksresult]);
+  }, [Backlitprintresult]);
 
   // Static array of image objects
   const imageData = [
@@ -226,23 +248,32 @@ const Backlitprint = () => {
               </Select>
             </div>
 
-          
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
               </label>
-              <Input placeholder="Enter height"></Input>
+              <Input
+                name="height"
+                placeholder="Enter height"
+                value={formData.height}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="width" className="block mb-2 font-semibold">
                 Width
               </label>
-              <Input placeholder="Enter Width"></Input>
+              <Input
+                name="width"
+                placeholder="Enter width"
+                value={formData.width}
+                onChange={handleInputChange}
+              />
             </div>
 
             {/* Dropdown for Quantity */}
             <div className="mb-4">
-              <label htmlFor="qty" className="block mb-2 font-semibold">
+              <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
               </label>
               <Select
@@ -253,11 +284,7 @@ const Backlitprint = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {availableQuantities.map((quantity) => (
-                      <SelectItem key={quantity} value={quantity}>
-                        {quantity}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value={1}>1</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -276,13 +303,13 @@ const Backlitprint = () => {
 
                 <Button
                   className="bg-white  "
-                  disabled={Billbooksresult == null}
+                  disabled={Backlitprintresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Billbooksresult?.totalPrice || 0}
+                      ₹{Backlitprintresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>

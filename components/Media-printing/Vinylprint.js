@@ -69,23 +69,22 @@ const Vinylprint = () => {
     const { name, value } = e.target;
     setFormData((prev) => {
       const updatedFormData = { ...prev, [name]: value };
-  
+
       // Calculate square footage
       const height = parseFloat(updatedFormData.height) || 0;
       const width = parseFloat(updatedFormData.width) || 0;
       const squareFootage = height * width;
-  
+
       // Validation check
       if (squareFootage > 0 && squareFootage < 3) {
         setErrorMessage("Square footage must be greater than 3 sq.ft.");
       } else {
         setErrorMessage(""); // Clear error if valid
       }
-  
+
       return updatedFormData;
     });
   };
-  
 
   useEffect(() => {
     if (formData.width && formData.height) {
@@ -284,80 +283,80 @@ const Vinylprint = () => {
                 Height
               </label>
               <Input
-              name="height"
-              placeholder="Enter height"
-              value={formData.height}
-              onChange={handleInputChange}
-            />
+                name="height"
+                placeholder="Enter height"
+                value={formData.height}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="width" className="block mb-2 font-semibold">
                 Width
               </label>
               <Input
-              name="width"
-              placeholder="Enter width"
-              value={formData.width}
-              onChange={handleInputChange}
-            />
+                name="width"
+                placeholder="Enter width"
+                value={formData.width}
+                onChange={handleInputChange}
+              />
             </div>
 
             {errorMessage && (
               <div className="text-[#F44336] mb-4 text-sm">{errorMessage}</div>
             )}
             {/* Dropdown for Quantity */}
-           <div className="mb-4">
-                       <label htmlFor="quantity" className="block mb-2 font-semibold">
-                         Quantity
-                       </label>
-                       <Select
-                         onValueChange={(value) => handleSelectChange("qty", value)}
-                       >
-                         <SelectTrigger className="w-full">
-                           <SelectValue placeholder="Select Quantity" />
-                         </SelectTrigger>
-                         <SelectContent>
-                           <SelectGroup>
-                             <SelectItem value={1}>1</SelectItem>
-                           
-                           </SelectGroup>
-                         </SelectContent>
-                       </Select>
-                     </div>
+            <div className="mb-4">
+              <label htmlFor="quantity" className="block mb-2 font-semibold">
+                Quantity
+              </label>
+              <Select
+                onValueChange={(value) => handleSelectChange("qty", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Quantity" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={1}>1</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
-           
-
-              <div className="mb-4">
-                          <label htmlFor="applyDiscount" className="block mb-2 font-semibold">
-                          Apply 10% Discount
-                          </label>
-                          <Select
-                            onValueChange={(value) =>
-                              handleSelectChange("applyDiscount", value)
-                            }
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Apply Discount" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value={true}>Yes</SelectItem>
-                                <SelectItem value={false}>No</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </div>
+            <div className="mb-4">
+              <label
+                htmlFor="applyDiscount"
+                className="block mb-2 font-semibold"
+              >
+                Apply 10% Discount
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("applyDiscount", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Apply Discount" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={true}>Yes</SelectItem>
+                    <SelectItem value={false}>No</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
             <div className="flex justify-between items-center mb-4">
               <div>
                 <p class=" text-sm font-medium text-[#606060] ml-4">
-                           {" "}
-                           {Vinylprintresult?.totalSqFt || 0} TotalSqFt
-                         </p>
+                  {" "}
+                  {Vinylprintresult?.totalSqFt || 0} TotalSqFt
+                </p>
                 <p class=" text-sm font-medium text-[#606060] ml-4">
-                           {" "}
-                           {Vinylprintresult?.finalRate || 0} Per SqFt
-                         </p>
+                  {" "}
+                  {Vinylprintresult?.finalRate || 0} Per SqFt
+                </p>
 
                 <Button
                   className="bg-white  "

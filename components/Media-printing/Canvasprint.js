@@ -36,7 +36,8 @@ const Canvasprint = () => {
   const [formData, setFormData] = useState({
     type: "",
     height: "",
-    rigidSurface: "",
+    frame: true,
+    applyDiscount: false,
     width: "",
     qty: 0,
   });
@@ -224,7 +225,6 @@ const Canvasprint = () => {
               </Select>
             </div>
 
-    
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
