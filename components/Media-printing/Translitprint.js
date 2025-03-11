@@ -29,16 +29,16 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
+import { GetTranslitprintcalculation } from "@/lib/ReduxSlice/Media-printing/TranslitprintSlice";
 import { Input } from "@/components/ui/input";
 
 const Translitprint = () => {
   const [formData, setFormData] = useState({
     type: "",
     height: "",
-    rigidSurface: "",
     width: "",
-    qty: 0,
+    applyDiscount: false,
+    qty: 1,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -51,27 +51,48 @@ const Translitprint = () => {
 
   const dispatch = useDispatch();
 
-  const { Billbooksresult, loading, error } = useSelector(
-    (state) => state.Billbooks
+  const { Translitprintresult, loading, error } = useSelector(
+    (state) => state.Translitprint
   );
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+
+      // Calculate square footage
+      const height = parseFloat(updatedFormData.height) || 0;
+      const width = parseFloat(updatedFormData.width) || 0;
+      const squareFootage = height * width;
+
+      // Validation check
+      if (squareFootage > 0 && squareFootage < 3) {
+        setErrorMessage("Square footage must be greater than 3 sq.ft.");
+      } else {
+        setErrorMessage(""); // Clear error if valid
+      }
+
+      return updatedFormData;
+    });
+  };
+
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetBillbookscalculation(formData));
+      dispatch(GetTranslitprintcalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Billbooksresult?.message === "Configuration not found") {
+    if (Translitprintresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Billbooksresult]);
+  }, [Translitprintresult]);
 
   // Static array of image objects
   const imageData = [
@@ -215,30 +236,39 @@ const Translitprint = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="Translit Print (for Cliapon)">
-                    Translit Print (for Cliapon)
+                      Translit Print (for Cliapon)
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
-         
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
               </label>
-              <Input placeholder="Enter height"></Input>
+              <Input
+                name="height"
+                placeholder="Enter height"
+                value={formData.height}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="width" className="block mb-2 font-semibold">
                 Width
               </label>
-              <Input placeholder="Enter Width"></Input>
+              <Input
+                name="width"
+                placeholder="Enter width"
+                value={formData.width}
+                onChange={handleInputChange}
+              />
             </div>
 
             {/* Dropdown for Quantity */}
             <div className="mb-4">
-              <label htmlFor="qty" className="block mb-2 font-semibold">
+              <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
               </label>
               <Select
@@ -249,11 +279,31 @@ const Translitprint = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {availableQuantities.map((quantity) => (
-                      <SelectItem key={quantity} value={quantity}>
-                        {quantity}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value={1}>1</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="applyDiscount"
+                className="block mb-2 font-semibold"
+              >
+                Apply 10% Discount
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("applyDiscount", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Apply Discount" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={true}>Yes</SelectItem>
+                    <SelectItem value={false}>No</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -272,13 +322,13 @@ const Translitprint = () => {
 
                 <Button
                   className="bg-white  "
-                  disabled={Billbooksresult == null}
+                  disabled={Translitprintresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Billbooksresult?.totalPrice || 0}
+                      ₹{Translitprintresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>

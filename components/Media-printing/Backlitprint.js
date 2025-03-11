@@ -37,6 +37,7 @@ const Backlitprint = () => {
     type: "",
     height: "",
     width: "",
+    applyDiscount: false,
     qty: 1,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
@@ -285,6 +286,31 @@ const Backlitprint = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value={1}>1</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+
+ <div className="mb-4">
+              <label
+                htmlFor="applyDiscount"
+                className="block mb-2 font-semibold"
+              >
+                Apply 10% Discount
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("applyDiscount", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Apply Discount" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={true}>Yes</SelectItem>
+                    <SelectItem value={false}>No</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

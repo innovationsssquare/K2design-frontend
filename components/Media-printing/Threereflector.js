@@ -29,7 +29,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
+import { GetThreereflectorprintcalculation } from "@/lib/ReduxSlice/Media-printing/ThreereflectorSlice";
 import { Input } from "@/components/ui/input";
 
 const Threereflector = () => {
@@ -51,27 +51,49 @@ const Threereflector = () => {
 
   const dispatch = useDispatch();
 
-  const { Billbooksresult, loading, error } = useSelector(
-    (state) => state.Billbooks
+  const { Threereflectorprintresult, loading, error } = useSelector(
+    (state) => state.Threereflectorprint
   );
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+
+      // Calculate square footage
+      const height = parseFloat(updatedFormData.height) || 0;
+      const width = parseFloat(updatedFormData.width) || 0;
+      const squareFootage = height * width;
+
+      // Validation check
+      if (squareFootage > 0 && squareFootage < 3) {
+        setErrorMessage("Square footage must be greater than 3 sq.ft.");
+      } else {
+        setErrorMessage(""); // Clear error if valid
+      }
+
+      return updatedFormData;
+    });
+  };
+
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetBillbookscalculation(formData));
+      dispatch(GetThreereflectorprintcalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Billbooksresult?.message === "Configuration not found") {
+    if (Threereflectorprintresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Billbooksresult]);
+  }, [Threereflectorprintresult]);
 
   // Static array of image objects
   const imageData = [
@@ -220,33 +242,40 @@ const Threereflector = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="3M Reflector + Transparent Film Print">
-                    3M Reflector + Transparent Film Print
+                      3M Reflector + Transparent Film Print
                     </SelectItem>
-                    <SelectItem value="ACP 3mm">
-                    ACP 3mm
-                    </SelectItem>
+                    <SelectItem value="ACP 3mm">ACP 3mm</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
-        
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
               </label>
-              <Input placeholder="Enter height"></Input>
+              <Input
+                name="height"
+                placeholder="Enter height"
+                value={formData.height}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="width" className="block mb-2 font-semibold">
                 Width
               </label>
-              <Input placeholder="Enter Width"></Input>
+              <Input
+                name="width"
+                placeholder="Enter width"
+                value={formData.width}
+                onChange={handleInputChange}
+              />
             </div>
 
             {/* Dropdown for Quantity */}
             <div className="mb-4">
-              <label htmlFor="qty" className="block mb-2 font-semibold">
+              <label htmlFor="quantity" className="block mb-2 font-semibold">
                 Quantity
               </label>
               <Select
@@ -257,11 +286,31 @@ const Threereflector = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {availableQuantities.map((quantity) => (
-                      <SelectItem key={quantity} value={quantity}>
-                        {quantity}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value={1}>1</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="applyDiscount"
+                className="block mb-2 font-semibold"
+              >
+                Apply 10% Discount
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("applyDiscount", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Apply Discount" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={true}>Yes</SelectItem>
+                    <SelectItem value={false}>No</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -280,13 +329,13 @@ const Threereflector = () => {
 
                 <Button
                   className="bg-white  "
-                  disabled={Billbooksresult == null}
+                  disabled={Threereflectorprintresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Billbooksresult?.totalPrice || 0}
+                      ₹{Threereflectorprintresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>
