@@ -20,6 +20,13 @@ import Canvasprint from "@/components/Media-printing/Canvasprint";
 import Nightglowprint from "@/components/Media-printing/Nightglowprint";
 import Translitprint from "@/components/Media-printing/Translitprint";
 import Threereflector from "@/components/Media-printing/Threereflector";
+import Flexbannerprinting from "@/components/Flexrelated-printing/Flexbannerprinting";
+import Flexbannereconomy from "@/components/Flexrelated-printing/Flexbannereconomy";
+import Flexrollupstand from "@/components/Flexrelated-printing/Flexrollupstand";
+import Flexbannerpremium from "@/components/Flexrelated-printing/Flexbannerpremium";
+import Flexbanneradvertise from "@/components/Flexrelated-printing/Flexbanneradvertise";
+import Flexbannerwood from "@/components/Flexrelated-printing/Flexbannerwood";
+import Flexstandprint from "@/components/Flexrelated-printing/Flexstandprint";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -66,7 +73,6 @@ const Page = () => {
         return <InvitationCards />;
       case "pamphlet":
         return <Pamphlets />;
-
       case "wedding-card":
         return <Weddingcard />;
       case "sticker-and-label":
@@ -85,6 +91,20 @@ const Page = () => {
         return <Translitprint/>;
       case "3m-reflector":
         return <Threereflector/>;
+      case "flex-(banner)-printing":
+        return <Flexbannerprinting/>;
+      case "flex-(banner)-printing-economy-%2B-ms-frame":
+        return <Flexbannereconomy/>;
+      case "flex-(banner)-printing-premium-%2B-ms-frame":
+        return <Flexbannerpremium/>;
+      case "flex-(banner)-printing-advertise-%2B-ms-frame":
+        return <Flexbanneradvertise/>;
+      case "flex-(banner)-%2B-wooden-frame":
+        return <Flexbannerwood/>;
+      case "flex-stand":
+        return <Flexstandprint/>;
+      case "roll-up-stand":
+        return <Flexrollupstand/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
