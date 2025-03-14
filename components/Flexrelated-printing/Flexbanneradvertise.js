@@ -29,9 +29,8 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
 import { Input } from "@/components/ui/input";
-import { GetVinylprintcalculation } from "@/lib/ReduxSlice/Media-printing/VinylprintSlice";
+import { GetFlexbanneradvertisealculation } from "@/lib/ReduxSlice/Flex-printing/FlexbanneradvertiseSlice";
 
 const Flexbanneradvertise = () => {
   const [formData, setFormData] = useState({
@@ -53,11 +52,10 @@ const Flexbanneradvertise = () => {
 
   const dispatch = useDispatch();
 
-  const { Vinylprintresult, loading, error } = useSelector(
-    (state) => state.Vinylprint
+  const { Flexbanneradvetiseresult, loading, error } = useSelector(
+    (state) => state.Flexbanneradvertise
   );
 
-  console.log("Vinylprintresult", Vinylprintresult);
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -88,17 +86,17 @@ const Flexbanneradvertise = () => {
 
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetVinylprintcalculation(formData));
+      dispatch(GetFlexbanneradvertisealculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Vinylprintresult?.message === "Configuration not found") {
+    if (Flexbanneradvetiseresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Vinylprintresult]);
+  }, [Flexbanneradvetiseresult]);
 
   // Static array of image objects
   const imageData = [
@@ -212,16 +210,15 @@ const Flexbanneradvertise = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Flex (Banner) Printing</h1>
+            <h1 className="text-2xl font-bold mb-4">Flex (Banner) Printing - Advertise + MS Frame</h1>
 
             <p className="mb-4">
-              {`High-quality premium flex printing suitable for banners and advertisements.`}
+            {`High-quality flex banner printing with MS frame.`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
             <ul className="list-disc list-inside mb-4">
-              <li>Economy</li>
-              <li>Premium</li>
+              <li>Flex Advertise + MS Frame</li>
             </ul>
             {/* <p className="font-bold mb-4">
           {`We do not accept designs that belong to or represent government or government-affiliated organizations.`}
@@ -345,24 +342,15 @@ const Flexbanneradvertise = () => {
 
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.totalSqFt || 0} TotalSqFt
-                </p>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.finalRate || 0} Per SqFt
-                </p>
-
                 <Button
                   className="bg-white  "
-                  disabled={Vinylprintresult == null}
+                  disabled={Flexbanneradvetiseresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Vinylprintresult?.totalPrice || 0}
+                      ₹{Flexbanneradvetiseresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>

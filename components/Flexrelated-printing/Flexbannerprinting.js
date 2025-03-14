@@ -31,7 +31,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
 import { Input } from "@/components/ui/input";
-import { GetVinylprintcalculation } from "@/lib/ReduxSlice/Media-printing/VinylprintSlice";
+import { GetFlecbannercalculation } from "@/lib/ReduxSlice/Flex-printing/FlexbannerprintingSlice";
 
 const Flexbannerprinting = () => {
   const [formData, setFormData] = useState({
@@ -53,11 +53,10 @@ const Flexbannerprinting = () => {
 
   const dispatch = useDispatch();
 
-  const { Vinylprintresult, loading, error } = useSelector(
-    (state) => state.Vinylprint
+  const { Flexbannerresult, loading, error } = useSelector(
+    (state) => state.Flexbanner
   );
 
-  console.log("Vinylprintresult", Vinylprintresult);
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -88,17 +87,17 @@ const Flexbannerprinting = () => {
 
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetVinylprintcalculation(formData));
+      dispatch(GetFlecbannercalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Vinylprintresult?.message === "Configuration not found") {
+    if (Flexbannerresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Vinylprintresult]);
+  }, [Flexbannerresult]);
 
   // Static array of image objects
   const imageData = [
@@ -345,24 +344,17 @@ const Flexbannerprinting = () => {
 
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.totalSqFt || 0} TotalSqFt
-                </p>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.finalRate || 0} Per SqFt
-                </p>
+              
 
                 <Button
                   className="bg-white  "
-                  disabled={Vinylprintresult == null}
+                  disabled={Flexbannerresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Vinylprintresult?.totalPrice || 0}
+                      ₹{Flexbannerresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>

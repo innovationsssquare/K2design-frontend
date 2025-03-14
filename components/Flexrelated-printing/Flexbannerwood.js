@@ -29,9 +29,8 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBillbookscalculation } from "@/lib/ReduxSlice/Paper-printing/BillbooksSlice";
 import { Input } from "@/components/ui/input";
-import { GetVinylprintcalculation } from "@/lib/ReduxSlice/Media-printing/VinylprintSlice";
+import { GetFlecbannerWoodencalculation } from "@/lib/ReduxSlice/Flex-printing/FlexbannerwoodSlice";
 
 const Flexbannerwood = () => {
   const [formData, setFormData] = useState({
@@ -53,11 +52,10 @@ const Flexbannerwood = () => {
 
   const dispatch = useDispatch();
 
-  const { Vinylprintresult, loading, error } = useSelector(
-    (state) => state.Vinylprint
+  const { Flexbannerwoodenresult, loading, error } = useSelector(
+    (state) => state.Flexbannerwooden
   );
 
-  console.log("Vinylprintresult", Vinylprintresult);
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -88,17 +86,17 @@ const Flexbannerwood = () => {
 
   useEffect(() => {
     if (formData.width && formData.height) {
-      dispatch(GetVinylprintcalculation(formData));
+      dispatch(GetFlecbannerWoodencalculation(formData));
     }
   }, [formData, dispatch]);
 
   useEffect(() => {
-    if (Vinylprintresult?.message === "Configuration not found") {
+    if (Flexbannerwoodenresult?.message === "Configuration not found") {
       setErrorMessage("Selected options are not available");
     } else {
       setErrorMessage("");
     }
-  }, [Vinylprintresult]);
+  }, [Flexbannerwoodenresult]);
 
   // Static array of image objects
   const imageData = [
@@ -212,16 +210,22 @@ const Flexbannerwood = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Flex (Banner) Printing</h1>
+            <h1 className="text-2xl font-bold mb-4">Flex (Banner) + Wooden Frame</h1>
 
             <p className="mb-4">
-              {`High-quality premium flex printing suitable for banners and advertisements.`}
+            {`High-quality Flex Banner printing with Wooden Frame.`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
-            <ul className="list-disc list-inside mb-4">
-              <li>Economy</li>
-              <li>Premium</li>
+            <ul className="list-disc list-inside mb-4 flex justify-evenly items-center">
+              <li>3x2</li>
+              <li>4x3</li>
+              <li>6x4</li>
+              <li>8x6</li>
+              <li>8x8</li>
+              <li>10x8</li>
+              <li>10x10</li>
+              <li>10x12</li>
             </ul>
             {/* <p className="font-bold mb-4">
           {`We do not accept designs that belong to or represent government or government-affiliated organizations.`}
@@ -345,24 +349,17 @@ const Flexbannerwood = () => {
 
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.totalSqFt || 0} TotalSqFt
-                </p>
-                <p class=" text-sm font-medium text-[#606060] ml-4">
-                  {" "}
-                  {Vinylprintresult?.finalRate || 0} Per SqFt
-                </p>
+        
 
                 <Button
                   className="bg-white  "
-                  disabled={Vinylprintresult == null}
+                  disabled={Flexbannerwoodenresult == null}
                 >
                   {loading ? (
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Vinylprintresult?.totalPrice || 0}
+                      ₹{Flexbannerwoodenresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>
