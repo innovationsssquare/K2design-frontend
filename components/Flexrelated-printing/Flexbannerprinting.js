@@ -248,31 +248,7 @@ const Flexbannerprinting = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="rigidSurface"
-                className="block mb-2 font-semibold"
-              >
-                Rigid Surface
-              </label>
-              <Select
-                onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+           
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
@@ -318,7 +294,7 @@ const Flexbannerprinting = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -340,7 +316,7 @@ const Flexbannerprinting = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>

@@ -56,7 +56,6 @@ const Flexbannereconomy = () => {
     (state) => state.Flexbannereconomy
   );
 
-
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -210,10 +209,12 @@ const Flexbannereconomy = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Flex (Banner) Printing - Economy + MS Frame</h1>
+            <h1 className="text-2xl font-bold mb-4">
+              Flex (Banner) Printing - Economy + MS Frame
+            </h1>
 
             <p className="mb-4">
-            {`High-quality flex printing with MS frame (1 inch pipe).`}
+              {`High-quality flex printing with MS frame (1 inch pipe).`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
@@ -237,36 +238,9 @@ const Flexbannereconomy = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Economy">
-                       Economy
+                    <SelectItem value="Flex Economy + MS Frame">
+                      Flex Economy + MS Frame{" "}
                     </SelectItem>
-                    <SelectItem value="Premium">Premium </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="rigidSurface"
-                className="block mb-2 font-semibold"
-              >
-                Rigid Surface
-              </label>
-              <Select
-                onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -316,7 +290,7 @@ const Flexbannereconomy = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -338,11 +312,10 @@ const Flexbannereconomy = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>
-            
                 <Button
                   className="bg-white  "
                   disabled={Flexbannereconomyresult == null}

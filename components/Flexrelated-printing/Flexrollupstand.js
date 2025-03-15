@@ -34,12 +34,9 @@ import { GetFlexrollupstandcalculation } from "@/lib/ReduxSlice/Flex-printing/Fl
 
 const Flexrollupstand = () => {
   const [formData, setFormData] = useState({
-    type: "",
-    height: "",
-    rigidSurface: "",
-    width: "",
-    qty: 1,
-    applyDiscount: false,
+    size: "",
+    flexType: "",
+    quantity: 1,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -85,7 +82,7 @@ const Flexrollupstand = () => {
   };
 
   useEffect(() => {
-    if (formData.width && formData.height) {
+    if (formData.flexType && formData.size) {
       dispatch(GetFlexrollupstandcalculation(formData));
     }
   }, [formData, dispatch]);
@@ -226,11 +223,11 @@ const Flexrollupstand = () => {
 
             {/* Dropdowns for Options */}
             <div className="mb-4">
-              <label htmlFor="type" className="block mb-2 font-semibold">
+              <label htmlFor="flexType" className="block mb-2 font-semibold">
                 Type
               </label>
               <Select
-                onValueChange={(value) => handleSelectChange("type", value)}
+                onValueChange={(value) => handleSelectChange("flexType", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Type" />
@@ -240,7 +237,8 @@ const Flexrollupstand = () => {
                     <SelectItem value="Economy">
                        Economy
                     </SelectItem>
-                    <SelectItem value="Premium">Premium </SelectItem>
+                    <SelectItem value="premium">Premium </SelectItem>
+                    <SelectItem value="hpLatexPremium">hpLatexPremium </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -248,51 +246,28 @@ const Flexrollupstand = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="rigidSurface"
+                htmlFor="size"
                 className="block mb-2 font-semibold"
               >
-                Rigid Surface
+                Size
               </label>
               <Select
                 onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
+                  handleSelectChange("size", value)
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
+                  <SelectValue placeholder="Select Size" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
+                    <SelectItem value="6x3">6x3</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
-            <div className="mb-4">
-              <label htmlFor="height" className="block mb-2 font-semibold">
-                Height
-              </label>
-              <Input
-                name="height"
-                placeholder="Enter height"
-                value={formData.height}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="width" className="block mb-2 font-semibold">
-                Width
-              </label>
-              <Input
-                name="width"
-                placeholder="Enter width"
-                value={formData.width}
-                onChange={handleInputChange}
-              />
-            </div>
+            
+            
 
             {errorMessage && (
               <div className="text-[#F44336] mb-4 text-sm">{errorMessage}</div>
@@ -316,7 +291,7 @@ const Flexrollupstand = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -338,7 +313,7 @@ const Flexrollupstand = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>

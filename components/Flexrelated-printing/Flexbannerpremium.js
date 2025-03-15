@@ -56,7 +56,6 @@ const Flexbannerpremium = () => {
     (state) => state.Flexbannerpremium
   );
 
-
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -210,7 +209,9 @@ const Flexbannerpremium = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Flex (Banner) Printing - Premium + MS Frame</h1>
+            <h1 className="text-2xl font-bold mb-4">
+              Flex (Banner) Printing - Premium + MS Frame
+            </h1>
 
             <p className="mb-4">
               {`Premium quality flex banner printing with MS frame.`}
@@ -237,40 +238,15 @@ const Flexbannerpremium = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Economy">
-                       Economy
+                    <SelectItem value="Flex Premium + MS Frame">
+                      Flex Premium + MS Frame{" "}
                     </SelectItem>
-                    <SelectItem value="Premium">Premium </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="rigidSurface"
-                className="block mb-2 font-semibold"
-              >
-                Rigid Surface
-              </label>
-              <Select
-                onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+           
             <div className="mb-4">
               <label htmlFor="height" className="block mb-2 font-semibold">
                 Height
@@ -316,7 +292,7 @@ const Flexbannerpremium = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -338,12 +314,10 @@ const Flexbannerpremium = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>
-    
-
                 <Button
                   className="bg-white  "
                   disabled={Flexbannerpremiumresult == null}

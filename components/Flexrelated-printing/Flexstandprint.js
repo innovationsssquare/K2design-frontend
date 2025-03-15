@@ -30,16 +30,15 @@ import {
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
-import { GetFlexrollupstandcalculation } from "@/lib/ReduxSlice/Flex-printing/FlexrollupstandSlice";
+import { GetFlexstandcalculation } from "@/lib/ReduxSlice/Flex-printing/FlexstandprintSlice";
 
 const Flexstandprint = () => {
   const [formData, setFormData] = useState({
-    type: "",
-    height: "",
-    rigidSurface: "",
-    width: "",
-    qty: 1,
-    applyDiscount: false,
+    standType: "Simple Stand",
+    frameSize: "3x2",
+    msTubeType: "threeFourInchRate",
+    flexType: "Economy",
+    sideType: "oneSideRate",
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -55,7 +54,6 @@ const Flexstandprint = () => {
   const { Flexstandresult, loading, error } = useSelector(
     (state) => state.Flexstand
   );
-
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -85,8 +83,8 @@ const Flexstandprint = () => {
   };
 
   useEffect(() => {
-    if (formData.width && formData.height) {
-      dispatch(GetFlexrollupstandcalculation(formData));
+    if (formData.flexType && formData.standType && formData.frameSize) {
+      dispatch(GetFlexstandcalculation(formData));
     }
   }, [formData, dispatch]);
 
@@ -213,7 +211,7 @@ const Flexstandprint = () => {
             <h1 className="text-2xl font-bold mb-4">Flex Stand</h1>
 
             <p className="mb-4">
-            {`High-quality flex stand with durable MS tube and economy/premium flex options.`}
+              {`High-quality flex stand with durable MS tube and economy/premium flex options.`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
@@ -227,21 +225,48 @@ const Flexstandprint = () => {
 
             {/* Dropdowns for Options */}
             <div className="mb-4">
-              <label htmlFor="type" className="block mb-2 font-semibold">
+              <label htmlFor="standType" className="block mb-2 font-semibold">
                 Type
               </label>
               <Select
-                onValueChange={(value) => handleSelectChange("type", value)}
+                onValueChange={(value) =>
+                  handleSelectChange("standType", value)
+                }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Economy">
-                       Economy
+                    <SelectItem value="Simple Stand">Simple Stand</SelectItem>
+                    <SelectItem
+                      value="Folding Stand">
+                      Folding Stand
                     </SelectItem>
-                    <SelectItem value="Premium">Premium </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="flexType" className="block mb-2 font-semibold">
+                 Flex Type
+              </label>
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("flexType", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="Economy">Economy</SelectItem>
+                    <SelectItem
+                      value="Premium">
+                     Premium
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -249,51 +274,80 @@ const Flexstandprint = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="rigidSurface"
+                htmlFor="frameSize"
                 className="block mb-2 font-semibold"
               >
-                Rigid Surface
+                Frame Size
               </label>
               <Select
                 onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
+                  handleSelectChange("frameSize", value)
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
+                  <SelectValue placeholder="Select Frame Size" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
+                    <SelectItem value="3x2">3x2</SelectItem>
+                    <SelectItem value="4x2">4x2</SelectItem>
+                    <SelectItem value="4x2.5">4x2.5</SelectItem>
+                    <SelectItem value="4x3">4x3</SelectItem>
+                    <SelectItem value="5x2.5">5x2.5</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
+
             <div className="mb-4">
-              <label htmlFor="height" className="block mb-2 font-semibold">
-                Height
+              <label
+                htmlFor="msTubeType"
+                className="block mb-2 font-semibold"
+              >
+               MS Tube Type
               </label>
-              <Input
-                name="height"
-                placeholder="Enter height"
-                value={formData.height}
-                onChange={handleInputChange}
-              />
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("msTubeType", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select MS Tube Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="threeFourInchRate">3/4'' MS TUBE</SelectItem>
+                    <SelectItem value="oneInchRate"> 1'' MS TUBE</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
+            
             <div className="mb-4">
-              <label htmlFor="width" className="block mb-2 font-semibold">
-                Width
+              <label
+                htmlFor="sideType"
+                className="block mb-2 font-semibold"
+              >
+               Select Side
               </label>
-              <Input
-                name="width"
-                placeholder="Enter width"
-                value={formData.width}
-                onChange={handleInputChange}
-              />
+              <Select
+                onValueChange={(value) =>
+                  handleSelectChange("sideType", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Side" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="oneSideRate">One side</SelectItem>
+                    <SelectItem value="twoSideRate">Two side</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
+           
+            
 
             {errorMessage && (
               <div className="text-[#F44336] mb-4 text-sm">{errorMessage}</div>
@@ -317,7 +371,7 @@ const Flexstandprint = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -339,12 +393,10 @@ const Flexstandprint = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>
-             
-
                 <Button
                   className="bg-white  "
                   disabled={Flexstandresult == null}

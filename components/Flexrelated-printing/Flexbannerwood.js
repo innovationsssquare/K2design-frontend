@@ -35,11 +35,9 @@ import { GetFlecbannerWoodencalculation } from "@/lib/ReduxSlice/Flex-printing/F
 const Flexbannerwood = () => {
   const [formData, setFormData] = useState({
     type: "",
-    height: "",
-    rigidSurface: "",
-    width: "",
+    size: "",
+    sqft: 0,
     qty: 1,
-    applyDiscount: false,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
   const [availablePageCounts, setAvailablePageCounts] = useState([]);
@@ -55,7 +53,6 @@ const Flexbannerwood = () => {
   const { Flexbannerwoodenresult, loading, error } = useSelector(
     (state) => state.Flexbannerwooden
   );
-
 
   const handleSelectChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -85,7 +82,7 @@ const Flexbannerwood = () => {
   };
 
   useEffect(() => {
-    if (formData.width && formData.height) {
+    if (formData.size && formData.sqft) {
       dispatch(GetFlecbannerWoodencalculation(formData));
     }
   }, [formData, dispatch]);
@@ -210,10 +207,12 @@ const Flexbannerwood = () => {
 
           {/* Right Side: Details and Dropdowns */}
           <div className=" px-5 w-full">
-            <h1 className="text-2xl font-bold mb-4">Flex (Banner) + Wooden Frame</h1>
+            <h1 className="text-2xl font-bold mb-4">
+              Flex (Banner) + Wooden Frame
+            </h1>
 
             <p className="mb-4">
-            {`High-quality Flex Banner printing with Wooden Frame.`}
+              {`High-quality Flex Banner printing with Wooden Frame.`}
             </p>
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
@@ -244,61 +243,76 @@ const Flexbannerwood = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Economy">
-                       Economy
-                    </SelectItem>
+                    <SelectItem value="Economy">Economy</SelectItem>
                     <SelectItem value="Premium">Premium </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="size" className="block mb-2 font-semibold">
+                size
+              </label>
+              <Select
+                onValueChange={(value) => handleSelectChange("size", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Size" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="3x2">3x2</SelectItem>
+                    <SelectItem value="4x3">4x3</SelectItem>
+                    <SelectItem value="6x4">6x4</SelectItem>
+                    <SelectItem value="8x6">8x6</SelectItem>
+                    <SelectItem value="8x8">8x8</SelectItem>
+                    <SelectItem value="10x8">10x8</SelectItem>
+                    <SelectItem value="10x10">10x10</SelectItem>
+                    <SelectItem value="10x12">10x12</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="rigidSurface"
-                className="block mb-2 font-semibold"
-              >
-                Rigid Surface
+              <label htmlFor="sqft" className="block mb-2 font-semibold">
+                Sq.ft.
               </label>
               <Select
-                onValueChange={(value) =>
-                  handleSelectChange("rigidSurface", value)
-                }
+                onValueChange={(value) => handleSelectChange("sqft", value)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Rigid Surface Type" />
+                  <SelectValue placeholder="Select sqft" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Vinyl Print">Vinyl Print</SelectItem>
-                    <SelectItem value="Foamsheet3mm">Foamsheet 3mm</SelectItem>
-                    <SelectItem value="Foamsheet5mm">Foamsheet 5mm</SelectItem>
-                    <SelectItem value="ACP3mm">ACP 3mm</SelectItem>
+                    {formData.size === "3x2" && (
+                      <SelectItem value={6}>6</SelectItem>
+                    )}
+                    {formData.size === "4x3" && (
+                      <SelectItem value={12}>12</SelectItem>
+                    )}
+                    {formData.size === "6x4" && (
+                      <SelectItem value={24}>24</SelectItem>
+                    )}{" "}
+                    {formData.size === "8x6" && (
+                      <SelectItem value={56}>56</SelectItem>
+                    )}
+                    {formData.size === "8x8" && (
+                      <SelectItem value={64}>64</SelectItem>
+                    )}
+                    {formData.size === "10x8" && (
+                      <SelectItem value={80}>80</SelectItem>
+                    )}
+                    {formData.size === "10x10" && (
+                      <SelectItem value={100}>100</SelectItem>
+                    )}
+                    {formData.size === "10x12" && (
+                      <SelectItem value={120}>120</SelectItem>
+                    )}
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="height" className="block mb-2 font-semibold">
-                Height
-              </label>
-              <Input
-                name="height"
-                placeholder="Enter height"
-                value={formData.height}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="width" className="block mb-2 font-semibold">
-                Width
-              </label>
-              <Input
-                name="width"
-                placeholder="Enter width"
-                value={formData.width}
-                onChange={handleInputChange}
-              />
             </div>
 
             {errorMessage && (
@@ -323,7 +337,7 @@ const Flexbannerwood = () => {
               </Select>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="applyDiscount"
                 className="block mb-2 font-semibold"
@@ -345,12 +359,10 @@ const Flexbannerwood = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center mb-4">
               <div>
-        
-
                 <Button
                   className="bg-white  "
                   disabled={Flexbannerwoodenresult == null}
@@ -359,7 +371,7 @@ const Flexbannerwood = () => {
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Flexbannerwoodenresult?.totalPrice || 0}
+                      ₹{Flexbannerwoodenresult?.finalTotalPrice || 0}
                     </strong>
                   )}
                 </Button>
