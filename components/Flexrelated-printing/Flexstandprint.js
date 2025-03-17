@@ -316,8 +316,8 @@ const Flexstandprint = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="threeFourInchRate">3/4'' MS TUBE</SelectItem>
-                    <SelectItem value="oneInchRate"> 1'' MS TUBE</SelectItem>
+                    <SelectItem value="threeFourInchRate">3/4 MS TUBE</SelectItem>
+                    <SelectItem value="oneInchRate"> 1 MS TUBE</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
