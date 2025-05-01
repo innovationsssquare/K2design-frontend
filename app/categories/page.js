@@ -1,5 +1,5 @@
 "use client";
-
+'use cache'
 import React, { useEffect } from "react";
 import Link from "next/link";
 

@@ -192,7 +192,7 @@ const Categorynav = () => {
                     </div>
                     <p className="flex items-center text-center text-sm whitespace-nowrap mt-1 hover:text-Apptheme transition-colors">
                       {menuItem.name}
-                      {menuItem.subcategories?.length > 0 && (
+                      {menuItem.products?.length > 0 && (
                         <ChevronDown
                           className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
                           aria-hidden="true"
@@ -201,16 +201,16 @@ const Categorynav = () => {
                     </p>
                   </div>
                 </MenubarTrigger>
-                {menuItem.subcategories?.length > 0 && (
-                  <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2">
-                    {menuItem.subcategories.map((subItem, subIndex) => (
+                {menuItem.products?.length > 0 && (
+                  <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2 w-96">
+                    {menuItem.products.map((subItem, subIndex) => (
                       <MenubarItem className="text-medium" key={subIndex} asChild>
                         <Link
-                          href={`${subItem.slug}`}
+                          href={`/categories/${menuItem.slug}/subcategories/${subItem.slug}`}
                           className="hover:bg-[#f0f5ff] hover:text-Apptheme duration-750 transition-all"
                         >
                           <p
-                            className="flex items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
+                            className="flex text-xs items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
                             style={{ fontFamily: "unset" }}
                           >
                             {subItem.name}
