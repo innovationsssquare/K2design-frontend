@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { categoriesWithProducts } from "./searchdata";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -34,10 +34,20 @@ import {
   Sticker,
   PanelTop,
 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { Spinner } from "@nextui-org/react";
+
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const router = useRouter();
+  const pathname = usePathname();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -83,13 +93,19 @@ export default function SearchBar() {
   const handleSelect = (item) => {
     setQuery("");
     setSuggestions([]);
+    setLoading(true);
 
     const path =
       item.type === "category"
         ? `/categories/${item.slug}`
         : `/categories/${item.categorySlug}/subcategories/${item.slug}`;
 
-    router.push(path);
+    if (path === pathname) {
+      router.refresh(); // Force re-render if same route
+      setTimeout(() => setLoading(false), 1000); // Graceful delay
+    } else {
+      router.push(path);
+    }
   };
 
   const getIcon = (item) => {
@@ -164,11 +180,17 @@ export default function SearchBar() {
     <div className="relative w-full">
       <input
         type="search"
+        disabled={loading}
         className="text-heading outline-none w-full h-[52px] pl-5 pr-14 bg-[#f8f9fb] text-sm text-brand-dark rounded-md border border-[#e5e7eb] placeholder:text-brand-dark/50 focus:border-secondary focus:ring-0"
-        placeholder="What are you looking..."
+        placeholder="Search products and categories..."
         value={query}
         onChange={handleChange}
       />
+      {loading ? (
+        <Spinner size="sm" className="absolute right-4 top-1/2 -translate-y-1/2  text-gray-400" />
+      ) : (
+        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a4a4a4]" />
+      )}
       <i className="pi pi-search absolute inset-y-0 right-4 flex items-center text-[#a4a4a4] pointer-events-none text-opacity-40" />
 
       {suggestions.length > 0 && (

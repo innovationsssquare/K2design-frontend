@@ -27,6 +27,7 @@ import Flexbannerpremium from "@/components/Flexrelated-printing/Flexbannerpremi
 import Flexbanneradvertise from "@/components/Flexrelated-printing/Flexbanneradvertise";
 import Flexbannerwood from "@/components/Flexrelated-printing/Flexbannerwood";
 import Flexstandprint from "@/components/Flexrelated-printing/Flexstandprint";
+import OverlayLoader from "@/components/Navbarcomponents/OverlayLoader";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -86,35 +87,31 @@ const Page = () => {
       case "canvas-print":
         return <Canvasprint />;
       case "night-glow-print-(green)":
-        return <Nightglowprint/>;
+        return <Nightglowprint />;
       case "translit-print-(for-cliapon)":
-        return <Translitprint/>;
+        return <Translitprint />;
       case "3m-reflector":
-        return <Threereflector/>;
+        return <Threereflector />;
       case "flex-(banner)-printing":
-        return <Flexbannerprinting/>;
+        return <Flexbannerprinting />;
       case "flex-(banner)-printing-economy-%2B-ms-frame":
-        return <Flexbannereconomy/>;
+        return <Flexbannereconomy />;
       case "flex-(banner)-printing-premium-%2B-ms-frame":
-        return <Flexbannerpremium/>;
+        return <Flexbannerpremium />;
       case "flex-(banner)-printing-advertise-%2B-ms-frame":
-        return <Flexbanneradvertise/>;
+        return <Flexbanneradvertise />;
       case "flex-(banner)-%2B-wooden-frame":
-        return <Flexbannerwood/>;
+        return <Flexbannerwood />;
       case "flex-stand":
-        return <Flexstandprint/>;
+        return <Flexstandprint />;
       case "roll-up-stand":
-        return <Flexrollupstand/>;
+        return <Flexrollupstand />;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
   };
 
-  return (
-    <div>
-     {renderComponent()}
-    </div>
-  );
+  return <Suspense fallback={<OverlayLoader/>}>{renderComponent()}</Suspense>;
 };
 
 export default Page;
