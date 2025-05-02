@@ -181,8 +181,8 @@ const Categorynav = () => {
             categoryslug?.map((menuItem, index) => (
               <MenubarMenu key={index} className="min-w-max">
                 <MenubarTrigger>
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="bg-slate h-20 w-20 rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="flex flex-col items-center justify-center group">
+                    <div className=" h-20 w-20 rounded-full flex items-center justify-center overflow-hidden">
                       <Image
                         src={menuItem.image} // Ensure that logo URLs are coming from the API or state
                         alt={menuItem.mainMenu}
@@ -192,17 +192,12 @@ const Categorynav = () => {
                     </div>
                     <p className="flex items-center text-center text-sm whitespace-nowrap mt-1 hover:text-Apptheme transition-colors">
                       {menuItem.name}
-                      {menuItem.products?.length > 0 && (
-                        <ChevronDown
-                          className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                          aria-hidden="true"
-                        />
-                      )}
+                    
                     </p>
                   </div>
                 </MenubarTrigger>
                 {menuItem.products?.length > 0 && (
-                  <MenubarContent className="-mt-3 grid lg:grid-cols-2 grid-cols-2 w-96">
+                  <MenubarContent className={menuItem.products?.length > 1?"-mt-3 grid lg:grid-cols-2 grid-cols-2 w-96":"-mt-3 grid lg:grid-cols-1 grid-cols-1 w-60"}>
                     {menuItem.products.map((subItem, subIndex) => (
                       <MenubarItem className="text-medium" key={subIndex} asChild>
                         <Link

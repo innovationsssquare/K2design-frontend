@@ -112,7 +112,7 @@ const Page = () => {
 
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>{renderComponent()}</Suspense>
+     {renderComponent()}
     </div>
   );
 };

@@ -31,7 +31,7 @@ const MenubarTrigger = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-slate-100 focus:text-slate-900 data-[state=open]:bg-slate-100 data-[state=open]:text-slate-900 dark:focus:bg-slate-800 dark:focus:text-slate-50 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-50",
+      "flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:text-slate-900  data-[state=open]:text-slate-900 dark:focus:bg-slate-800 dark:focus:text-slate-50 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-50",
       className
     )}
     {...props} />
@@ -48,7 +48,7 @@ const MenubarSubTrigger = React.forwardRef(({ className, inset, children, ...pro
     )}
     {...props}>
     {children}
-    <ChevronRight className="ml-auto h-4 w-4" />
+    <ChevronRight className="ml-auto h-4 w-4 " />
   </MenubarPrimitive.SubTrigger>
 ))
 MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
