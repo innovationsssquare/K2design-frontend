@@ -152,20 +152,14 @@ const Sticker = () => {
   ];
 
   // State to hold images
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState(imageData);
   const [material, setMaterial] = useState("");
   const [lamination, setLamination] = useState("");
   const [orientation, setOrientation] = useState("");
   const [printingLocation, setPrintingLocation] = useState("");
   const [quantity, setQuantity] = useState("");
 
-  // Fetch image data (simulated with useEffect)
-  useEffect(() => {
-    // Simulating fetching data
-    setTimeout(() => {
-      setImages(imageData); // Set the image data after fetching
-    }, 1000); // Simulate delay
-  }, []);
+
 
   // Galleria responsive options
   const responsiveOptions = [

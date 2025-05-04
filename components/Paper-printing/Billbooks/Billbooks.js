@@ -198,20 +198,14 @@ const Billbooks = () => {
   ];
 
   // State to hold images
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState(imageData);
   const [material, setMaterial] = useState("");
   const [lamination, setLamination] = useState("");
   const [orientation, setOrientation] = useState("");
   const [printingLocation, setPrintingLocation] = useState("");
   const [quantity, setQuantity] = useState("");
 
-  useEffect(() => {
-    // Simulating fetching data
-    setTimeout(() => {
-      setImages(imageData); // Set the image data after fetching
-    }, 1000); // Simulate delay
-  }, []);
-
+  
   // Galleria responsive options
   const responsiveOptions = [
     {
@@ -270,7 +264,7 @@ const Billbooks = () => {
       <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
         <div className="w-full p-4 shadow-sm ml-4 mr-4 my-4 flex gap-4 justify-center    lg:flex-row flex-col bg-white">
           {/* Left Side: Galleria */}
-          <div className=" ">
+          <div className="w-full ">
             <div className="card sticky top-5 lg:flex lg:justify-center md:flex md:justify-center w-full ">
               {images && (
                 <Galleria

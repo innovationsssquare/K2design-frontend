@@ -140,15 +140,9 @@ const Filesandfolders = () => {
     }));
   };
 
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState(imageData);
 
-  // Fetch image data (simulated with useEffect)
-  useEffect(() => {
-    // Simulating fetching data
-    setTimeout(() => {
-      setImages(imageData); // Set the image data after fetching
-    }, 1000); // Simulate delay
-  }, []);
+
 
   // Galleria responsive options
   const responsiveOptions = [

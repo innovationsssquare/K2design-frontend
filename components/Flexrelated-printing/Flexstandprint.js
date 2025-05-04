@@ -118,7 +118,7 @@ const Flexstandprint = () => {
   ];
 
   // State to hold images
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState(imageData);
   const [material, setMaterial] = useState("");
   const [lamination, setLamination] = useState("");
   const [orientation, setOrientation] = useState("");

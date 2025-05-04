@@ -190,14 +190,14 @@ const Categorynav = () => {
                         layout="fill"
                       />
                     </div>
-                    <p className="flex items-center text-center text-sm whitespace-nowrap mt-1 hover:text-Apptheme transition-colors">
+                    <p className="flex items-center text-center text-xs whitespace-nowrap mt-1 hover:text-Apptheme transition-colors">
                       {menuItem.name}
                     
                     </p>
                   </div>
                 </MenubarTrigger>
                 {menuItem.products?.length > 0 && (
-                  <MenubarContent className={menuItem.products?.length > 1?"-mt-3 grid lg:grid-cols-2 grid-cols-2 w-96":"-mt-3 grid lg:grid-cols-1 grid-cols-1 w-60"}>
+                  <MenubarContent className={menuItem.products?.length > 1?"-mt-3 grid lg:grid-cols-2 grid-cols-2  w-96":"-mt-3 grid lg:grid-cols-1 grid-cols-1 justify-items-center w-60"}>
                     {menuItem.products.map((subItem, subIndex) => (
                       <MenubarItem className="text-medium" key={subIndex} asChild>
                         <Link
@@ -205,7 +205,7 @@ const Categorynav = () => {
                           className="hover:bg-[#f0f5ff] hover:text-Apptheme duration-750 transition-all"
                         >
                           <p
-                            className="flex text-xs items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
+                            className="flex text-xs capitalize items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
                             style={{ fontFamily: "unset" }}
                           >
                             {subItem.name}

@@ -74,7 +74,7 @@ export default function Exploreallcategories() {
                     </div>
                   </Link>
                 )}
-                <p className="text-black text-center text-base font-semibold mt-2">
+                <p className="text-black text-center text-sm font-medium mt-2">
                   {isLoading ? (
                     <Skeleton width="80px" height="20px" />
                   ) : (
@@ -85,8 +85,8 @@ export default function Exploreallcategories() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute -left-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" />
-        <CarouselNext className="absolute -right-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" />
+        <CarouselPrevious className="absolute -left-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-10 w-10 cursor-pointer border-none" />
+        <CarouselNext className="absolute -right-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-10 w-10 cursor-pointer border-none" />
       </Carousel>
     </div>
   );

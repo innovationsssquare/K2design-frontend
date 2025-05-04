@@ -125,7 +125,7 @@ console.log(categoryslug)
                     <div class="shine-box"></div>
                   </div>
                 </Link>
-                <p className="text-black text-center text-base font-semibold mt-2">
+                <p className="text-black text-center text-xs  mt-2">
                   {card.title}
                 </p>
               </CardContent>
