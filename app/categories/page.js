@@ -61,7 +61,7 @@ export default function Exploreallcategories() {
                   />
                 ) : (
                   <Link href={card.link}>
-                    <div className="shine-effect w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full cursor-pointer">
+                    <div className="shine-effect w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-28 lg:h-28 xl:w-44 xl:h-44  rounded-full cursor-pointer">
                       <Image
                         isZoomed
                         src={card.img}
@@ -74,7 +74,7 @@ export default function Exploreallcategories() {
                     </div>
                   </Link>
                 )}
-                <p className="text-black text-center text-sm font-medium mt-2">
+                <p className="text-black text-center text-sm font-medium mt-2 w-full">
                   {isLoading ? (
                     <Skeleton width="80px" height="20px" />
                   ) : (

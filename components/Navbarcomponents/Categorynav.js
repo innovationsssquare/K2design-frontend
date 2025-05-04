@@ -205,7 +205,7 @@ const Categorynav = () => {
                           className="hover:bg-[#f0f5ff] hover:text-Apptheme duration-750 transition-all"
                         >
                           <p
-                            className="flex text-xs capitalize items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
+                            className="flex text-xs  capitalize items-center justify-between py-2 ltr:pl-5 rtl:pr-5 xl:ltr:pl-7 xl:rtl:pr-7 ltr:pr-3 rtl:pl-3 xl:ltr:pr-3.5 xl:rtl:pl-3.5 hover:bg-fill-dropdown-hover hover:text-Apptheme"
                             style={{ fontFamily: "unset" }}
                           >
                             {subItem.name}
