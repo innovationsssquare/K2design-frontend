@@ -106,6 +106,10 @@ const Page = () => {
         return <Flexstandprint />;
       case "roll-up-stand":
         return <Flexrollupstand />;
+      case "glass-films":
+        return <Flexrollupstand />;
+      case "one-way-vision-print-(glass-film)":
+        return <Flexrollupstand />;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
