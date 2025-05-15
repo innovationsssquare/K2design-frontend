@@ -28,6 +28,13 @@ import Flexbanneradvertise from "@/components/Flexrelated-printing/Flexbanneradv
 import Flexbannerwood from "@/components/Flexrelated-printing/Flexbannerwood";
 import Flexstandprint from "@/components/Flexrelated-printing/Flexstandprint";
 import OverlayLoader from "@/components/Navbarcomponents/OverlayLoader";
+import Glassfilms from "@/components/Glass-films/Glassfilms";
+import Glassfilmsonevision from "@/components/Glass-films/Glassfilmsonevision";
+import Acpplates from "@/components/Rigidsignplates/Acpplates";
+import Acrylicplates from "@/components/Rigidsignplates/Acrylicplates";
+import Pvcfoamplates from "@/components/Rigidsignplates/Pvcfoamplates";
+import Nightglowplates from "@/components/Rigidsignplates/Nightglowplates";
+import Stainlessplates from "@/components/Rigidsignplates/Stainlessplates";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -107,9 +114,19 @@ const Page = () => {
       case "roll-up-stand":
         return <Flexrollupstand />;
       case "glass-films":
-        return <Flexrollupstand />;
+        return <Glassfilms/>;
       case "one-way-vision-print-(glass-film)":
-        return <Flexrollupstand />;
+        return <Glassfilmsonevision/>;
+      case "acp-plates":
+        return <Acpplates/>;
+      case "acrylic-plates":
+        return <Acrylicplates/>;
+      case "pvc-foam-plates":
+        return <Pvcfoamplates/>;
+      case "night-glow-plates":
+        return <Nightglowplates/>;
+      case "stainless-steel-plates":
+        return <Stainlessplates/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
