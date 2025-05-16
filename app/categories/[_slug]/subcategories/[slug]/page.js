@@ -35,6 +35,14 @@ import Acrylicplates from "@/components/Rigidsignplates/Acrylicplates";
 import Pvcfoamplates from "@/components/Rigidsignplates/Pvcfoamplates";
 import Nightglowplates from "@/components/Rigidsignplates/Nightglowplates";
 import Stainlessplates from "@/components/Rigidsignplates/Stainlessplates";
+import Vinylletter from "@/components/Vinyl-letter/Vinylletter";
+import Acrylicletter from "@/components/Acrylic-letter/Acrylicletter";
+import Acpstancil from "@/components/LightandLedboards/Acpstancil";
+import Lightbox from "@/components/LightandLedboards/Lightbox";
+import Threedledletter from "@/components/LightandLedboards/Threedledletter";
+import Fabricsled from "@/components/LightandLedboards/Fabricsled";
+import Backlittube from "@/components/LightandLedboards/Backlittube";
+import Cliponframes from "@/components/LightandLedboards/Cliponframes";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -127,6 +135,22 @@ const Page = () => {
         return <Nightglowplates/>;
       case "stainless-steel-plates":
         return <Stainlessplates/>;
+      case "vinyl-letters-and-numbers":
+        return <Vinylletter/>;
+      case "acrylic-letters-and-numbers":
+        return <Acrylicletter/>;
+      case "acp-stencil-led-board":
+        return <Acpstancil/>;
+      case "backlit-tube-flex-board":
+        return <Backlittube/>;
+      case "fabrics-led-board-textile-led-board":
+        return <Fabricsled/>;
+      case "3d-led-letters":
+        return <Threedledletter/>;
+      case "led-thinlite-frames-(cliapon-frames)":
+        return <Cliponframes/>;
+      case "lightbox-board":
+        return <Lightbox/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
