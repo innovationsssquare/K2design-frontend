@@ -151,6 +151,18 @@ const Page = () => {
         return <Cliponframes/>;
       case "lightbox-board":
         return <Lightbox/>;
+      case "opti-frames":
+        return <Lightbox/>;
+      case "flat-sign-board":
+        return <Lightbox/>;
+      case "curv-sign":
+        return <Lightbox/>;
+      case "i-sign":
+        return <Lightbox/>;
+      case "art-frame":
+        return <Lightbox/>;
+      case "table-stand-name-plates":
+        return <Lightbox/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
