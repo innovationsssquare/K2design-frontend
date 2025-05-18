@@ -215,9 +215,9 @@ const Isign = () => {
             <p class="mt-4 text-sm font-medium text-[#606060]">Available In:</p>
 
             <ul className="list-disc list-inside mb-4">
-              <li>Silver Anodised</li>
-              <li>Black Anodised</li>
-              <li>Bronze Anodised</li>
+              <li>Silver Anodized</li>
+              <li>Black Anodized</li>
+              <li>Bronze Anodized</li>
             </ul>
             {/* <p className="font-bold mb-4">
           {`We do not accept designs that belong to or represent government or government-affiliated organizations.`}
@@ -237,13 +237,13 @@ const Isign = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="Silver Anodised">
-                      Silver Anodised
+                      Silver Anodized
                     </SelectItem>
                     <SelectItem value="Black Anodised">
-                      Black Anodised
+                      Black Anodized
                     </SelectItem>
                     <SelectItem value="Bronze Anodised">
-                      Bronze Anodised
+                      Bronze Anodized
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>

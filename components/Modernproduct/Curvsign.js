@@ -35,10 +35,9 @@ import { GetCurvsigncalculation } from "@/lib/ReduxSlice/Modernproduct/curvsignS
 
 const Curvsign = () => {
   const [formData, setFormData] = useState({
-    mainType: "",
-    subType: "",
-    height: "",
-    width: "",
+    type: "",
+    widthMM: "",
+    heightMM: "",
     qty: 1,
   });
   const [availableQuantities, setAvailableQuantities] = useState([]);
@@ -84,7 +83,7 @@ const Curvsign = () => {
   };
 
   useEffect(() => {
-    if (formData.width && formData.height) {
+    if (formData.heightMM && formData.widthMM) {
       dispatch(GetCurvsigncalculation(formData));
     }
   }, [formData, dispatch]);
@@ -186,8 +185,30 @@ const Curvsign = () => {
     console.log("Quantity:", quantity);
   };
 
-const wallmounted=["56","78","109","150","212","300"]
+  const wallmounted = [56, 78, 109, 150, 212, 300];
+  const wallmounted56mm = [74, 105, 150, 200, 250, 300];
+  const wallmounted78mm = [105, 150, 210, 250, 300, 420];
+  const wallmounted109mm = [105, 150, 210, 250, 297, 420];
+  const wallmounted150mm = [105, 150, 210, 297, 420];
+  const wallmounted212mm = [148, 210, 297, 420];
+  const wallmounted300mm = [210, 420, 600];
 
+  const projected = [109, 150, 212];
+  const projected109mm = [148, 210, 297];
+  const projected150mm = [150, 210, 297];
+  const projected212mm = [210, 297];
+
+  const singlesuspended = [109, 150, 212];
+  const singlesuspended109mm = [210, 297, 420, 600];
+  const singlesuspended150mm = [297, 420, 600, 840];
+  const singlesuspended212mm = [297, 420, 600, 840];
+
+  const doublesuspended = [109, 150, 212];
+  const doublesuspended109mm = [210, 297, 420, 600];
+  const doublesuspended150mm = [297, 420, 600, 840];
+  const doublesuspended212mm = [297, 420, 600, 840];
+
+  console.log(formData);
   return (
     <>
       <div className="bg-[#f1f2f4] flex justify-center items-center w-full">
@@ -243,59 +264,189 @@ const wallmounted=["56","78","109","150","212","300"]
                   <SelectGroup>
                     <SelectItem value="Wall Mounted">Wall Mounted</SelectItem>
                     <SelectItem value="Projected">Projected</SelectItem>
-                    <SelectItem value="Suspended Single Level">Suspended Single Level</SelectItem>
-                    <SelectItem value="Suspended Double Level">Suspended Double Level</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="subType" className="block mb-2 font-semibold">
-               Width 
-              </label>
-              <Select
-                onValueChange={(value) => handleSelectChange("subType", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Frame Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                   {wallmounted.map((value,index)=>(
-                    
-                   <SelectItem value={value}>
-                     {value} MM
+                    <SelectItem value="Suspended Single Level">
+                      Suspended Single Level
                     </SelectItem>
-                   )) 
-                    }
+                    <SelectItem value="Suspended Double Level">
+                      Suspended Double Level
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
 
-         
+            <div className="mb-4">
+              <label htmlFor="widthMM" className="block mb-2 font-semibold">
+                Width
+              </label>
+              <Select
+                onValueChange={(value) => handleSelectChange("widthMM", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Width Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {formData.type === "Wall Mounted" &&
+                      wallmounted.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Projected" &&
+                      projected.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Single Level" &&
+                      singlesuspended.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Double Level" &&
+                      doublesuspended.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="heightMM" className="block mb-2 font-semibold">
+                height
+              </label>
+              <Select
+                onValueChange={(value) => handleSelectChange("heightMM", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Height Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 56 &&
+                      wallmounted56mm.map((value, index) => (
+                        <SelectItem value={value}>{value} MM</SelectItem>
+                      ))}
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 78 &&
+                      wallmounted78mm.map((value, index) => (
+                        <SelectItem value={value}>{value} MM</SelectItem>
+                      ))}
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 109 &&
+                      wallmounted109mm.map((value, index) => (
+                        <SelectItem value={value}>{value} MM</SelectItem>
+                      ))}
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 150 &&
+                      wallmounted150mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 212 &&
+                      wallmounted212mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Wall Mounted" &&
+                      formData.widthMM === 300 &&
+                      wallmounted300mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Projected" &&
+                      formData.widthMM === 109 &&
+                      projected109mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Projected" &&
+                      formData.widthMM === 150 &&
+                      projected150mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Projected" &&
+                      formData.widthMM === 212 &&
+                      projected212mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Single Level" &&
+                      formData.widthMM === 109 &&
+                      singlesuspended109mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Single Level" &&
+                      formData.widthMM === 150 &&
+                      singlesuspended150mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Single Level" &&
+                      formData.widthMM === 212 &&
+                      singlesuspended212mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Double Level" &&
+                      formData.widthMM === 109 &&
+                      doublesuspended109mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Double Level" &&
+                      formData.widthMM === 150 &&
+                      doublesuspended150mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                    {formData.type === "Suspended Double Level" &&
+                      formData.widthMM === 212 &&
+                      doublesuspended212mm.map((value, index) => (
+                        <SelectItem key={index} value={value}>
+                          {value} MM
+                        </SelectItem>
+                      ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="qty" className="block mb-2 font-semibold">
+                Quantity
+              </label>
+              <Input
+                name="qty"
+                placeholder="Enter Quantity"
+                value={formData.qty}
+                onChange={handleInputChange}
+              />
+            </div>
 
             {errorMessage && (
               <div className="text-[#F44336] mb-4 text-sm">{errorMessage}</div>
             )}
-            {/* Dropdown for Quantity */}
-            <div className="mb-4">
-              <label htmlFor="quantity" className="block mb-2 font-semibold">
-                Quantity
-              </label>
-              <Select
-                onValueChange={(value) => handleSelectChange("qty", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Quantity" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={1}>1</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
 
             {/* <div className="mb-4">
               <label
@@ -331,7 +482,7 @@ const wallmounted=["56","78","109","150","212","300"]
                     <span className="loader4"></span>
                   ) : (
                     <strong className="text-Apptheme text-lg ">
-                      ₹{Curvsignresult?.finalRate || 0}
+                      ₹{Curvsignresult?.totalPrice || 0}
                     </strong>
                   )}
                 </Button>

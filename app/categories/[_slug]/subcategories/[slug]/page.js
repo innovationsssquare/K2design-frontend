@@ -46,6 +46,9 @@ import Cliponframes from "@/components/LightandLedboards/Cliponframes";
 import Artframe from "@/components/Modernproduct/Artframe";
 import Curvsign from "@/components/Modernproduct/Curvsign";
 import Isign from "@/components/Modernproduct/Isign";
+import Optiframes from "@/components/Modernproduct/Optiframes";
+import Flatsign from "@/components/Modernproduct/Flatsign";
+import Tablestand from "@/components/Modernproduct/Tablestand";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -155,9 +158,9 @@ const Page = () => {
       case "lightbox-board":
         return <Lightbox/>;
       case "opti-frames":
-        return <Lightbox/>;
+        return <Optiframes/>;
       case "flat-sign-board":
-        return <Lightbox/>;
+        return <Flatsign/>;
       case "curv-sign":
         return <Curvsign/>;
       case "i-sign":
@@ -165,7 +168,7 @@ const Page = () => {
       case "art-frame":
         return <Artframe/>;
       case "table-stand-name-plates":
-        return <Lightbox/>;
+        return <Tablestand/>;
       default:
         return <div>Component not found for slug: {slug}</div>;
     }
