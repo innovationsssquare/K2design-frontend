@@ -43,6 +43,9 @@ import Threedledletter from "@/components/LightandLedboards/Threedledletter";
 import Fabricsled from "@/components/LightandLedboards/Fabricsled";
 import Backlittube from "@/components/LightandLedboards/Backlittube";
 import Cliponframes from "@/components/LightandLedboards/Cliponframes";
+import Artframe from "@/components/Modernproduct/Artframe";
+import Curvsign from "@/components/Modernproduct/Curvsign";
+import Isign from "@/components/Modernproduct/Isign";
 
 const Brochure = lazy(() =>
   import("@/components/Paper-printing/Brochure/Brochure")
@@ -156,11 +159,11 @@ const Page = () => {
       case "flat-sign-board":
         return <Lightbox/>;
       case "curv-sign":
-        return <Lightbox/>;
+        return <Curvsign/>;
       case "i-sign":
-        return <Lightbox/>;
+        return <Isign/>;
       case "art-frame":
-        return <Lightbox/>;
+        return <Artframe/>;
       case "table-stand-name-plates":
         return <Lightbox/>;
       default:
