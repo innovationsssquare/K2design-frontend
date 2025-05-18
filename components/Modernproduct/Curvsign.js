@@ -331,17 +331,17 @@ const Curvsign = () => {
                     {formData.type === "Wall Mounted" &&
                       formData.widthMM === 56 &&
                       wallmounted56mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Wall Mounted" &&
                       formData.widthMM === 78 &&
                       wallmounted78mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Wall Mounted" &&
                       formData.widthMM === 109 &&
                       wallmounted109mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Wall Mounted" &&
                       formData.widthMM === 150 &&

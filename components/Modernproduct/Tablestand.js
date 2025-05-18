@@ -339,17 +339,17 @@ const Tablestand = () => {
                     {formData.type === "Flat Table Stand - 31mm" &&
                       formData.widthMM === 31 &&
                       FLATTABLESTAND31mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Flat Table Stand - 62mm" &&
                       formData.widthMM === 62 &&
                       FLATTABLESTAND62mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Flat Table Stand - 31mm Slider" &&
                       formData.widthMM === 31 &&
                       FLATTABLESTAND31mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.type === "Flat Table Stand - 62mm Slider" &&
                       formData.widthMM === 62 &&

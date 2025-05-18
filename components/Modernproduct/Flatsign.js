@@ -345,17 +345,17 @@ const Flatsign = () => {
                     {formData.mainType === "Wall Mounted" &&
                       formData.widthMM === 31 &&
                       wallmounted31mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.mainType === "Wall Mounted" &&
                       formData.widthMM === 62 &&
                       wallmounted62mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.mainType === "Wall Mounted" &&
                       formData.widthMM === 93 &&
                       wallmounted93mm.map((value, index) => (
-                        <SelectItem value={value}>{value} MM</SelectItem>
+                        <SelectItem key={index} value={value}>{value} MM</SelectItem>
                       ))}
                     {formData.mainType === "Wall Mounted" &&
                       formData.widthMM === 125 &&
