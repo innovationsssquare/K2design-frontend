@@ -115,14 +115,12 @@ console.log(categoryslug)
                 <Link href={card.link}>
                   <div className="shine-effect w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44  rounded-full cursor-pointer">
                     <Image
-                    isZoomed
+                      isZoomed
                       src={card.img}
                       alt={card.title}
-                      className="object-cover w-full rounded-full h-full "
-                       layout="fill"
-              objectFit="cover"
+                      className="object-cover w-full rounded-full h-full"
                     />
-                    <div class="shine-box"></div>
+                    <div className="shine-box"></div>
                   </div>
                 </Link>
                 <p className="text-black text-center text-xs  mt-2">

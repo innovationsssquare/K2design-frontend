@@ -1,14 +1,6 @@
-import React from "react";
-import { CardFooter, Image, Button } from "@nextui-org/react";
-
-import StandardVisitingCard from "../../public/images/StandardVisitingCard.jpeg";
-import brochures from "../../public/images/brochures.jpeg";
-
-import Stickers from "../../public/images/Stickers.jpeg";
-
-import CardInvitation from "../../public/images/CardInvitation.jpeg";
-import Stamp from "../../public/images/Stamp.jpeg";
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Carousel,
   CarouselContent,
@@ -17,78 +9,118 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import StandardVisitingCard from "../../public/images/StandardVisitingCard.jpeg";
+import brochures from "../../public/images/brochures.jpeg";
+import Stickers from "../../public/images/Stickers.jpeg";
+import Stamp from "../../public/images/Stamp.jpeg";
+import PaperBag from "../../public/images/PaperBag.jpeg";
+import CardInvitation from "../../public/images/CardInvitation.jpeg";
+
 export default function RecentlyView() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const cardsData = [
     {
+      title: "Visiting Cards",
+      subtitle: "from ₹200 / 100 pcs",
+      img: StandardVisitingCard.src,
+      link: "/paper-printing/VisitingCards",
+    },
+    {
       title: "Brochures",
-      subtitle: "25 starting at ₹370.00",
+      subtitle: "from ₹370 / 25 pcs",
       img: brochures.src,
+      link: "/paper-printing/Brochure",
     },
     {
       title: "Sheet Stickers",
-      subtitle: "24 starting at ₹160.00",
+      subtitle: "from ₹160 / 24 pcs",
       img: Stickers.src,
+      link: "/paper-printing/Sticker",
     },
     {
-      title: "Standard Visiting Cards",
-      subtitle: "100 starting at ₹200.00",
-      img: StandardVisitingCard.src,
-    },
-    {
-      title: "Self Inking Stamps",
-      subtitle: "1 starting at ₹290.00",
+      title: "Rubber Stamps",
+      subtitle: "from ₹290 / pc",
       img: Stamp.src,
+      link: "/paper-printing/Stamp",
     },
     {
-      title: "Classic Visiting Cards",
-      subtitle: "100 starting at ₹220.00",
-      img: CardInvitation.src,
+      title: "Paper Bags",
+      subtitle: "from ₹100 / 10 pcs",
+      img: PaperBag.src,
+      link: "/paper-printing/PaperBags",
     },
     {
-      title: "Classic Visiting Cards",
-      subtitle: "100 starting at ₹220.00",
+      title: "Invitation Cards",
+      subtitle: "from ₹220 / 100 pcs",
       img: CardInvitation.src,
-    },
-    {
-      title: "Classic Visiting Cards",
-      subtitle: "100 starting at ₹220.00",
-      img: CardInvitation.src,
+      link: "/paper-printing/InvitationCards",
     },
   ];
 
-  return (
-    <div className="mx-4 shadow-small my-1 mb-5 px-4 bg-white ">
-      {/* Section Heading */}
-      <h2 className="p-4 mb-6 mt-3 text-[#000] text-lg lg:text-xl xl:text-[22px] xl:leading-8 font-bold  3xl:text-[25px] 3xl:leading-9">
-        Your Recently Viewed Items
-      </h2>
+  if (!isMounted) {
+    return (
+      <div className="mx-4 shadow-sm my-1 mb-5 p-6 bg-white rounded-2xl border border-gray-100 min-h-[220px]">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-4">
+          Recently Viewed & Recommended
+        </h2>
+        <div className="flex gap-4 overflow-hidden">
+          {cardsData.slice(0, 6).map((_, index) => (
+            <div key={index} className="w-32 h-32 bg-gray-100 rounded-xl animate-pulse flex-shrink-0" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-      <Carousel className="w-full mb-8"> {/* Added Carousel wrapper */}
-        <CarouselContent className="flex gap-4">
+  return (
+    <div className="mx-4 shadow-sm my-3 mb-6 p-4 sm:p-6 bg-white rounded-2xl border border-gray-100">
+      {/* Section Heading */}
+      <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-100">
+        <div>
+          <span className="text-xs font-bold text-[#9c1dac] uppercase tracking-wider">
+            Quick Reorder
+          </span>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mt-0.5">
+            Recently Viewed & Recommended
+          </h2>
+        </div>
+      </div>
+
+      <Carousel opts={{ align: "start" }} className="w-full relative">
+        <CarouselContent className="flex gap-3 sm:gap-4">
           {cardsData.map((card, index) => (
             <CarouselItem
               key={index}
-              className="flex-shrink-0 basis-1/3 md:basis-1/4 lg:basis-1/6"
+              className="flex-shrink-0 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6"
             >
-              <Card className="border border-none bg-slate mb-4">
-                <CardContent className="flex flex-col items-center">
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-36 lg:h-36 xl:w-44 xl:h-44 rounded-full">
-                    <Image
-                      src={card.img}
-                      alt={card.title}
-                      className="object-fill w-full h-full"
-                    />
-                    <p className="text-black text-center text-sm font-bold whitespace-nowrap">
-                      {card.title}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link
+                href={card.link}
+                className="group block p-2.5 bg-gray-50/70 hover:bg-purple-50/60 rounded-xl border border-gray-200/80 hover:border-purple-300 transition"
+              >
+                <div className="h-28 sm:h-32 w-full rounded-lg overflow-hidden bg-white mb-2">
+                  <img
+                    src={card.img}
+                    alt={card.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <h4 className="text-xs sm:text-sm font-bold text-gray-900 truncate group-hover:text-purple-700">
+                  {card.title}
+                </h4>
+                <p className="text-[11px] text-purple-700 font-semibold mt-0.5">
+                  {card.subtitle}
+                </p>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute -left-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" />
-        <CarouselNext className="absolute -right-2 shadow-lg top-1/2 transform -translate-y-1/2 bg-white text-black p-1 rounded-full h-14 w-14 cursor-pointer border-none" /> {/* Corrected typo here */}
+        <CarouselPrevious className="absolute -left-2 top-1/2 -translate-y-1/2 bg-white text-gray-800 shadow-md p-1 rounded-full h-9 w-9 cursor-pointer border border-gray-200" />
+        <CarouselNext className="absolute -right-2 top-1/2 -translate-y-1/2 bg-white text-gray-800 shadow-md p-1 rounded-full h-9 w-9 cursor-pointer border border-gray-200" />
       </Carousel>
     </div>
   );

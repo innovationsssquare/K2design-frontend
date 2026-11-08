@@ -1,271 +1,524 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Logo from "../../public/Logo.png";
-import { FaUser } from "react-icons/fa";
-import { IoMdLock } from "react-icons/io";
-import toast, { Toaster } from 'react-hot-toast';
-
-import { Adminlogin, } from "@/lib/API/Auth";
-
-import Cookies from "js-cookie";
-import { Tabs, Tab } from "@nextui-org/react";
-
-
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Checkbox,
-  Button,
-} from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { setUser } from '../../lib/AuthSlice';
-// import { useDispatch } from 'react-redux';
-// import { fetchUserDetails } from "@/lib/AuthSlice";
+import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
+import {
+  ShieldCheck,
+  CheckCircle2,
+  RefreshCw,
+  ChevronDown,
+  ArrowLeft,
+  ChevronLeft,
+  Sparkles
+} from "lucide-react";
+import { FaWhatsapp, FaGoogle } from "react-icons/fa";
 
-const Loginpage = () => {
+export default function Loginpage() {
   const router = useRouter();
+  const [authMode, setAuthMode] = useState("phone"); // 'phone' | 'otp' | 'password'
+  
+  // WhatsApp / Mobile OTP State
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const [resendTimer, setResendTimer] = useState(30);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [mockGeneratedOtp, setMockGeneratedOtp] = useState("");
+  const otpInputRefs = useRef([]);
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState("");
-  const [superAdminEmail, setSuperAdminEmail] = useState("");
-  const [superAdminPassword, setSuperAdminPassword] = useState("");
-  const [adminEmail, setAdminEmail] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
-  const [selected, setSelected] = React.useState("Superadminlogin");
-  const [errors, setErrors] = useState({});
-  const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [userdata,Setuserdata]=useState()
+  // Password Login State
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
   useEffect(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    if (rememberedEmail) {
-      setSuperAdminEmail(rememberedEmail);
-      setAdminEmail(rememberedEmail);
-      setRememberMe(true);
+    let interval = null;
+    if (authMode === "otp" && resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
     }
-  }, []);
-  const properties = ["Property 1", "Property 2", "Property 3"]; // Example properties
+    return () => clearInterval(interval);
+  }, [authMode, resendTimer]);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handlePropertySelect = (property) => {
-    setSelectedProperty(property);
-    setIsDropdownOpen(false);
-  };
-
-  // const handleSubmit = async () => {
-  //   const data = {
-  //     Email: email,
-  //     Password: password,
-  //   };
-  //   const result = await Superadminlogin(data);
-  //   if (result.status) {
-  //     console.log(result.token);
-  //     Cookies.set("token", result.token, { expires: 7 });
-  //     window.location.href = "/";
-  //   } else {
-  //     toast.error(result.message || "An error occurred");
-  //   }
-  // };
-
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  const validate = () => {
-    if (selected === "Superadminlogin") {
-      if (!superAdminEmail) {
-        return "Email is required";
-      } else if (!validateEmail(superAdminEmail)) {
-        return "Invalid  email format";
-      }
-      if (!superAdminPassword) return " Password is required";
-    } else {
-      if (!adminEmail) {
-        return " Email is required";
-      } else if (!validateEmail(adminEmail)) {
-        return "Invalid  email format";
-      }
-      if (!adminPassword) return " Password is required";
-    }
-    return null;
-  };
-
-  const handleSubmit = async () => {
-    const errors = validate();
-    if (errors) {
-      toast.error(errors);
+  const handleSendOtp = () => {
+    const cleaned = phoneNumber.replace(/\D/g, "");
+    if (cleaned.length !== 10) {
+      toast.error("Please enter a valid 10-digit Indian mobile number");
       return;
     }
 
-    setLoading(true);
+    setIsSendingOtp(true);
+    setTimeout(() => {
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      setMockGeneratedOtp(code);
+      setAuthMode("otp");
+      setResendTimer(30);
+      setIsSendingOtp(false);
+      toast.success(`WhatsApp OTP sent! Use code: ${code}`, { duration: 6000 });
+    }, 600);
+  };
 
-    let data, result;
+  const handleOtpChange = (index, value) => {
+    if (value.length > 1) {
+      const pasted = value.replace(/\D/g, "").slice(0, 6).split("");
+      const newDigits = [...otpDigits];
+      pasted.forEach((char, i) => {
+        if (i < 6) newDigits[i] = char;
+      });
+      setOtpDigits(newDigits);
+      if (pasted.length === 6) {
+        verifyOtpCode(newDigits.join(""));
+      }
+      return;
+    }
 
-    try {
-      if (selected === "Superadminlogin") {
-        data = {
-          email: superAdminEmail,
-          password: superAdminPassword,
-        };
-        result = await Adminlogin(data);
-       if(result.data){
-        Setuserdata(result.data)
-      }
-      } else {
-        data = {
-          email: adminEmail,
-          password: adminPassword,
-        };
-        result = await Adminlogin(data);
-        if(result.data){
-          Setuserdata(result.data)
-        }
-      }
+    const newDigits = [...otpDigits];
+    newDigits[index] = value;
+    setOtpDigits(newDigits);
 
-      if (result.status) {
-        console.log(result.token);
-        Cookies.set("token", result.token);
-        if (rememberMe) {
-          localStorage.setItem("rememberedEmail", data.Email);
-        } else {
-          localStorage.removeItem("rememberedEmail");
-        }
-        router.push("/");
-      } else {
-        toast.error(result.message || "An error occurred during login");
-      }
-    } catch (error) {
-      toast.error("An error occurred during login");
-    } finally {
-      setLoading(false);
+    if (value && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+
+    if (newDigits.every((d) => d !== "")) {
+      verifyOtpCode(newDigits.join(""));
     }
   };
 
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const verifyOtpCode = (enteredCode) => {
+    setIsVerifying(true);
+    setTimeout(() => {
+      setIsVerifying(false);
+      const cleaned = phoneNumber.replace(/\D/g, "");
+      const sessionUser = {
+        name: `Member +91 ${cleaned.slice(0, 5)}...`,
+        phone: `+91 ${cleaned}`,
+        email: `user_${cleaned.slice(-4)}@k2sign.com`,
+        isVerified: true,
+        authProvider: "whatsapp",
+        role: "customer",
+      };
+
+      const mockToken = "k2_jwt_" + Date.now();
+      Cookies.set("token", mockToken, { expires: 30 });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("k2_user", JSON.stringify(sessionUser));
+        window.dispatchEvent(new Event("storage"));
+      }
+
+      toast.success("Welcome! Successfully signed in via WhatsApp OTP.");
+      router.push("/");
+    }, 800);
+  };
+
+  const handleGoogleLogin = () => {
+    setIsVerifying(true);
+    setTimeout(() => {
+      setIsVerifying(false);
+      const googleUser = {
+        name: "Google Customer",
+        email: "verified.customer@gmail.com",
+        isVerified: true,
+        authProvider: "google",
+        role: "customer",
+      };
+
+      const mockToken = "k2_google_jwt_" + Date.now();
+      Cookies.set("token", mockToken, { expires: 30 });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("k2_user", JSON.stringify(googleUser));
+        window.dispatchEvent(new Event("storage"));
+      }
+
+      toast.success("Signed in with Google account!");
+      router.push("/");
+    }, 700);
+  };
+
+  const handlePasswordLogin = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
+    }
+
+    setIsPasswordLoading(true);
+    setTimeout(() => {
+      setIsPasswordLoading(false);
+      const standardUser = {
+        name: email.split("@")[0].toUpperCase(),
+        email: email,
+        isVerified: true,
+        authProvider: "email",
+        role: email.includes("admin") ? "admin" : "customer",
+      };
+
+      const mockToken = "k2_pwd_jwt_" + Date.now();
+      Cookies.set("token", mockToken, { expires: 30 });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("k2_user", JSON.stringify(standardUser));
+        window.dispatchEvent(new Event("storage"));
+      }
+
+      toast.success(`Welcome back, ${standardUser.name}!`);
+      router.push("/");
+    }, 800);
+  };
 
   return (
-    <>
-      <main className="h-screen w-full bg-[#f7f7f7]   flex justify-center items-center flex-col">
-        <div className="md:w-96 lg:w-96 w-11/12 h-auto rounded-lg overflow-hidden mx-auto boxshadow">
-          <div className="flex gap-3 bg-white justify-center items-center ">
-            <Image alt=" logo"  objectFit="contain"  radius="sm" src={Logo}  className="object-contain h-24 w-24" />
-           
+    <div className="min-h-screen bg-[#0f172a]/95 flex flex-col justify-center items-center p-4 sm:p-6 relative">
+      <Toaster position="top-center" />
+
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#1e1035] via-[#0b0f19] to-[#0f172a] pointer-events-none" />
+
+      {/* Navigation Header */}
+      <div className="w-full max-w-4xl mb-4 flex items-center justify-between relative z-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-300 hover:text-white transition"
+        >
+          <ChevronLeft size={16} />
+          <span>Back to Home</span>
+        </Link>
+
+        <span className="text-[11px] font-semibold text-purple-300 bg-purple-950/60 px-3 py-1 rounded-full border border-purple-800">
+          6 Store Hubs in Pune & Mumbai
+        </span>
+      </div>
+
+      {/* Main Centered 2-Column Card */}
+      <div className="w-full max-w-4xl bg-white border border-gray-200 rounded-[32px] shadow-2xl overflow-hidden relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 p-4 sm:p-6 gap-6 items-stretch">
+          
+          {/* LEFT COLUMN: VISUAL BANNER CARD */}
+          <div className="md:col-span-5 relative rounded-[24px] overflow-hidden min-h-[340px] md:min-h-[480px] bg-gradient-to-br from-[#180a29] via-[#2a1145] to-[#120520] flex flex-col justify-between p-6 sm:p-7 text-white shadow-inner">
+            <div className="absolute inset-0 opacity-40 mix-blend-overlay">
+              <Image
+                src="/images/acrylic-3d-letters.jpg"
+                alt="K2 Sign & Print Production"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none" />
+
+            {/* Top Brand Tag */}
+            <div className="relative z-10 text-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-300/90 block">
+                K2 SIGN & PRINT
+              </span>
+            </div>
+
+            {/* Headline & Subtitle */}
+            <div className="relative z-10 text-center space-y-2.5 my-auto py-6">
+              <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight leading-snug">
+                Print Smarter. <br />
+                Grow Your Brand.
+              </h3>
+              <p className="text-xs text-purple-200/90 font-medium max-w-[240px] mx-auto leading-relaxed">
+                Industrial offset & digital printing press with 6 branch stores in Pune & Mumbai
+              </p>
+
+              <div className="pt-2">
+                <span className="inline-block border border-dashed border-white/60 bg-black/40 backdrop-blur-xs px-4 py-2 rounded-full text-xs font-bold text-white tracking-wide shadow-xs">
+                  Visiting Cards from ₹0.20*
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Assurance */}
+            <div className="relative z-10 flex items-center justify-center gap-1.5 text-[11px] text-gray-300 font-medium border-t border-white/10 pt-3">
+              <Sparkles size={13} className="text-amber-300" />
+              <span>300 DPI Pre-Press Proofing Guaranteed</span>
+            </div>
           </div>
-          <Divider/>
-          <div className="flex gap-3 justify-center bg-white items-center py-4 flex-col">
-            <Tabs
-              fullWidth
-              classNames={{
-                tabList:
-                  "gap-6 w-11/12 mx-auto relative  rounded-md p-0  ",
-                cursor: "w-full bg-white",
-                tab: " px-2 h-6",
-                tabContent: "group-data-[selected=true]:text-black text-black uppercase font-bold",
-              }}
-              size="md"
-              aria-label="Tabs form"
-              selectedKey={selected}
-              onSelectionChange={setSelected}
-            >
-              <Tab key="Superadminlogin" title="Login" className="w-full">
-                <div className="w-full flex justify-center items-center flex-col gap-3">
-                  <div className="bg-slate rounded-md w-11/12 mx-auto h-12 flex justify-start px-2 items-center gap-4">
-                    <FaUser className="text-[#9c1dac]" size={24} />
+
+          {/* RIGHT COLUMN: LOGIN / SIGNUP FORM */}
+          <div className="md:col-span-7 flex flex-col justify-between p-2 sm:p-4 sm:pr-6">
+            
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-xl bg-[#9c1dac] text-white flex items-center justify-center font-black text-sm shadow-xs">
+                  K2
+                </div>
+                <span className="font-extrabold text-sm tracking-wider text-gray-900">
+                  K2 SIGN & PRINT
+                </span>
+              </div>
+
+              <div className="space-y-1 mb-6">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Login/Signup
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                  Welcome to K2 Sign & Print
+                </h2>
+              </div>
+
+              {/* FLOW 1: PHONE NUMBER INPUT */}
+              {authMode === "phone" && (
+                <div className="space-y-4">
+                  <div className="flex gap-2.5">
+                    <div className="flex items-center gap-1.5 px-3.5 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-gray-800 text-sm font-bold shrink-0">
+                      <span>+91</span>
+                      <ChevronDown size={14} className="text-gray-500" />
+                    </div>
+
                     <input
-                      className="outline-none bg-slate text-black placeholder:text-black placeholder:text-sm placeholder:font-medium w-full"
-                      placeholder="User Name"
-                      value={superAdminEmail}
-                      onChange={(e) => setSuperAdminEmail(e.target.value)}
-                      required
+                      type="tel"
+                      maxLength={10}
+                      placeholder="Phone number"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSendOtp();
+                      }}
+                      className="w-full h-12 px-4 text-sm font-semibold rounded-2xl border border-gray-200 focus:border-[#9c1dac] focus:ring-4 focus:ring-[#9c1dac]/10 outline-none transition placeholder:text-gray-400 placeholder:font-normal"
+                      autoFocus
                     />
                   </div>
-                  <div className="bg-slate rounded-md w-11/12 mx-auto h-12 flex justify-start px-2 items-center gap-4">
-                    <IoMdLock className="text-[#9c1dac]" size={24} />
-                    <input
-                      className="outline-none bg-slate text-black placeholder:text-black placeholder:text-sm placeholder:font-medium w-full"
-                      placeholder="Password"
-                      type="password"
-                      value={superAdminPassword}
-                      onChange={(e) => setSuperAdminPassword(e.target.value)}
-                      required
-                    />
+
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={isSendingOtp || phoneNumber.length < 10}
+                    className="w-full h-12 rounded-2xl bg-[#9c1dac] hover:bg-[#831492] disabled:opacity-50 text-white font-extrabold text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {isSendingOtp ? (
+                      <>
+                        <RefreshCw size={16} className="animate-spin" />
+                        <span>Sending WhatsApp OTP...</span>
+                      </>
+                    ) : (
+                      <span>Continue</span>
+                    )}
+                  </button>
+
+                  <div className="relative my-4 text-center">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-100" />
+                    </div>
+                    <span className="relative bg-white px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      or continue with
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    disabled={isVerifying}
+                    className="w-full h-12 rounded-2xl border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-bold text-xs shadow-xs flex items-center justify-center gap-3 transition cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                      />
+                    </svg>
+                    <span>Continue with Google</span>
+                  </button>
+
+                  <div className="text-center pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode("password")}
+                      className="text-xs text-gray-500 hover:text-purple-700 font-medium transition cursor-pointer"
+                    >
+                      Sign in with Email & Password &rarr;
+                    </button>
                   </div>
                 </div>
-              </Tab>
-              
-            </Tabs>
+              )}
 
-            <div className="flex py-2 px-6 justify-between w-full">
-              <Checkbox
-               color="secondary"
-                classNames={{
-                  label: "text-small text-black opacity-70",
-                }}
-                isSelected={rememberMe}
-                onValueChange={setRememberMe}
-              >
-                Remember me
-              </Checkbox>
-              <Link
-                color="primary"
-                href="#"
-                size="sm"
-                className="text-black opacity-70"
-              >
-                Forgot password?
-              </Link>
+              {/* FLOW 2: OTP VERIFICATION */}
+              {authMode === "otp" && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 pb-1">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode("phone")}
+                      className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 transition cursor-pointer"
+                      title="Back to phone number"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+                    <div>
+                      <p className="text-xs font-bold text-gray-800">
+                        Verification code sent via WhatsApp
+                      </p>
+                      <p className="text-[11px] text-gray-500">
+                        Code sent to <span className="font-bold text-gray-800">+91 {phoneNumber}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between gap-1.5 py-1">
+                    {otpDigits.map((digit, idx) => (
+                      <input
+                        key={idx}
+                        ref={(el) => (otpInputRefs.current[idx] = el)}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(idx, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                        className="w-11 h-12 text-center text-lg font-black rounded-xl border border-gray-200 focus:border-[#9c1dac] focus:ring-4 focus:ring-[#9c1dac]/15 outline-none transition bg-gray-50/50"
+                        autoFocus={idx === 0}
+                      />
+                    ))}
+                  </div>
+
+                  {mockGeneratedOtp && (
+                    <div className="bg-amber-50 border border-amber-200 p-2.5 rounded-xl text-center text-[11px] text-amber-800 font-medium">
+                      Demo Code: <span className="font-mono font-bold text-sm text-purple-900 tracking-wider">{mockGeneratedOtp}</span>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => verifyOtpCode(otpDigits.join(""))}
+                    disabled={isVerifying || otpDigits.some((d) => !d)}
+                    className="w-full h-12 rounded-2xl bg-[#9c1dac] hover:bg-[#831492] disabled:opacity-50 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {isVerifying ? (
+                      <>
+                        <RefreshCw size={16} className="animate-spin" />
+                        <span>Verifying...</span>
+                      </>
+                    ) : (
+                      <span>Verify & Continue</span>
+                    )}
+                  </button>
+
+                  <div className="flex items-center justify-between text-xs pt-1 px-1">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode("phone")}
+                      className="text-gray-500 hover:text-gray-800 underline font-medium cursor-pointer"
+                    >
+                      Change Number
+                    </button>
+
+                    {resendTimer > 0 ? (
+                      <span className="text-gray-400 font-medium">
+                        Resend in {resendTimer}s
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        className="text-[#9c1dac] hover:text-[#831492] font-bold cursor-pointer"
+                      >
+                        Resend Code
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* FLOW 3: PASSWORD LOGIN */}
+              {authMode === "password" && (
+                <form onSubmit={handlePasswordLogin} className="space-y-3.5">
+                  <div className="flex items-center gap-2 pb-1">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode("phone")}
+                      className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 transition cursor-pointer"
+                      title="Back to phone login"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+                    <span className="text-xs font-bold text-gray-800">
+                      Sign in with Email
+                    </span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-gray-600">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="name@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full h-11 px-4 text-sm font-semibold rounded-xl border border-gray-200 focus:border-[#9c1dac] focus:ring-4 focus:ring-[#9c1dac]/10 outline-none transition"
+                      autoFocus
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-gray-600">Password</label>
+                    <input
+                      type="password"
+                      required
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full h-11 px-4 text-sm font-semibold rounded-xl border border-gray-200 focus:border-[#9c1dac] focus:ring-4 focus:ring-[#9c1dac]/10 outline-none transition"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isPasswordLoading}
+                    className="w-full h-12 rounded-2xl bg-[#9c1dac] hover:bg-[#831492] disabled:opacity-50 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {isPasswordLoading ? (
+                      <>
+                        <RefreshCw size={16} className="animate-spin" />
+                        <span>Signing in...</span>
+                      </>
+                    ) : (
+                      <span>Sign In</span>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
-            <div className="w-full flex justify-center items-center py-2">
-              <Button
-                onPress={handleSubmit}
-                className="bg-[#9c1dac] w-11/12 text-white font-semibold rounded-md"
-              >
-                {loading ? <span className="loader2"></span> : "Login"}
-              </Button>
+
+            {/* Terms and Privacy notice */}
+            <div className="pt-6 mt-4">
+              <p className="text-[11px] text-gray-400 leading-relaxed text-left">
+                By signing up, you agree to our{" "}
+                <span className="text-[#9c1dac] font-semibold hover:underline cursor-pointer">
+                  Terms & Conditions
+                </span>{" "}
+                and{" "}
+                <span className="text-[#9c1dac] font-semibold hover:underline cursor-pointer">
+                  Privacy Policy
+                </span>
+              </p>
             </div>
+
           </div>
+
         </div>
-        
-      </main>
-
-
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          // Define default options
-          className: "",
-          duration: 5000,
-          style: {
-            background: "white",
-            color: "#000",
-          },
-
-          // Default options for specific types
-          success: {
-            duration: 3000,
-            theme: {
-              primary: "green",
-              secondary: "black",
-            },
-          },
-        }}
-      />
-    </>
+      </div>
+    </div>
   );
-};
-
-export default Loginpage;
-
+}

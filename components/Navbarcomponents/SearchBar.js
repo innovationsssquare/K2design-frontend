@@ -1,235 +1,334 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { categoriesWithProducts } from "./searchdata";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { SEARCH_INDEX } from "./searchIndex";
 import {
-  FileText,
-  CreditCard,
-  Mail,
-  Receipt,
-  BookOpen,
-  Book,
-  ImageIcon,
-  Stamp,
-  Send,
-  Tag,
-  Calendar,
-  Folder,
-  ShoppingBag,
-  Heart,
-  Printer,
-  Flag,
-  Film,
-  Glasses,
-  Square,
-  Type,
-  Lightbulb,
-  Award,
-  ChevronRight,
   Search,
+  X,
+  Sparkles,
+  ArrowRight,
+  TrendingUp,
+  Tag,
+  CreditCard,
+  Stamp,
+  Flag,
   Layers,
-  Scissors,
-  Monitor,
-  Frame,
-  Sticker,
-  PanelTop,
+  Palette,
+  Store,
+  Clock,
+  Printer,
+  ChevronRight
 } from "lucide-react";
-import { Loader2 } from "lucide-react";
-import { Spinner } from "@nextui-org/react";
 
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
   const router = useRouter();
   const pathname = usePathname();
 
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [recentSearches, setRecentSearches] = useState([
+    "Visiting Cards",
+    "Apparel Hang Tags",
+    "Flex Banners",
+    "Acrylic 3D Letters"
+  ]);
 
+  const inputRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Close on route navigation
   useEffect(() => {
-    setLoading(false);
+    setIsOpen(false);
+    setQuery("");
   }, [pathname]);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-
-    if (!value) {
-      setSuggestions([]);
-      return;
-    }
-
-    const lowerValue = value.toLowerCase();
-    const results = [];
-
-    categoriesWithProducts.forEach(
-      ({ category, slug: categorySlug, products }) => {
-        // Match category
-        if (category.toLowerCase().includes(lowerValue)) {
-          results.push({
-            type: "category",
-            name: category,
-            slug: categorySlug,
-          });
-        }
-
-        // Match products
-        products.forEach(({ name, slug }) => {
-          if (name.toLowerCase().includes(lowerValue)) {
-            results.push({
-              type: "product",
-              name,
-              slug,
-              category,
-              categorySlug,
-            });
-          }
-        });
+  // Global Keyboard Shortcut: Ctrl + K / Cmd + K / '/' to focus
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+        setIsOpen(true);
+      } else if (e.key === "/" && document.activeElement !== inputRef.current && !["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        inputRef.current?.focus();
+        setIsOpen(true);
+      } else if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        inputRef.current?.blur();
       }
-    );
+    };
 
-    setSuggestions(results);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  // Click outside listener
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Filter search results with intelligent multi-field matching
+  const searchResults = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+
+    return SEARCH_INDEX.filter((item) => {
+      const matchTitle = item.title.toLowerCase().includes(q);
+      const matchCategory = item.category.toLowerCase().includes(q);
+      const matchKeywords = item.keywords.some((k) => k.toLowerCase().includes(q));
+      return matchTitle || matchCategory || matchKeywords;
+    }).slice(0, 8);
+  }, [query]);
+
+  // Popular items when query is empty
+  const popularItems = useMemo(() => {
+    return SEARCH_INDEX.filter((item) => item.popular).slice(0, 6);
+  }, []);
+
+  // Keyboard navigation up / down / enter
+  const handleKeyDownInput = (e) => {
+    const activeList = query.trim() ? searchResults : popularItems;
+    if (activeList.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1) % activeList.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev - 1 + activeList.length) % activeList.length);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const target = activeList[selectedIndex] || activeList[0];
+      if (target) {
+        handleSelect(target);
+      }
+    }
   };
 
   const handleSelect = (item) => {
+    setIsOpen(false);
     setQuery("");
-    setSuggestions([]);
-    setLoading(true);
-
-    const path =
-      item.type === "category"
-        ? `/categories/${item.slug}`
-        : `/categories/${item.categorySlug}/subcategories/${item.slug}`;
-
-    if (path === pathname) {
-      router.refresh(); // Force re-render if same route
-      setTimeout(() => setLoading(false), 1000); // Graceful delay
-    } else {
-      router.push(path);
+    if (item.title) {
+      setRecentSearches((prev) => {
+        const filtered = prev.filter((s) => s.toLowerCase() !== item.title.toLowerCase());
+        return [item.title, ...filtered].slice(0, 5);
+      });
     }
+    router.push(item.route);
   };
 
-  const getIcon = (item) => {
-    // Category icons
-    if (item.type === "category") {
-      if (item.name.includes("Paper Printing"))
-        return <Printer className="h-4 w-4" />;
-      if (item.name.includes("Flex")) return <Flag className="h-4 w-4" />;
-      if (item.name.includes("Media Printing"))
-        return <Film className="h-4 w-4" />;
-      if (item.name.includes("Glass")) return <Glasses className="h-4 w-4" />;
-      if (item.name.includes("Rigid Sign"))
-        return <Square className="h-4 w-4" />;
-      if (item.name.includes("Vinyl Letters"))
-        return <Type className="h-4 w-4" />;
-      if (item.name.includes("ACP & Acrylic"))
-        return <Layers className="h-4 w-4" />;
-      if (item.name.includes("Light Board") || item.name.includes("LED"))
-        return <Lightbulb className="h-4 w-4" />;
-      if (item.name.includes("Modular") || item.name.includes("Premium"))
-        return <Award className="h-4 w-4" />;
-      return <FileText className="h-4 w-4" />;
-    }
-    // Product icons
-    else {
-      if (item.name.includes("Visiting Card"))
-        return <CreditCard className="h-4 w-4" />;
-      if (item.name.includes("Letterhead"))
-        return <FileText className="h-4 w-4" />;
-      if (item.name.includes("Envelope")) return <Mail className="h-4 w-4" />;
-      if (item.name.includes("Bill")) return <Receipt className="h-4 w-4" />;
-      if (item.name.includes("Brochure"))
-        return <BookOpen className="h-4 w-4" />;
-      if (item.name.includes("Booklet") || item.name.includes("Book"))
-        return <Book className="h-4 w-4" />;
-      if (item.name.includes("Digital Print") || item.name.includes("Poster"))
-        return <ImageIcon className="h-4 w-4" />;
-      if (item.name.includes("Stamp")) return <Stamp className="h-4 w-4" />;
-      if (
-        item.name.includes("Pamphlet") ||
-        item.name.includes("Flyer") ||
-        item.name.includes("Leaflet")
-      )
-        return <Send className="h-4 w-4" />;
-      if (item.name.includes("Invitation")) return <Mail className="h-4 w-4" />;
-      if (item.name.includes("Sticker") || item.name.includes("Label"))
-        return <Sticker className="h-4 w-4" />;
-      if (item.name.includes("Tag")) return <Tag className="h-4 w-4" />;
-      if (item.name.includes("Calendar"))
-        return <Calendar className="h-4 w-4" />;
-      if (item.name.includes("File") || item.name.includes("Folder"))
-        return <Folder className="h-4 w-4" />;
-      if (item.name.includes("Bag")) return <ShoppingBag className="h-4 w-4" />;
-      if (item.name.includes("Wedding")) return <Heart className="h-4 w-4" />;
-      if (item.name.includes("Flex") || item.name.includes("Banner"))
-        return <Flag className="h-4 w-4" />;
-      if (item.name.includes("Frame")) return <Frame className="h-4 w-4" />;
-      if (item.name.includes("Vinyl")) return <Scissors className="h-4 w-4" />;
-      if (item.name.includes("Print")) return <Printer className="h-4 w-4" />;
-      if (item.name.includes("Glass")) return <Glasses className="h-4 w-4" />;
-      if (item.name.includes("Plate")) return <Square className="h-4 w-4" />;
-      if (item.name.includes("LED") || item.name.includes("Light"))
-        return <Lightbulb className="h-4 w-4" />;
-      if (item.name.includes("Acrylic")) return <Layers className="h-4 w-4" />;
-      if (item.name.includes("Sign")) return <PanelTop className="h-4 w-4" />;
-      if (item.name.includes("Table")) return <Monitor className="h-4 w-4" />;
-      return <FileText className="h-4 w-4" />;
-    }
+  const getItemIcon = (item) => {
+    if (item.id === "tool-studio") return <Palette className="text-purple-600" size={17} />;
+    if (item.id === "tool-branches") return <Store className="text-amber-600" size={17} />;
+    if (item.category.includes("Paper")) return <CreditCard className="text-blue-600" size={17} />;
+    if (item.category.includes("Flex")) return <Flag className="text-orange-600" size={17} />;
+    if (item.category.includes("Light") || item.category.includes("3D")) return <Sparkles className="text-purple-600" size={17} />;
+    return <Printer className="text-gray-600" size={17} />;
   };
 
   return (
-    <div className="relative w-full">
-      <input
-        type="search"
-        disabled={loading}
-        className="text-heading outline-none w-full h-[52px] pl-5 pr-14 bg-[#f8f9fb] text-sm text-brand-dark rounded-md border border-[#e5e7eb] placeholder:text-brand-dark/50 focus:border-secondary focus:ring-0"
-        placeholder="Search products and categories..."
-        value={query}
-        onChange={handleChange}
-      />
-      {loading ? (
-        <Spinner size="sm" className="absolute right-4 top-1/2 -translate-y-1/2  text-gray-400" />
-      ) : (
-        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a4a4a4]" />
-      )}
-      <i className="pi pi-search absolute inset-y-0 right-4 flex items-center text-[#a4a4a4] pointer-events-none text-opacity-40" />
+    <div ref={containerRef} className="relative w-full">
+      {/* Input Box */}
+      <div className="relative flex items-center w-full">
+        <div className="absolute left-4 text-gray-400 pointer-events-none flex items-center justify-center">
+          <Search size={18} />
+        </div>
 
-      {suggestions.length > 0 && (
-        <div className="absolute z-10 bg-white border border-gray-200 rounded-md mt-2 w-full shadow-lg">
-          <ScrollArea className="h-60 rounded-md border-none ">
-            <ul className="py-1">
-              {suggestions.map((item, index) => (
-                <li
-                  key={index}
-                  className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between group transition-colors"
-                  onClick={() => handleSelect(item)}
-                >
-                  <div className="flex items-center gap-3">
-                    {getIcon(item)}
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{item.name}</span>
-                      {item.categorySlug && (
-                        <span className="text-xs text-gray-500">
-                          in {item.categorySlug}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        item.type === "category"
-                          ? "bg-gray-100 text-secondary-400"
-                          : "bg-Apptheme/10 text-Apptheme"
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setSelectedIndex(0);
+            if (!isOpen) setIsOpen(true);
+          }}
+          onFocus={() => setIsOpen(true)}
+          onKeyDown={handleKeyDownInput}
+          placeholder="Search products, signs, tags, flex banners..."
+          className="w-full h-11 pl-11 pr-24 text-xs sm:text-sm bg-gray-50/80 hover:bg-gray-100/80 focus:bg-white text-gray-900 rounded-full border border-gray-200 focus:border-purple-600 focus:ring-4 focus:ring-purple-600/10 outline-none transition-all duration-200 placeholder:text-gray-400 font-medium"
+        />
+
+        <div className="absolute right-3 flex items-center gap-1.5">
+          {query ? (
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                inputRef.current?.focus();
+              }}
+              className="p-1 text-gray-400 hover:text-gray-600 rounded-full transition"
+            >
+              <X size={15} />
+            </button>
+          ) : (
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-mono font-bold text-gray-400 bg-white border border-gray-200 rounded-md shadow-2xs pointer-events-none">
+              Ctrl K
+            </kbd>
+          )}
+        </div>
+      </div>
+
+      {/* Modern Autocomplete Dropdown Popover */}
+      {isOpen && (
+        <div
+          className="absolute left-0 right-0 top-13 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150"
+          style={{ backgroundColor: "#ffffff" }}
+        >
+          
+          {/* STATE 1: Query Typed with Results */}
+          {query.trim() && searchResults.length > 0 && (
+            <div className="p-2 divide-y divide-gray-50">
+              <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-400 flex justify-between items-center">
+                <span>Matching Products & Services</span>
+                <span>{searchResults.length} results</span>
+              </div>
+
+              <div className="space-y-1 pt-1 max-h-80 overflow-y-auto">
+                {searchResults.map((item, idx) => {
+                  const isHighlighted = idx === selectedIndex;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => handleSelect(item)}
+                      onMouseEnter={() => setSelectedIndex(idx)}
+                      className={`p-2.5 rounded-xl cursor-pointer transition flex items-center justify-between ${
+                        isHighlighted
+                          ? "bg-purple-50/90 text-purple-950 font-semibold"
+                          : "hover:bg-gray-50 text-gray-800"
                       }`}
                     >
-                      {item.type}
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${isHighlighted ? "bg-white shadow-xs" : "bg-gray-100"}`}>
+                          {getItemIcon(item)}
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-bold flex items-center gap-2">
+                            <span>{item.title}</span>
+                            <span className="text-[10px] font-medium bg-gray-100 text-gray-600 px-1.5 py-0.2 rounded">
+                              {item.category}
+                            </span>
+                          </div>
+                          <span className="text-[11px] text-gray-500 font-mono">
+                            {item.priceHint}
+                          </span>
+                        </div>
+                      </div>
+
+                      <ChevronRight
+                        size={16}
+                        className={`transition-transform ${isHighlighted ? "text-purple-600 translate-x-1" : "text-gray-300"}`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* STATE 2: Query Typed with NO Results */}
+          {query.trim() && searchResults.length === 0 && (
+            <div className="p-8 text-center space-y-2">
+              <p className="text-sm font-semibold text-gray-700">No print products found for &ldquo;{query}&rdquo;</p>
+              <p className="text-xs text-gray-400 max-w-xs mx-auto">
+                Try searching for visiting cards, banners, 3D letters, apparel tags, or K2 Studio.
+              </p>
+              <button
+                type="button"
+                onClick={() => handleSelect(SEARCH_INDEX[0])}
+                className="mt-2 text-xs font-bold text-purple-700 hover:underline inline-flex items-center gap-1"
+              >
+                Open K2 Canvas Design Studio <ArrowRight size={12} />
+              </button>
+            </div>
+          )}
+
+          {/* STATE 3: Empty Query - Fast Quick Jump & Trending */}
+          {!query.trim() && (
+            <div className="p-4 space-y-4">
+              {/* Recent Searches */}
+              {recentSearches.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={12} /> Recent Searches
                     </span>
-                    <ChevronRight className="h-4 w-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <button
+                      type="button"
+                      onClick={() => setRecentSearches([])}
+                      className="text-[10px] hover:text-gray-600 lowercase font-medium cursor-pointer"
+                    >
+                      clear
+                    </button>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </ScrollArea>
+                  <div className="flex flex-wrap gap-1.5">
+                    {recentSearches.map((tag, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => {
+                          setQuery(tag);
+                          inputRef.current?.focus();
+                        }}
+                        className="text-xs px-2.5 py-1 bg-gray-100 hover:bg-purple-50 hover:text-purple-700 rounded-lg text-gray-700 font-medium transition"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Jump Popular Products */}
+              <div>
+                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <TrendingUp size={12} className="text-purple-600" />
+                  Popular Quick Access
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {popularItems.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleSelect(item)}
+                      className="p-2.5 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50/50 cursor-pointer transition flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-gray-100 group-hover:bg-white rounded-lg transition shadow-2xs">
+                          {getItemIcon(item)}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900 group-hover:text-purple-900 transition leading-tight">
+                            {item.title}
+                          </p>
+                          <p className="text-[10px] text-gray-400 font-mono mt-0.5">
+                            {item.priceHint}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-gray-300 group-hover:text-purple-600 group-hover:translate-x-0.5 transition" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer Shortcut Helper */}
+              <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+                <span>Navigate with <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px]">↑</kbd> <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px]">↓</kbd></span>
+                <span>Select with <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px]">Enter</kbd></span>
+                <span>Close with <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px]">Esc</kbd></span>
+              </div>
+            </div>
+          )}
+
         </div>
       )}
     </div>

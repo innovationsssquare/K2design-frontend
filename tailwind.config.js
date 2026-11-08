@@ -9,7 +9,6 @@ module.exports = {
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-
   ],
   prefix: "",
   theme: {
@@ -21,38 +20,29 @@ module.exports = {
         "3xl": "1700px",
       },
     },
-    colors: {
-      'Apptheme': '#9c1dac',
-      'black': '#00000',
-      'white': '#ffffff',
-      'slate': '#f3f4f6',
-      'slate-50': '#F8FAFC',
-      'slate-100': '#F1F5F9',
-      'slate-200': '#E2E8F0',
-      'slate-300': '#CBD5E1',
-      'slate-400': '#94A3B8',
-      'slate-500': '#64748B',
-      'green': '#13ce66',
-      'yellow': '#ffc82c',
-      'gray-dark': '#273444',
-      'gray': '#595959',
-      'gray-light': '#d3dce6',
-      'gray-800': '#1F2937',
-      'gray-200': '#E5E7EB',
-      'gray-300': '#D1D5DB',
-      'gray-400': '#9CA3AF',
-      'gray-500': '#6B7280',
-      'gray-600': '#4B5563',
-      'gray-700': '#374151',
-      'gray-800': '#1F2937',
-      'gray-900': '#111827',
-    },
-   
-    fontFamily: {
-      sans: ['Poppins', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
-    },
     extend: {
+      colors: {
+        'Apptheme': '#9c1dac',
+        'popover': {
+          DEFAULT: '#ffffff',
+          foreground: '#111827',
+        },
+        'muted': {
+          DEFAULT: '#f3f4f6',
+          foreground: '#6b7280',
+        },
+        'accent': {
+          DEFAULT: '#f3f4f6',
+          foreground: '#111827',
+        },
+        'border': '#e5e7eb',
+        'input': '#e5e7eb',
+        'ring': '#9c1dac',
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -61,12 +51,9 @@ module.exports = {
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
-
         },
-       
       },
-      
     },
   },
-  plugins: [require("tailwindcss-animate"),nextui()],
+  plugins: [require("tailwindcss-animate"), nextui()],
 }
